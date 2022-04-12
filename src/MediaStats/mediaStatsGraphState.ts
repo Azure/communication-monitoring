@@ -11,17 +11,15 @@ import ChartStreaming from 'chartjs-plugin-streaming'
 import zoomPlugin from 'chartjs-plugin-zoom'
 import 'chartjs-adapter-luxon'
 
-Chart.register(zoomPlugin, ChartStreaming)
-
-Chart.defaults.set('plugins.streaming', {
-  duration: 20000,
-})
+let chart: Chart
 
 export function renderChart(
   objectToGraph: MediaStatsDataValue[],
   objectName: string,
-  myChart: Chart
 ) {
+
+  Chart.register(zoomPlugin, ChartStreaming)
+
   const chartContainer = document.getElementById('myChart') as HTMLCanvasElement
   const objectKey = objectName as keyof typeof MediaStatsMap
   const data = {
@@ -41,7 +39,7 @@ export function renderChart(
   const ctx = chartContainer.getContext('2d')!
 
   /* eslint-disable  @typescript-eslint/no-unused-vars */
-  myChart = new Chart(ctx, {
+  chart = new Chart(ctx, {
     type: 'line',
     data,
     options: {
@@ -62,6 +60,9 @@ export function renderChart(
         },
       },
       plugins: {
+        streaming: {
+          duration: 20000
+        },
         zoom: {
           pan: {
             enabled: true,
@@ -86,6 +87,7 @@ export function renderChart(
       },
     },
   })
+
 }
 
 function generateOldData(objectToGraph: MediaStatsDataValue[]) {
@@ -99,4 +101,8 @@ function generateOldData(objectToGraph: MediaStatsDataValue[]) {
     })
   })
   return valueArray
+}
+
+export function destroyChart(){
+  Chart.unregister(zoomPlugin, ChartStreaming)
 }

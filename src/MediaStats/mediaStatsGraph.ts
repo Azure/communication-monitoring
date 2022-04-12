@@ -1,8 +1,6 @@
 import { MediaStatsDataValue } from '../../types'
-import { renderChart } from './mediaStatsGraphState'
-import Chart from 'chart.js/auto'
+import { destroyChart, renderChart } from './mediaStatsGraphState'
 
-let myChart: Chart
 let backButton: HTMLElement
 
 export function initializeGraph(
@@ -11,6 +9,7 @@ export function initializeGraph(
 ) {
   ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = true
   ;(document.getElementById('navigationTabs') as HTMLElement).hidden = true
+
 
   const statsContainer = document.getElementById('media-stats-pop-up')!
   const historicalDataDiv = document.createElement('div')
@@ -26,14 +25,14 @@ export function initializeGraph(
   backButton.addEventListener('click', () => {
     ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = false
     ;(document.getElementById('navigationTabs') as HTMLElement).hidden = false
+    destroyChart()
     statsContainer.removeChild(historicalDataDiv)
     statsContainer.removeChild(backButton)
-    myChart.destroy()
   })
-
+  
   chartContainerHolder.append(chartContainer)
   historicalDataDiv.append(chartContainerHolder)
   statsContainer.append(backButton, historicalDataDiv)
 
-  renderChart(objectToGraph, objectName, myChart)
+  renderChart(objectToGraph, objectName)
 }
