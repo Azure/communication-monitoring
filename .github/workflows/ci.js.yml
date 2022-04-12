@@ -20,4 +20,4 @@ jobs:
         with:
           node-version: '14.x'
           cache: 'npm'
-      - run: npm run build
+      - run: npm run test
