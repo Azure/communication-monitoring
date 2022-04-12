@@ -1,24 +1,24 @@
 import { startCollection, stopCollection, createCollectorArray } from './stats'
 import { initializeTables, removeTables } from './statTables'
-import { Call } from '@azure/communication-calling'
-import { Collector } from '../types'
+import { Collector, Options } from '../types'
 
 export class CallMonitor {
-  call: Call
-  divElement: HTMLDivElement
-  isCollectionStarted: boolean
   isOpened: boolean
-  collectors: Collector[]
 
-  constructor(call: Call, divElement: HTMLDivElement) {
-    this.call = call
-    this.divElement = divElement
+  private options: Options
+  private isCollectionStarted: boolean
+  private collectors: Collector[]
+
+  constructor(options: Options) {
+    this.options = options
     this.isCollectionStarted = false
     this.isOpened = false
-    this.collectors = createCollectorArray(this.call)
+    this.collectors = createCollectorArray(this.options)
+
+    this.start()
   }
 
-  start() {
+  private start() {
     if (!this.isCollectionStarted) {
       startCollection(this.collectors)
       this.isCollectionStarted = true
@@ -32,9 +32,14 @@ export class CallMonitor {
 
   open() {
     if (!this.isOpened) {
-      initializeTables(this.collectors, this.divElement)
+      initializeTables(this.collectors, this.options)
       this.isOpened = true
     }
+  }
+
+  dispose() {
+    this.stop()
+    this.close()
   }
 
   close() {

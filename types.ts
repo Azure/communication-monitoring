@@ -1,5 +1,7 @@
 import {
   Call,
+  CallAgent,
+  CallClient,
   MediaDiagnosticChangedEventArgs,
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
@@ -26,8 +28,8 @@ export interface Collector {
 export interface GeneralStatsData {
   callId: string
   participantId?: string
-  remoteParticipants?: string[]
-  dominantSpeakers?: string[]
+  remoteParticipants?: string
+  dominantSpeakers?: string
   isRecording: boolean
   isTranscribing?: boolean
   isScreenSharing?: boolean
@@ -118,4 +120,10 @@ export interface MediaStatsData {
   videoRecvLongestFreezeDurationValue?: MediaStatsDataValue[]
   videoRecvTotalFreezeDuration?: MediaStatsDataValue[]
   videoRecvTotalFreezeDurationValue?: MediaStatsDataValue[]
+}
+
+export interface Options {
+  callClient: CallClient
+  callAgent: CallAgent
+  divElement: HTMLDivElement
 }

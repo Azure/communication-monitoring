@@ -9,7 +9,7 @@ export function initializeGraph(
   objectToGraph: MediaStatsDataValue[],
   objectName: string
 ) {
-  (document.getElementById('mediaStatsTable') as HTMLElement).hidden = true
+  ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = true
   ;(document.getElementById('navigationTabs') as HTMLElement).hidden = true
 
   const statsContainer = document.getElementById('media-stats-pop-up')!
@@ -24,7 +24,7 @@ export function initializeGraph(
   backButton.innerText = '<- Back'
 
   backButton.addEventListener('click', () => {
-    (document.getElementById('mediaStatsTable') as HTMLElement).hidden = false
+    ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = false
     ;(document.getElementById('navigationTabs') as HTMLElement).hidden = false
     statsContainer.removeChild(historicalDataDiv)
     statsContainer.removeChild(backButton)

@@ -5,7 +5,7 @@ import {
   MediaDiagnosticChangedEventArgs,
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
-import { Collector, Tabs } from '../../types'
+import { Collector, Options, Tabs } from '../../types'
 
 let userFacingDiagnosticsFeature: UserFacingDiagnosticsFeature
 let userFacingDiagnosticsData:
@@ -16,8 +16,8 @@ export class UserFacingDiagnosticsImpl implements Collector {
   call: Call
   tab: Tabs
 
-  constructor(call: Call) {
-    this.call = call
+  constructor(options: Options) {
+    this.call = options.callAgent.calls[0]
     this.tab = Tabs.UserFacingDiagnostics
   }
 

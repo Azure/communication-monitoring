@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/communication-calling": "1.4.2-beta.1",
+    "@azure/communication-calling": "1.5.1-alpha.20220401.1",
     "@azure/communication-common": "^1.1.0",
     "callmonitorpackage": "file:../callmonitorpackage-1.0.0.tgz"
   },

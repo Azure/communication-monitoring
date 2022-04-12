@@ -4,19 +4,22 @@ import {
   MediaStats,
   MediaStatsCallFeature,
 } from '@azure/communication-calling'
-import { MediaStatsData, Collector, Tabs } from '../../types'
+import { MediaStatsData, Collector, Tabs, Options } from '../../types'
 import { MediaStatsMap } from './mediaStatsMap'
+import { MEDIA_STATS_AMOUNT_LIMIT } from './constants'
 
 export class MediaStatsCollectorImpl implements Collector {
   call: Call
   tab: Tabs
-  mediaStatsFeature: MediaStatsCallFeature
+  mediaStatsFeature?: MediaStatsCallFeature
   mediaStatsData: MediaStatsData = {}
 
-  constructor(call: Call) {
-    this.call = call
+  constructor(options: Options) {
+    try {
+    } catch (e) {}
+    this.call = options.callAgent.calls[0]
     this.tab = Tabs.MediaStats
-    this.mediaStatsFeature = this.call.feature(Features.MediaStats)
+    this.mediaStatsFeature = undefined
   }
 
   getStats() {
@@ -25,6 +28,12 @@ export class MediaStatsCollectorImpl implements Collector {
 
   startCollector() {
     // Start collecting stats
+
+    try {
+      this.mediaStatsFeature = this.call.feature(Features.MediaStats)
+    } catch (e) {
+      throw new Error('Media stats features are not available')
+    }
 
     const mediaStatsCollectorOptions = {
       aggregationInterval: 1,
@@ -35,24 +44,33 @@ export class MediaStatsCollectorImpl implements Collector {
       mediaStatsCollectorOptions
     )
     mediaStatsCollector.on('mediaStatsEmitted', (mediaStats) => {
-      this.updateData(mediaStats)
+      this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
     })
   }
 
   stopCollector() {
     // Stop collecting stats
-    this.mediaStatsFeature.disposeAllCollectors()
+    this.mediaStatsFeature?.disposeAllCollectors()
   }
 
-  updateData(mediaStats: MediaStats) {
+  updateData(
+    mediaStats: MediaStats,
+    mediaStatsData: MediaStatsData
+  ): MediaStatsData {
     for (const [statName, statValue] of Object.entries(mediaStats.stats)) {
-      if (statName in this.mediaStatsData) {
-        this.mediaStatsData[statName as keyof MediaStatsData]!.push({
+      if (statName in mediaStatsData) {
+        if (
+          mediaStatsData[statName as keyof MediaStatsData]!.length >=
+          MEDIA_STATS_AMOUNT_LIMIT
+        ) {
+          mediaStatsData[statName as keyof MediaStatsData]!.shift()
+        }
+        mediaStatsData[statName as keyof MediaStatsData]!.push({
           value: statValue.raw[0],
           unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
         })
       } else {
-        this.mediaStatsData[statName as keyof MediaStatsData] = [
+        mediaStatsData[statName as keyof MediaStatsData] = [
           {
             value: statValue.raw[0],
             unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
@@ -60,5 +78,6 @@ export class MediaStatsCollectorImpl implements Collector {
         ]
       }
     }
+    return mediaStatsData
   }
 }

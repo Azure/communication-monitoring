@@ -9,9 +9,10 @@
   ],
   "scripts": {
     "clean": "npx --ignore-existing --quiet rimraf ts-built && npx --ignore-existing --quiet rimraf *.tgz && npx --ignore-existing --quiet rimraf ./**/node_modules",
-    "prelint": "npm run build",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --check .",
+    "prettier-fix": "prettier --write .",
     "prebuild": "npm i",
     "build": "npx tsc",
     "prepack": "npm run build",
@@ -32,12 +33,13 @@
     "luxon": "^2.3.1"
   },
   "devDependencies": {
-    "@azure/communication-calling": "1.4.2-beta.1",
+    "@azure/communication-calling": "1.5.1-alpha.20220401.1",
     "@azure/communication-common": "^1.1.0",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",

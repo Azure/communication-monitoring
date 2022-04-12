@@ -171,7 +171,7 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
       eventListenerSet.add(key)
     }
   } else {
-    (document.getElementById(elementId) as HTMLElement).innerText = ''
+    ;(document.getElementById(elementId) as HTMLElement).innerText = ''
     ;(document.getElementById(elementId) as HTMLElement).hidden = true
     ;(document.getElementById(key) as HTMLElement).hidden = true
   }

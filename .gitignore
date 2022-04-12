@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+ts-built/
+.app/
+
+#api-extractor temp directory
+temp/

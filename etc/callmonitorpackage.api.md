@@ -5,22 +5,14 @@
 ```ts
 
 import { Call } from '@azure/communication-calling';
-import { MediaDiagnosticChangedEventArgs } from '@azure/communication-calling';
-import { NetworkDiagnosticChangedEventArgs } from '@azure/communication-calling';
 
 // @public (undocumented)
 export class CallMonitor {
-    constructor(call: Call);
-    // (undocumented)
-    call: Call;
+    constructor(call: Call, divElement: HTMLDivElement);
     // (undocumented)
     close(): void;
-    // Warning: (ae-forgotten-export) The symbol "Collector" needs to be exported by the entry point CallMonitor.d.ts
-    //
     // (undocumented)
-    collectors: Collector[];
-    // (undocumented)
-    isCollectionStarted: boolean;
+    dispose(): void;
     // (undocumented)
     isOpened: boolean;
     // (undocumented)

@@ -10,11 +10,18 @@ import {
   createMediaStatsTable,
   updateMediaStatsTable,
 } from './MediaStats/mediaStatsTable.js'
-import { Collector, GeneralStatsData, MediaStatsData, Tabs } from '../types.js'
+import {
+  Collector,
+  GeneralStatsData,
+  MediaStatsData,
+  Options,
+  Tabs,
+} from '../types.js'
 import {
   createUserFacingDiagnosticsTable,
   updateUserFacingDiagnosticsTable,
 } from './UserFacingDiagnostics/userFacingDiagnosticsTable'
+import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
@@ -113,13 +120,12 @@ function createDownloadLogsButton(collectorArray: Collector[]) {
   downloadLogsButton.id = 'downloadLogsButton'
   downloadLogsButton.innerHTML = 'Download Logs'
   downloadLogsButton.addEventListener('click', () => {
-    const logs = Object.assign(
-      collectorArray.map((collector) => {
-        return collector.getStats()
-      })
-    )
-    const logsString = JSON.stringify(logs)
-    downloadLogs('logs.txt', logsString)
+    collectorArray.forEach((collector) => {
+      if (collector instanceof GeneralStatsCollectorImpl) {
+        const logsString = collector.getLogs()?.dump
+        downloadLogs('logs.txt', logsString!)
+      }
+    })
   })
   return downloadLogsButton
 }
@@ -142,12 +148,9 @@ function updateUserFacingDiagnostics() {
   )
 }
 
-export function initializeTables(
-  collectors: Collector[],
-  divElement: HTMLDivElement
-) {
+export function initializeTables(collectors: Collector[], options: Options) {
   collectorArray = collectors
-  statsContainer = divElement
+  statsContainer = options.divElement
   mediaStatsTable = createMediaStatsTable()!
   generalStatsTable = createGeneralStatsTable()!
   userFacingDiagnosticsTable = createUserFacingDiagnosticsTable()!
