@@ -1,0 +1,22 @@
+{
+  "name": "calling-quickstart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "install": "npm i ../callmonitorpackage-1.0.0.tgz"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/communication-calling": "1.4.2-beta.1",
+    "@azure/communication-common": "^1.1.0",
+    "callmonitorpackage": "file:../callmonitorpackage-1.0.0.tgz"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

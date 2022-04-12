@@ -1,0 +1,8 @@
+ts-built
+temp
+node_modules
+dist
+etc
+tsconfig.json
+jest.config.js
+*/**/*.html
