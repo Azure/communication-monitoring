@@ -33,8 +33,7 @@ export class CommunicationInspector {
   open() {
     if (!this.isCollectionStarted) {
       console.error('Communication Inspector must be started first')
-    }
-    else if (!this.isOpened) {
+    } else if (!this.isOpened) {
       initializeTables(this.collectors, this.options)
       this.isOpened = true
     }
