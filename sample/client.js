@@ -141,6 +141,7 @@ callButton.addEventListener('click', async () => {
     divElement: statsContainer,
   }
   communicationInspector = new CommunicationInspector(options)
+  communicationInspector.start()
 
   subscribeToRemoteParticipantInCall(call)
 
