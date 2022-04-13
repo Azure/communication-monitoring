@@ -58,24 +58,30 @@ export class MediaStatsCollectorImpl implements Collector {
     mediaStatsData: MediaStatsData
   ): MediaStatsData {
     for (const [statName, statValue] of Object.entries(mediaStats.stats)) {
-      if (statName in mediaStatsData) {
-        if (
-          mediaStatsData[statName as keyof MediaStatsData]!.length >=
-          MEDIA_STATS_AMOUNT_LIMIT
-        ) {
-          mediaStatsData[statName as keyof MediaStatsData]!.shift()
-        }
-        mediaStatsData[statName as keyof MediaStatsData]!.push({
-          value: statValue.raw[0],
-          unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
-        })
-      } else {
-        mediaStatsData[statName as keyof MediaStatsData] = [
-          {
+      if (statName in MediaStatsMap) {
+        if (statName in mediaStatsData) {
+          if (
+            mediaStatsData[statName as keyof MediaStatsData]!.length >=
+            MEDIA_STATS_AMOUNT_LIMIT
+          ) {
+            mediaStatsData[statName as keyof MediaStatsData]!.shift()
+          }
+          mediaStatsData[statName as keyof MediaStatsData]!.push({
+            timestamp: statValue.timestamp,
             value: statValue.raw[0],
             unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
-          },
-        ]
+          })
+        } else {
+          mediaStatsData[statName as keyof MediaStatsData] = [
+            {
+              timestamp: statValue.timestamp,
+              value: statValue.raw[0],
+              unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
+            },
+          ]
+        }
+      } else {
+        console.debug('%s is not present in MediaStatsMap', statName)
       }
     }
     return mediaStatsData
