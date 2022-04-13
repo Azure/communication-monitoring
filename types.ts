@@ -39,6 +39,7 @@ export interface GeneralStatsData {
 }
 
 export interface MediaStatsDataValue {
+  timestamp: Date
   value: string | number
   unit: string
 }

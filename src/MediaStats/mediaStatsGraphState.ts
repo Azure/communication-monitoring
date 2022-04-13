@@ -51,7 +51,7 @@ export function renderChart(
             ttl: CHART_UPDATE_TTL,
             onRefresh: (chart) => {
               chart.data.datasets[0].data.push({
-                x: Date.now(),
+                x: objectToGraph[objectToGraph.length - 1].timestamp.getTime(),
                 y: objectToGraph[objectToGraph.length - 1].value as number,
               })
             },
@@ -94,7 +94,7 @@ function generateOldData(objectToGraph: MediaStatsDataValue[]) {
   now.setSeconds(now.getSeconds() - objectToGraph.length)
   objectToGraph.forEach((element) => {
     valueArray.push({
-      x: now.setSeconds(now.getSeconds() + 1),
+      x: element.timestamp.getTime(),
       y: element.value as number,
     })
   })
