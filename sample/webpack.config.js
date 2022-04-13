@@ -17,7 +17,7 @@ module.exports = {
     watchOptions: {
       aggregateTimeout: 300,
       poll: 1000,
-      ignored: ['/node_modules([\\]+|/)+(?!callmonitorpackage)/'],
+      ignored: ['/node_modules([\\]+|/)+(?!communication-inspector)/'],
     },
   },
 }

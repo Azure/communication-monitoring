@@ -1,5 +1,6 @@
 import { MediaStatsData } from '../../types.js'
 import { initializeGraph } from './mediaStatsGraph'
+import { MediaStatsMap } from './mediaStatsMap.js'
 
 let html = `
 <dl id="mediaStatsTable">
@@ -151,6 +152,7 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
       unit = ''
     }
     const textToShow = value + unit
+
     if (textToShow !== document.getElementById(elementId)!.innerText) {
       // to avoid updating the dom when incoming data is same as previous data
       document.getElementById(elementId)!.innerText = textToShow
@@ -160,15 +162,17 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
 
     if (!eventListenerSet.has(key)) {
       // to avoid duplicate event listeners
-      document.getElementById(key)!.addEventListener('click', () => {
-        initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
-      })
-      document.getElementById(elementId)!.addEventListener('click', () => {
-        initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
-      })
-      document.getElementById(key)!.classList.add('interactive')
-      document.getElementById(elementId)!.classList.add('interactive')
-      eventListenerSet.add(key)
+      if (MediaStatsMap[key as keyof typeof MediaStatsMap].Clickable) {
+        document.getElementById(key)!.addEventListener('click', () => {
+          initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
+        })
+        document.getElementById(elementId)!.addEventListener('click', () => {
+          initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
+        })
+        document.getElementById(key)!.classList.add('interactive')
+        document.getElementById(elementId)!.classList.add('interactive')
+        eventListenerSet.add(key)
+      }
     }
   } else {
     ;(document.getElementById(elementId) as HTMLElement).innerText = ''
