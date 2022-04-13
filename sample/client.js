@@ -4,7 +4,7 @@ import {
   LocalVideoStream,
 } from '@azure/communication-calling'
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
-import { CommunicationsInspector } from 'communications-inspector'
+import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
 
 let call
@@ -24,7 +24,7 @@ let deviceManager
 let localVideoStream
 let rendererLocal
 let rendererRemote
-let communicationsInspector
+let communicationInspector
 
 function handleVideoStream(remoteVideoStream) {
   remoteVideoStream.on('isAvailableChanged', async () => {
@@ -63,7 +63,6 @@ function subscribeToRemoteParticipantInCall(callInstance) {
 
 async function init() {
   callClient = new CallClient()
-  console.log(AZURE_COMMUNICATION_TOKEN)
   const tokenCredential = new AzureCommunicationTokenCredential(
     AZURE_COMMUNICATION_TOKEN
   )
@@ -141,7 +140,7 @@ callButton.addEventListener('click', async () => {
     callClient: callClient,
     divElement: statsContainer,
   }
-  communicationsInspector = new CommunicationsInspector(options)
+  communicationInspector = new CommunicationInspector(options)
 
   subscribeToRemoteParticipantInCall(call)
 
@@ -165,13 +164,13 @@ startVideoButton.addEventListener('click', async () => {
 })
 
 renderButton.addEventListener('click', async () => {
-  communicationsInspector.open()
+  communicationInspector.open()
   stopRenderButton.disabled = false
   renderButton.disabled = true
 })
 
 stopRenderButton.addEventListener('click', async () => {
-  communicationsInspector.close()
+  communicationInspector.close()
   renderButton.disabled = false
   stopRenderButton.disabled = true
 })
@@ -180,7 +179,7 @@ hangUpButton.addEventListener('click', async () => {
   // dispose of video renderers
   rendererLocal.dispose()
   rendererRemote.dispose()
-  communicationsInspector.stop()
+  communicationInspector.stop()
   // end the current call
   await call.hangUp()
   // toggle button states
