@@ -15,11 +15,9 @@ export class CommunicationInspector {
     this.isCollectionStarted = false
     this.isOpened = false
     this.collectors = createCollectorArray(this.options)
-
-    this.start()
   }
 
-  private start() {
+  start() {
     if (!this.isCollectionStarted) {
       startCollection(this.collectors)
       this.isCollectionStarted = true
@@ -27,12 +25,16 @@ export class CommunicationInspector {
   }
 
   stop() {
-    stopCollection(this.collectors)
-    this.isCollectionStarted = false
+    if (this.isCollectionStarted) {
+      stopCollection(this.collectors)
+      this.isCollectionStarted = false
+    }
   }
 
   open() {
-    if (!this.isOpened) {
+    if (!this.isCollectionStarted) {
+      console.error('Communication Inspector must be started first')
+    } else if (!this.isOpened) {
       initializeTables(this.collectors, this.options)
       this.isOpened = true
     }
@@ -44,8 +46,10 @@ export class CommunicationInspector {
   }
 
   close() {
-    destroyChart()
-    removeTables()
-    this.isOpened = false
+    if (this.isOpened) {
+      destroyChart()
+      removeTables()
+      this.isOpened = false
+    }
   }
 }
