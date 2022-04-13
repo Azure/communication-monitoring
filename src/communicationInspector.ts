@@ -1,6 +1,7 @@
 import { startCollection, stopCollection, createCollectorArray } from './stats'
 import { initializeTables, removeTables } from './statTables'
 import { Collector, Options } from '../types'
+import { destroyChart } from './MediaStats/mediaStatsGraphState'
 
 export class CommunicationInspector {
   isOpened: boolean
@@ -43,6 +44,7 @@ export class CommunicationInspector {
   }
 
   close() {
+    destroyChart()
     removeTables()
     this.isOpened = false
   }
