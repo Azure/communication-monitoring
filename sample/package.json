@@ -4,7 +4,7 @@
   "description": "",
   "main": "client.js",
   "scripts": {
-    "install": "npm i ../callmonitorpackage-1.0.0.tgz"
+    "install": "npm i ../communications-inspector-1.0.0.tgz"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +12,9 @@
   "dependencies": {
     "@azure/communication-calling": "1.5.1-alpha.20220401.1",
     "@azure/communication-common": "^1.1.0",
-    "callmonitorpackage": "file:../callmonitorpackage-1.0.0.tgz"
+    "callmonitorpackage": "file:../communications-inspector-1.0.0.tgz",
+    "communications-inspector": "file:../communications-inspector-1.0.0.tgz",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "webpack": "^4.42.0",

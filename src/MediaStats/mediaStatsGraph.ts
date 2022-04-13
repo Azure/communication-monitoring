@@ -10,7 +10,6 @@ export function initializeGraph(
   ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = true
   ;(document.getElementById('navigationTabs') as HTMLElement).hidden = true
 
-
   const statsContainer = document.getElementById('media-stats-pop-up')!
   const historicalDataDiv = document.createElement('div')
   historicalDataDiv.id = 'historicalDataDiv'
@@ -29,7 +28,7 @@ export function initializeGraph(
     statsContainer.removeChild(historicalDataDiv)
     statsContainer.removeChild(backButton)
   })
-  
+
   chartContainerHolder.append(chartContainer)
   historicalDataDiv.append(chartContainerHolder)
   statsContainer.append(backButton, historicalDataDiv)

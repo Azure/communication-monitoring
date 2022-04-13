@@ -162,7 +162,7 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
 
     if (!eventListenerSet.has(key)) {
       // to avoid duplicate event listeners
-      if(MediaStatsMap[key as keyof typeof MediaStatsMap].Clickable) {
+      if (MediaStatsMap[key as keyof typeof MediaStatsMap].Clickable) {
         document.getElementById(key)!.addEventListener('click', () => {
           initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
         })

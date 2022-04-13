@@ -1,11 +1,11 @@
-import { Features } from '@azure/communication-calling'
 import {
   CallClient,
   VideoStreamRenderer,
   LocalVideoStream,
 } from '@azure/communication-calling'
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
-import { CallMonitor } from 'callmonitorpackage'
+import { CommunicationsInspector } from 'communications-inspector'
+import { AZURE_COMMUNICATION_TOKEN } from './.env'
 
 let call
 let callAgent
@@ -24,7 +24,7 @@ let deviceManager
 let localVideoStream
 let rendererLocal
 let rendererRemote
-let callMonitor
+let communicationsInspector
 
 function handleVideoStream(remoteVideoStream) {
   remoteVideoStream.on('isAvailableChanged', async () => {
@@ -63,7 +63,10 @@ function subscribeToRemoteParticipantInCall(callInstance) {
 
 async function init() {
   callClient = new CallClient()
-  const tokenCredential = new AzureCommunicationTokenCredential('')
+  console.log(AZURE_COMMUNICATION_TOKEN)
+  const tokenCredential = new AzureCommunicationTokenCredential(
+    AZURE_COMMUNICATION_TOKEN
+  )
   callAgent = await callClient.createCallAgent(tokenCredential, {
     displayName: 'optional ACS user name',
   })
@@ -138,7 +141,7 @@ callButton.addEventListener('click', async () => {
     callClient: callClient,
     divElement: statsContainer,
   }
-  callMonitor = new CallMonitor(options)
+  communicationsInspector = new CommunicationsInspector(options)
 
   subscribeToRemoteParticipantInCall(call)
 
@@ -162,13 +165,13 @@ startVideoButton.addEventListener('click', async () => {
 })
 
 renderButton.addEventListener('click', async () => {
-  callMonitor.open()
+  communicationsInspector.open()
   stopRenderButton.disabled = false
   renderButton.disabled = true
 })
 
 stopRenderButton.addEventListener('click', async () => {
-  callMonitor.close()
+  communicationsInspector.close()
   renderButton.disabled = false
   stopRenderButton.disabled = true
 })
@@ -177,7 +180,7 @@ hangUpButton.addEventListener('click', async () => {
   // dispose of video renderers
   rendererLocal.dispose()
   rendererRemote.dispose()
-  callMonitor.stop()
+  communicationsInspector.stop()
   // end the current call
   await call.hangUp()
   // toggle button states

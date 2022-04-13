@@ -1,9 +1,9 @@
 {
-  "name": "callmonitorpackage",
+  "name": "communications-inspector",
   "version": "1.0.0",
   "description": "",
-  "main": "ts-built/src/callMonitor.js",
-  "typings": "./ts-built/src/callMonitor.d.ts",
+  "main": "ts-built/src/communicationsInspector.js",
+  "typings": "./ts-built/src/communicationsInspector.d.ts",
   "files": [
     "ts-built/*"
   ],

@@ -2,7 +2,7 @@ import { startCollection, stopCollection, createCollectorArray } from './stats'
 import { initializeTables, removeTables } from './statTables'
 import { Collector, Options } from '../types'
 
-export class CallMonitor {
+export class CommunicationsInspector {
   isOpened: boolean
 
   private options: Options

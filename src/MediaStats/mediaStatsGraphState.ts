@@ -15,9 +15,8 @@ let chart: Chart
 
 export function renderChart(
   objectToGraph: MediaStatsDataValue[],
-  objectName: string,
+  objectName: string
 ) {
-
   Chart.register(zoomPlugin, ChartStreaming)
 
   const chartContainer = document.getElementById('myChart') as HTMLCanvasElement
@@ -61,7 +60,7 @@ export function renderChart(
       },
       plugins: {
         streaming: {
-          duration: 20000
+          duration: 20000,
         },
         zoom: {
           pan: {
@@ -87,7 +86,6 @@ export function renderChart(
       },
     },
   })
-
 }
 
 function generateOldData(objectToGraph: MediaStatsDataValue[]) {
@@ -103,6 +101,6 @@ function generateOldData(objectToGraph: MediaStatsDataValue[]) {
   return valueArray
 }
 
-export function destroyChart(){
+export function destroyChart() {
   Chart.unregister(zoomPlugin, ChartStreaming)
 }
