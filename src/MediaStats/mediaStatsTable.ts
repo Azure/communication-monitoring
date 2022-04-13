@@ -171,8 +171,8 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
         })
         document.getElementById(key)!.classList.add('interactive')
         document.getElementById(elementId)!.classList.add('interactive')
+        eventListenerSet.add(key)
       }
-      eventListenerSet.add(key)
     }
   } else {
     ;(document.getElementById(elementId) as HTMLElement).innerText = ''
