@@ -1,4 +1,4 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
 module.exports = {
@@ -11,18 +11,18 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
-    hot: true
+    hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html"
-      })
-    ],
+      template: 'index.html',
+    }),
+  ],
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

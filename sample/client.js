@@ -6,7 +6,7 @@ import {
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
 import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
-import "./styles.css"
+import './styles.css'
 
 let call
 let callAgent

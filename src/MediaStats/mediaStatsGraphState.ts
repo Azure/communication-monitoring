@@ -31,7 +31,7 @@ export function renderChart(
         backgroundColor: GRAPH_POINT_COLOR,
         borderColor: GRAPH_LINE_COLOR,
         data: generateOldData(objectToGraph),
-        tension: 0.2
+        tension: 0.2,
       },
     ],
   }
