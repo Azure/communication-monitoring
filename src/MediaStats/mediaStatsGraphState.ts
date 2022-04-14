@@ -31,6 +31,7 @@ export function renderChart(
         backgroundColor: GRAPH_POINT_COLOR,
         borderColor: GRAPH_LINE_COLOR,
         data: generateOldData(objectToGraph),
+        tension: 0.2
       },
     ],
   }
@@ -42,6 +43,9 @@ export function renderChart(
     type: 'line',
     data,
     options: {
+      animation: {
+        duration: 0,
+      },
       maintainAspectRatio: false,
       scales: {
         x: {
@@ -49,7 +53,7 @@ export function renderChart(
           realtime: {
             delay: CHART_UPDATE_DELAY,
             ttl: CHART_UPDATE_TTL,
-            onRefresh: (chart) => {
+            onRefresh: (chart: Chart) => {
               chart.data.datasets[0].data.push({
                 x: objectToGraph[objectToGraph.length - 1].timestamp.getTime(),
                 y: objectToGraph[objectToGraph.length - 1].value as number,
