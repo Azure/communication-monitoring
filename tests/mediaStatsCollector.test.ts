@@ -3,7 +3,7 @@ jest.mock('@azure/communication-common')
 import { MediaStatsCollectorImpl } from '../src/MediaStats/mediaStatsCollector'
 import { CallClient } from '@azure/communication-calling'
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
-import { MediaStatsData } from '../types'
+import { MediaStatsData } from '../src/types'
 import { MediaStatsMap } from '../src/MediaStats/mediaStatsMap'
 
 describe('Update data function', () => {

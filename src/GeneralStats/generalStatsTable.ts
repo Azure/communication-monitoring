@@ -1,4 +1,4 @@
-import { GeneralStatsData } from '../../types'
+import { GeneralStatsData } from '../types'
 
 let html = `
 <dl id="generalStatsTable">

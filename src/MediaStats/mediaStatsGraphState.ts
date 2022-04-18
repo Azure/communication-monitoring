@@ -1,4 +1,4 @@
-import { MediaStatsDataValue } from '../../types'
+import { MediaStatsDataValue } from '../types'
 import {
   GRAPH_LINE_COLOR,
   GRAPH_POINT_COLOR,

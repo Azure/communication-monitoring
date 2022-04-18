@@ -1,6 +1,6 @@
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 import { MediaStatsCollectorImpl } from './MediaStats/mediaStatsCollector'
-import { Collector, Options } from '../types'
+import { Collector, Options } from './types'
 import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDiagnosticsCollector'
 
 export function startCollection(collectorArray: Collector[]) {

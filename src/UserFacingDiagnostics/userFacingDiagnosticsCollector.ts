@@ -5,7 +5,7 @@ import {
   MediaDiagnosticChangedEventArgs,
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
-import { Collector, Options, Tabs } from '../../types'
+import { Collector, Options, Tabs } from '../types'
 
 let userFacingDiagnosticsFeature: UserFacingDiagnosticsFeature
 let userFacingDiagnosticsData:
