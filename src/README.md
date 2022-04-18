@@ -12,7 +12,7 @@ The Communication Inspector enables Azure Communication Services developers to i
 
 This package is a UI component that can be installed through NPM to your web application. Paste the following command in your terminal while located in the project's root folder to install.
 
-`command`
+`command placeholder`
 
 ### Initialization
 
@@ -20,12 +20,15 @@ The Communication Inspector component expects to receive an `Options` object tha
 
 ```typescript
 import { CallAgent, CallClient } from '@azure/communication-calling'
+import { CommunicationInspector } from 'communication-inspector'
 
 interface Options {
   callClient: CallClient
   callAgent: CallAgent
   divElement: HTMLDivElement
 }
+
+const selectedDiv = document.getElementById('selectedDiv')
 
 const options = {
   callClient = this.callClient,
@@ -36,11 +39,11 @@ const options = {
 const communicationInspector = new CommunicationInspector(options)
 ```
 
-### Using the Communication Inspector
+## Using the Communication Inspector
 
 The Communication Inspector API consists of 5 different functions that developers can use to initialize and use the component correctly. These functions are as followed:
 
-#### Start
+### Start
 
 Once the Inspector has been instantiated, you will need to start the collectors before doing anything else. These collectors will retrieve information from different SDKs across ACS to show you the latest information from the call you want to monitor.
 
@@ -48,7 +51,7 @@ Once the Inspector has been instantiated, you will need to start the collectors 
 communicationInspector.start()
 ```
 
-#### Open
+### Open
 
 This function will allow the Inspector to be injected in the div element that was sent as a parameter in the initialization of the component. Make sure to call this after calling the start function to expect the correct behavior.
 
@@ -56,7 +59,7 @@ This function will allow the Inspector to be injected in the div element that wa
 communicationInspector.open()
 ```
 
-#### Stop
+### Stop
 
 Stops all collectors from retrieving information.
 
@@ -64,7 +67,7 @@ Stops all collectors from retrieving information.
 communicationInspector.stop()
 ```
 
-#### Close
+### Close
 
 Removes the component from the selected div. It's worth mentioning that even if the Inspector is closed, it will still collect information from the different SDKs as long as the stop function is not called.
 
@@ -72,7 +75,7 @@ Removes the component from the selected div. It's worth mentioning that even if 
 communicationInspector.close()
 ```
 
-#### Dipose
+### Dipose
 
 The dispose function is available to activate both the stop and close functions in one call.
 
