@@ -2,6 +2,18 @@
 
 The Communication Inspector enables Azure Communication Services developers to inspect the state of a call to debug or monitor their solution. When building a solution, developers might need visibility for debugging into general call information such as the Call ID or advanced states. The Communication Inspector provides developers this information and more.
 
+## Capabilities
+
+The Communication Inspector provides developers three categories of information that can be used for debugging purposes:
+| Category | Descriptions |
+|--------------------------------|-----------------------------------|
+| General Call Information | Includes call id, participants, devices and user agent information (browser, version, etc.) |
+| Media Quality Stats | Metrics and statistics provided by [Media Quality APIs](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/media-quality-sdk). Metrics are clickable for timeseries view.|
+| User Facing Diagnostics | List of [user facing diagnostics](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics).|
+
+Data collected by the tool is only kept locally and temporarily. It can be downloaded from within the interface.
+Communications Inspector is compatible with the same browsers as the Calling SDK [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/calling-sdk-features#javascript-calling-sdk-support-by-os-and-browser).
+
 ## Getting Started
 
 ### Prerequisites
@@ -12,7 +24,9 @@ The Communication Inspector enables Azure Communication Services developers to i
 
 This package is a UI component that can be installed through NPM to your web application. Paste the following command in your terminal while located in the project's root folder to install.
 
-`command placeholder`
+```bash
+placeholder
+```
 
 ### Initialization
 
@@ -82,3 +96,35 @@ The dispose function is available to activate both the stop and close functions 
 ```typescript
 communicationInspector.dispose()
 ```
+
+## Sample App
+
+Before adding the Communication Inspector to your project, you may use the quickstart application to get a sample of the implementation. The instructions to initialize the sample application are as followed:
+
+### Clone the repository
+
+Paste the following command in your terminal to download the repository to your local environment:
+
+```bash
+git clone https://github.com/Azure/communication-inspector.git
+```
+
+### Add a credential
+
+In the sample folder, you will see the `.env.example` file. Remove the `.example` suffix and change the `AZURE_COMMUNICATION_TOKEN` value with the token from your specific resource.
+
+Go to the ACS resource page where your application is deployed in the Azure Portal and find the `Identities & User Access Tokens` under the Keys section. Mark the Voice and Video Calling checkbox and generate your token. Copy the User Access Token and paste it in your `.env` file.
+
+### Install the application
+
+Make sure to position yourself in the root folder and then run the following command:
+
+```bash
+npm run start
+```
+
+### Join a call
+
+In order to join a specific call using the quickstart application, you will need to find the group id from the call you're trying to join. Copy the group id to the app's textbox and click the start call button.
+
+The Inspector will be shown as a white square. This can be changed by clicking the open pop up button found in the UI. This button is calling the `open` function from the Communication Inspector API.
