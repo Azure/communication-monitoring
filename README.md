@@ -9,10 +9,11 @@ The Communication Inspector provides developers three categories of information 
 |--------------------------------|-----------------------------------|
 | General Call Information | Includes call id, participants, devices and user agent information (browser, version, etc.) |
 | Media Quality Stats | Metrics and statistics provided by [Media Quality APIs](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/media-quality-sdk). Metrics are clickable for timeseries view.|
-| User Facing Diagnostics | List of [user facing diagnostics](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics).|
+| User Facing Diagnostics | UFDs are a useful list of local attributes that may help to determine issues at a quick glance. These attributes include information such as camera status, speaker devices availability, etc. You can find the complete list of user facing diagnostics [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics).|
 
-Data collected by the tool is only kept locally and temporarily. It can be downloaded from within the interface.
-Communications Inspector is compatible with the same browsers as the Calling SDK [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/calling-sdk-features#javascript-calling-sdk-support-by-os-and-browser).
+Data collected by the tool is only kept locally and temporarily for charting purposes for up to 5 minutes. Downloading the logs from within the interface will store a file with the global information for the call from the time it was first started.
+
+Communications Inspector is compatible with the same browsers as the Calling SDK. For the complete compatibility table click [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/calling-sdk-features#javascript-calling-sdk-support-by-os-and-browser).
 
 ## Getting Started
 
@@ -59,7 +60,7 @@ The Communication Inspector API consists of 5 different functions that developer
 
 ### Start
 
-Once the Inspector has been instantiated, you will need to start the collectors before doing anything else. These collectors will retrieve information from different SDKs across ACS to show you the latest information from the call you want to monitor.
+Once the Inspector has been instantiated, you will need to start the collectors before doing anything else. These collectors will retrieve information from different SDKs across ACS to show you the latest information from the call you want to monitor. A suggestion would be to call this function as soon as the call is connected.
 
 ```typescript
 communicationInspector.start()
@@ -123,8 +124,12 @@ Make sure to position yourself in the root folder and then run the following com
 npm run start
 ```
 
+If the command fails, try to update to the latest `npm` version.
+
+Quickstart application will be available at `localhost:8080` after setup.
+
 ### Join a call
 
-In order to join a specific call using the quickstart application, you will need to find the group id from the call you're trying to join. Copy the group id to the app's textbox and click the start call button.
+In order to join a specific call using the quickstart application, you will need to find the id for the call you're trying to join. Copy the call id to the app's textbox and click the start call button.
 
 The Inspector will be shown as a white square. This can be changed by clicking the open pop up button found in the UI. This button is calling the `open` function from the Communication Inspector API.
