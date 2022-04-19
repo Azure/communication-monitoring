@@ -1,6 +1,6 @@
 # Communication Inspector
 
-The Communication Inspector enables Azure Communication Services developers to inspect the state of a call to debug or monitor their solution. When building a solution, developers might need visibility for debugging into general call information such as the Call ID or advanced states. The Communication Inspector provides developers this information and more.
+The Communication Inspector enables Azure Communication Services developers to inspect the state of a call to debug or monitor their solution. When building a solution, developers might need visibility for debugging into general call information such as the Call ID or advanced states (bitrate, received and sent packets are a few examples). The Communication Inspector provides developers this information and more.
 
 ## Capabilities
 
@@ -31,7 +31,7 @@ placeholder
 
 ### Initialization
 
-The Communication Inspector component expects to receive an `Options` object that consists of 3 different properties. Both the call client and call agent that are part of your already existing calling application are expected, as well as the div where you want the Inspector to be injected in once you call the `open` function.
+The Communication Inspector component expects to receive an `Options` object that consists of 3 different properties. Both the call client and call agent that are part of your already existing calling application are expected, as well as the div where you want the Inspector to be injected in once you call the `open()` function.
 
 ```typescript
 import { CallAgent, CallClient } from '@azure/communication-calling'
@@ -90,7 +90,7 @@ Removes the component from the selected div. It's worth mentioning that even if 
 communicationInspector.close()
 ```
 
-### Dipose
+### Dispose
 
 The dispose function is available to activate both the stop and close functions in one call.
 
@@ -112,9 +112,11 @@ git clone https://github.com/Azure/communication-inspector.git
 
 ### Add a credential
 
-In the sample folder, you will see the `.env.example` file. Remove the `.example` suffix and change the `AZURE_COMMUNICATION_TOKEN` value with the token from your specific resource.
+1. In the sample folder, you will see the `.env.example` file. Remove the `.example` suffix and change the `AZURE_COMMUNICATION_TOKEN` value with the token from your specific resource.
 
-Go to the ACS resource page where your application is deployed in the Azure Portal and find the `Identities & User Access Tokens` under the Keys section. Mark the Voice and Video Calling checkbox and generate your token. Copy the User Access Token and paste it in your `.env` file.
+2. Go to the ACS resource page where your application is deployed in the Azure Portal and find the `Identities & User Access Tokens` under the Keys section. Mark the Voice and Video Calling checkbox and generate your token.
+
+3. Copy the User Access Token and paste it in your `.env` file.
 
 ### Install the application
 
@@ -132,4 +134,8 @@ Quickstart application will be available at `localhost:8080` after setup.
 
 In order to join a specific call using the quickstart application, you will need to find the id for the call you're trying to join. Copy the call id to the app's textbox and click the start call button.
 
-The Inspector will be shown as a white square. This can be changed by clicking the open pop up button found in the UI. This button is calling the `open` function from the Communication Inspector API.
+The Inspector will be shown as a white square. This can be changed by clicking the open pop up button found in the UI. This button is calling the `open()` function from the Communication Inspector API.
+
+### Adding changes
+
+Given the fact that this quickstart application installs the Communication Inspector package as if it was being installed from the remote origin, changes to the src folder will not automatically show in the quickstart application when saved. Once you've made all of the changes you want to see in action, restart the server by using the same `npm run start` command to allow building, packing and installing processes to take place.
