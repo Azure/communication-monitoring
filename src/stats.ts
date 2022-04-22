@@ -1,5 +1,6 @@
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 import { MediaStatsCollectorImpl } from './MediaStats/mediaStatsCollector'
+import { removeTables, showErrorScreen } from './statTables'
 import { Collector, Options } from './types'
 import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDiagnosticsCollector'
 
@@ -20,4 +21,16 @@ export function createCollectorArray(options: Options): Collector[] {
   const generalStats = new GeneralStatsCollectorImpl(options)
   const userFacingDiagnostics = new UserFacingDiagnosticsImpl(options)
   return [generalStats, mediaStats, userFacingDiagnostics]
+}
+
+export function listenToCall(options: Options, isOpened: { value: boolean }) {
+  const listener = setInterval(() => {
+    if (options.callAgent.calls[0] === undefined) {
+      if (isOpened.value) {
+        removeTables()
+        showErrorScreen()
+      }
+      clearInterval(listener)
+    }
+  }, 1000)
 }

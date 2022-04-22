@@ -186,3 +186,12 @@ export function removeTables() {
   statsContainer.innerHTML = ''
   clearInterval(tableUpdater)
 }
+
+export function showErrorScreen() {
+  const errorDiv = document.createElement('div')
+  errorDiv.id = 'errorDiv'
+  const errorMessage = document.createElement('p')
+  errorMessage.innerText = 'Call is not connected'
+  errorDiv.appendChild(errorMessage)
+  statsContainer.appendChild(errorDiv)
+}

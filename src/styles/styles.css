@@ -217,3 +217,7 @@ dl dd.sectionHeader:nth-child(2) {
   padding: 15px;
   height: 500px;
 }
+
+#errorDiv {
+  padding: 10px;
+}

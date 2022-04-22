@@ -4,13 +4,14 @@
   "description": "",
   "main": "client.js",
   "scripts": {
+    "html": "copyfiles -u 1 ../src/styles/*.css ../ts-built/",
     "clean": "npx --ignore-existing --quiet rimraf ts-built && npx --ignore-existing --quiet rimraf *.tgz && npx --ignore-existing --quiet rimraf ../**/node_modules",
     "install": "npm i ../communication-inspector-1.0.0.tgz",
     "prebuild": "cd .. && npm i",
-    "build": "cd .. && npx tsc",
+    "build": "cd .. && npx tsc && cd sample && npm run html",
     "prepack": "cd .. && npm run build",
     "pack": "cd .. && npm pack",
-    "prestart": "cd .. && npm run pack && cd sample && npm run install",
+    "prestart": " cd .. && npm run pack && cd sample && npm run install",
     "start": "cd .. && cd sample && npx webpack serve --config ./webpack.config.js"
   },
   "keywords": [],
@@ -22,6 +23,7 @@
     "communication-inspector": "file:../communication-inspector-1.0.0.tgz"
   },
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",

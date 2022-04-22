@@ -106,6 +106,8 @@ function generateOldData(objectToGraph: MediaStatsDataValue[]) {
 }
 
 export function destroyChart() {
-  chart.destroy()
+  if (chart) {
+    chart.destroy()
+  }
   Chart.unregister(zoomPlugin, ChartStreaming)
 }

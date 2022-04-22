@@ -6,6 +6,7 @@ import {
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
 import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
+import 'communication-inspector/ts-built/src/styles/styles.css'
 import './styles.css'
 
 let call
@@ -94,13 +95,29 @@ async function init() {
 
   callAgent.on('callsUpdated', (e) => {
     e.removed.forEach((removedCall) => {
-      // dispose of video renderers
-      rendererLocal.dispose()
-      rendererRemote.dispose()
-      // toggle button states
       hangUpButton.disabled = true
       callButton.disabled = false
       stopVideoButton.disabled = true
+      renderButton.disabled = true
+      stopRenderButton.disabled = true
+      // dispose of video renderers
+      if (!rendererLocal.disposed) {
+        rendererLocal.dispose()
+      }
+
+      if (rendererRemote && !rendererRemote.disposed) {
+        rendererRemote.dispose()
+      }
+
+      if (communicationInspector.isOpened.value) {
+        stopRenderButton.disabled = false
+        renderButton.disabled = true
+      } else {
+        stopRenderButton.disabled = true
+        renderButton.disabled = false
+      }
+
+      communicationInspector.stop()
     })
   })
 }
@@ -122,33 +139,51 @@ async function remoteVideoView(remoteVideoStream) {
  */
 
 callButton.addEventListener('click', async () => {
-  const videoDevices = await deviceManager.getCameras()
-  const videoDeviceInfo = videoDevices[0]
-  localVideoStream = new LocalVideoStream(videoDeviceInfo)
-  placeCallOptions = {
-    videoOptions: { localVideoStreams: [localVideoStream] },
-    audioOptions: null,
+  if (communicationInspector && communicationInspector.isOpened.value) {
+    communicationInspector.close()
   }
+  if (document.getElementById('callee-id-input').value.length === 0) {
+    console.error('Enter a valid call id')
+  } else {
+    const videoDevices = await deviceManager.getCameras()
+    const videoDeviceInfo = videoDevices[0]
+    localVideoStream = new LocalVideoStream(videoDeviceInfo)
+    placeCallOptions = {
+      videoOptions: { localVideoStreams: [localVideoStream] },
+      audioOptions: null,
+    }
 
-  localVideoView()
-  stopVideoButton.disabled = false
-  startVideoButton.disabled = true
+    localVideoView()
+    stopVideoButton.disabled = false
+    startVideoButton.disabled = true
 
-  const userToCall = calleeInput.value
-  call = callAgent.join({ groupId: userToCall }, placeCallOptions)
-  const options = {
-    callAgent: callAgent,
-    callClient: callClient,
-    divElement: statsContainer,
+    const userToCall = calleeInput.value
+    call = await callAgent.join({ groupId: userToCall }, placeCallOptions)
+    const options = {
+      callAgent: callAgent,
+      callClient: callClient,
+      divElement: statsContainer,
+    }
+
+    communicationInspector = new CommunicationInspector(options)
+    communicationInspector.start()
+
+    setInterval(() => {
+      if (communicationInspector.isOpened.value) {
+        statsContainer.classList.add('active')
+      } else {
+        statsContainer.classList.remove('active')
+      }
+    }, 500)
+
+    communicationInspector.open()
+    subscribeToRemoteParticipantInCall(call)
+
+    hangUpButton.disabled = false
+    callButton.disabled = true
+    renderButton.disabled = true
+    stopRenderButton.disabled = false
   }
-  communicationInspector = new CommunicationInspector(options)
-  communicationInspector.start()
-
-  subscribeToRemoteParticipantInCall(call)
-
-  hangUpButton.disabled = false
-  callButton.disabled = true
-  renderButton.disabled = false
 })
 
 stopVideoButton.addEventListener('click', async () => {
@@ -159,14 +194,19 @@ stopVideoButton.addEventListener('click', async () => {
 })
 
 startVideoButton.addEventListener('click', async () => {
-  await call.startVideo(localVideoStream)
-  localVideoView()
-  stopVideoButton.disabled = false
-  startVideoButton.disabled = true
+  if (document.getElementById('callee-id-input').value.length === 0) {
+    console.error('Enter a valid call id')
+  } else {
+    await call.startVideo(localVideoStream)
+    localVideoView()
+    stopVideoButton.disabled = false
+    startVideoButton.disabled = true
+  }
 })
 
 renderButton.addEventListener('click', async () => {
   communicationInspector.open()
+
   stopRenderButton.disabled = false
   renderButton.disabled = true
 })
@@ -179,8 +219,14 @@ stopRenderButton.addEventListener('click', async () => {
 
 hangUpButton.addEventListener('click', async () => {
   // dispose of video renderers
-  rendererLocal.dispose()
-  rendererRemote.dispose()
+  if (!rendererLocal.disposed) {
+    rendererLocal.dispose()
+  }
+
+  if (rendererRemote && !rendererRemote.disposed) {
+    rendererRemote.dispose()
+  }
+
   communicationInspector.stop()
   // end the current call
   await call.hangUp()
@@ -188,6 +234,14 @@ hangUpButton.addEventListener('click', async () => {
   hangUpButton.disabled = true
   callButton.disabled = false
   stopVideoButton.disabled = true
+  startVideoButton.disabled = true
+  if (communicationInspector.isOpened.value) {
+    stopRenderButton.disabled = false
+    renderButton.disabled = true
+  } else {
+    stopRenderButton.disabled = true
+    renderButton.disabled = false
+  }
 })
 
 /*
