@@ -4,7 +4,7 @@ import {
   MediaStats,
   MediaStatsCallFeature,
 } from '@azure/communication-calling'
-import { MediaStatsData, Collector, Tabs, Options } from '../../types'
+import { MediaStatsData, Collector, Tabs, Options } from '../types'
 import { MediaStatsMap } from './mediaStatsMap'
 import { MEDIA_STATS_AMOUNT_LIMIT } from './constants'
 

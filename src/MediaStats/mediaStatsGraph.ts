@@ -1,4 +1,4 @@
-import { MediaStatsDataValue } from '../../types'
+import { MediaStatsDataValue } from '../types'
 import { destroyChart, renderChart } from './mediaStatsGraphState'
 
 let backButton: HTMLElement

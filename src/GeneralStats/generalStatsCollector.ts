@@ -15,7 +15,7 @@ import {
   MicrosoftTeamsUserKind,
   UnknownIdentifierKind,
 } from '@azure/communication-common'
-import { Collector, GeneralStatsData, Options, Tabs } from '../../types'
+import { Collector, GeneralStatsData, Options, Tabs } from '../types'
 
 let generalStatsCollector: NodeJS.Timer
 let generalStatsData: GeneralStatsData

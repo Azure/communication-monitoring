@@ -16,7 +16,7 @@ import {
   MediaStatsData,
   Options,
   Tabs,
-} from '../types.js'
+} from './types.js'
 import {
   createUserFacingDiagnosticsTable,
   updateUserFacingDiagnosticsTable,

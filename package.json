@@ -19,9 +19,7 @@
     "pack": "npm pack",
     "prepare": "husky install",
     "pretest": "npm run build",
-    "test": "jest",
-    "prestart": "npm run pack && cd sample && npm run install",
-    "start": "cd sample && npx webpack serve --config ./webpack.config.js"
+    "test": "jest"
   },
   "author": "",
   "license": "MIT",

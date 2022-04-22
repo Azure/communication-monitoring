@@ -1,4 +1,4 @@
-import { MediaStatsData } from '../../types.js'
+import { MediaStatsData } from '../types.js'
 import { initializeGraph } from './mediaStatsGraph'
 import { MediaStatsMap } from './mediaStatsMap.js'
 

@@ -1,6 +1,6 @@
 import { startCollection, stopCollection, createCollectorArray } from './stats'
 import { initializeTables, removeTables } from './statTables'
-import { Collector, Options } from '../types'
+import { Collector, Options } from './types'
 import { destroyChart } from './MediaStats/mediaStatsGraphState'
 
 export class CommunicationInspector {
