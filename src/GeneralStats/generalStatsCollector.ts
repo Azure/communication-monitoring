@@ -46,7 +46,7 @@ export class GeneralStatsCollectorImpl implements Collector {
   startCollector(): void {
     generalStatsCollector = setInterval(() => {
       this.updateData()
-    }, 1000)
+    }, 500)
   }
 
   stopCollector(): void {

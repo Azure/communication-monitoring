@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
 }
 
-#media-stats-pop-up {
+#things {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -30,7 +30,7 @@ body {
   display: block;
 }
 
-.active {
+.activated {
   border-top: solid 1px #000;
   border-right: solid 1px #000;
   border-bottom: none;

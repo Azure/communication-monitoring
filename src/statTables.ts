@@ -75,12 +75,15 @@ function createNavigationTabs() {
   generalTab = document.createElement('button')
   generalTab.innerText = 'General'
   generalTab.classList.add('active')
+  generalTab.classList.add('navigationButton')
 
   mediaStatsTab = document.createElement('button')
   mediaStatsTab.innerText = 'Stats'
+  mediaStatsTab.classList.add('navigationButton')
 
   userFacingDiagnosticsTab = document.createElement('button')
   userFacingDiagnosticsTab.innerText = 'UFDs'
+  userFacingDiagnosticsTab.classList.add('navigationButton')
 
   generalTab.addEventListener('click', () => {
     activeTab = Tabs.GeneralStats
@@ -150,7 +153,9 @@ function updateUserFacingDiagnostics() {
 
 export function initializeTables(collectors: Collector[], options: Options) {
   collectorArray = collectors
-  statsContainer = options.divElement
+  const parentElement = options.divElement
+  statsContainer = document.createElement('div')
+  statsContainer.id = 'media-stats-pop-up'
   mediaStatsTable = createMediaStatsTable()!
   generalStatsTable = createGeneralStatsTable()!
   userFacingDiagnosticsTable = createUserFacingDiagnosticsTable()!
@@ -165,6 +170,8 @@ export function initializeTables(collectors: Collector[], options: Options) {
   statsContainer.appendChild(mediaStatsTable as HTMLElement)
   statsContainer.appendChild(generalStatsTable as HTMLElement)
   statsContainer.appendChild(userFacingDiagnosticsTable as HTMLElement)
+
+  parentElement.appendChild(statsContainer)
 
   renderActiveTab()
 
@@ -188,10 +195,13 @@ export function removeTables() {
 }
 
 export function showErrorScreen() {
+  const downloadButton = createDownloadLogsButton(collectorArray)
   const errorDiv = document.createElement('div')
   errorDiv.id = 'errorDiv'
-  const errorMessage = document.createElement('p')
+  const errorMessage = document.createElement('div')
   errorMessage.innerText = 'Call is not connected'
+  errorMessage.id = 'errorMessage'
   errorDiv.appendChild(errorMessage)
+  errorDiv.appendChild(downloadButton)
   statsContainer.appendChild(errorDiv)
 }

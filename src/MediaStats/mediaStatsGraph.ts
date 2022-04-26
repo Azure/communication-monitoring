@@ -20,6 +20,7 @@ export function initializeGraph(
   backButton = document.createElement('button')
   backButton.id = 'backButton'
   backButton.innerText = 'Back'
+  backButton.classList.add('navigationButton')
 
   backButton.addEventListener('click', () => {
     ;(document.getElementById('mediaStatsTable') as HTMLElement).hidden = false

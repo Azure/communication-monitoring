@@ -1,12 +1,3 @@
-#media-stats-pop-up button {
-  background: #fff;
-  border: none;
-  font-size: 100%;
-  padding: 10px;
-  font-weight: 'regular';
-  cursor: pointer;
-}
-
 #media-stats-pop-up #navigationTabs {
   padding: 4px 10px 0 10px;
   position: sticky;
@@ -35,10 +26,9 @@
   color: #000;
   text-transform: none;
   font-size: 0.86rem;
-}
-
-#media-stats-pop-up #navigationTabs #downloadLogsButton:hover {
-  text-decoration: underline;
+  margin-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 #media-stats-pop-up #navigationTabs #toggleButton {
@@ -219,5 +209,44 @@ dl dd.sectionHeader:nth-child(2) {
 }
 
 #errorDiv {
+  display: flex;
+  flex-direction: row;
   padding: 10px;
+}
+
+#errorMessage{
+  padding: 10px;
+}
+
+#media-stats-pop-up #errorDiv #downloadLogsButton {
+  margin-left: auto;
+  color: #000;
+  text-transform: none;
+  font-size: 0.86rem;
+  color: #666;
+}
+
+#media-stats-pop-up #errorDiv #downloadLogsButton:hover {
+  text-decoration: underline;
+}
+
+.navigationButton {
+  background: #fff;
+  border: none;
+  font-size: 100%;
+  padding: 10px;
+  font-weight: 'regular';
+  cursor: pointer;
+}
+
+.greenText {
+  color: green;
+}
+
+.redText {
+  color: rgb(154, 3, 3)
+}
+
+.orangeText {
+  color: rgb(157, 86, 24)
 }

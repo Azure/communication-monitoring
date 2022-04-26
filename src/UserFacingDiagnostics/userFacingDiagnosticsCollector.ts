@@ -29,9 +29,14 @@ export class UserFacingDiagnosticsImpl implements Collector {
     ) => {
       userFacingDiagnosticsData = diagnosticInfo
     }
-    userFacingDiagnosticsFeature = this.call.feature(
-      Features.UserFacingDiagnostics
-    )
+    try{
+      userFacingDiagnosticsFeature = this.call.feature(
+        Features.UserFacingDiagnostics
+      )
+    } catch (e) {
+      throw new Error('User facing diagnostic features not available')
+    }
+
     userFacingDiagnosticsFeature.network.on(
       'diagnosticChanged',
       diagnosticChangedListener

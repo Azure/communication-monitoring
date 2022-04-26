@@ -19,7 +19,7 @@ const stopVideoButton = document.getElementById('stop-Video')
 const startVideoButton = document.getElementById('start-Video')
 const renderButton = document.getElementById('render')
 const stopRenderButton = document.getElementById('stopRender')
-const statsContainer = document.getElementById('media-stats-pop-up')
+const statsContainer = document.getElementById('things')
 
 let placeCallOptions
 let deviceManager
@@ -143,7 +143,7 @@ callButton.addEventListener('click', async () => {
     communicationInspector.close()
   }
   if (document.getElementById('callee-id-input').value.length === 0) {
-    console.error('Enter a valid call id')
+    window.alert('Enter a valid call id')
   } else {
     const videoDevices = await deviceManager.getCameras()
     const videoDeviceInfo = videoDevices[0]
@@ -170,9 +170,9 @@ callButton.addEventListener('click', async () => {
 
     setInterval(() => {
       if (communicationInspector.isOpened.value) {
-        statsContainer.classList.add('active')
+        statsContainer.classList.add('activated')
       } else {
-        statsContainer.classList.remove('active')
+        statsContainer.classList.remove('activated')
       }
     }, 500)
 
@@ -194,21 +194,21 @@ stopVideoButton.addEventListener('click', async () => {
 })
 
 startVideoButton.addEventListener('click', async () => {
-  if (document.getElementById('callee-id-input').value.length === 0) {
-    console.error('Enter a valid call id')
-  } else {
-    await call.startVideo(localVideoStream)
-    localVideoView()
-    stopVideoButton.disabled = false
-    startVideoButton.disabled = true
-  }
+  await call.startVideo(localVideoStream)
+  localVideoView()
+  stopVideoButton.disabled = false
+  startVideoButton.disabled = true
 })
 
 renderButton.addEventListener('click', async () => {
-  communicationInspector.open()
+  try{
+    communicationInspector.open()
+    stopRenderButton.disabled = false
+    renderButton.disabled = true
+  } catch (e) {
+    window.alert(e)
+  }
 
-  stopRenderButton.disabled = false
-  renderButton.disabled = true
 })
 
 stopRenderButton.addEventListener('click', async () => {
