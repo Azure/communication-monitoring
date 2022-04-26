@@ -6,7 +6,7 @@ import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDia
 
 export function startCollection(collectorArray: Collector[]) {
   collectorArray.map((collector) => {
-    try{
+    try {
       collector.startCollector()
     } catch (e) {
       console.error(e)

@@ -74,25 +74,23 @@ export function updateUserFacingDiagnosticsTable(
 ) {
   const value = diagnosticsData?.value
   const element = document.getElementById(diagnosticsData?.diagnostic + 'Value')
-  const innerText = String(value).charAt(0).toUpperCase() + String(value).slice(1)
-  if (
-    element &&
-    element.innerText !== innerText
-  ) {
+  const innerText =
+    String(value).charAt(0).toUpperCase() + String(value).slice(1)
+  if (element && element.innerText !== innerText) {
     element.innerText = innerText
     element.className = ''
-    switch(innerText){
+    switch (innerText) {
       case 'Good':
       case 'True':
         element.classList.add('greenText')
-        break;
+        break
       case 'False':
       case 'Bad':
         element.classList.add('redText')
         break
       case 'Poor':
         element.classList.add('orangeText')
-        break;
+        break
     }
   }
 }

@@ -201,14 +201,13 @@ startVideoButton.addEventListener('click', async () => {
 })
 
 renderButton.addEventListener('click', async () => {
-  try{
+  try {
     communicationInspector.open()
     stopRenderButton.disabled = false
     renderButton.disabled = true
   } catch (e) {
     window.alert(e)
   }
-
 })
 
 stopRenderButton.addEventListener('click', async () => {

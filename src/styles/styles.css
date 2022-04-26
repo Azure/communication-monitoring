@@ -214,7 +214,7 @@ dl dd.sectionHeader:nth-child(2) {
   padding: 10px;
 }
 
-#errorMessage{
+#errorMessage {
   padding: 10px;
 }
 
@@ -244,9 +244,9 @@ dl dd.sectionHeader:nth-child(2) {
 }
 
 .redText {
-  color: rgb(154, 3, 3)
+  color: rgb(154, 3, 3);
 }
 
 .orangeText {
-  color: rgb(157, 86, 24)
+  color: rgb(157, 86, 24);
 }

@@ -30,7 +30,7 @@ export class MediaStatsCollectorImpl implements Collector {
   startCollector() {
     // Start collecting stats
     let mediaStatsCollector: MediaStatsCollector
-    
+
     try {
       this.mediaStatsFeature = this.call.feature(Features.MediaStats)
     } catch (e) {
@@ -42,14 +42,13 @@ export class MediaStatsCollectorImpl implements Collector {
       dataPointsPerAggregation: 1,
     }
 
-    try{
+    try {
       mediaStatsCollector = this.mediaStatsFeature.startCollector(
         mediaStatsCollectorOptions
       )
-    } catch(e) {
+    } catch (e) {
       throw new Error('Media Stats Collector could not be started')
     }
-
 
     mediaStatsCollector.on('mediaStatsEmitted', (mediaStats) => {
       this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)

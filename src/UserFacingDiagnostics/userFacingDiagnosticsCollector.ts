@@ -29,7 +29,7 @@ export class UserFacingDiagnosticsImpl implements Collector {
     ) => {
       userFacingDiagnosticsData = diagnosticInfo
     }
-    try{
+    try {
       userFacingDiagnosticsFeature = this.call.feature(
         Features.UserFacingDiagnostics
       )
