@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
 }
 
-#things {
+#inspectorContainer {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -18,8 +18,8 @@ body {
   background-color: #fff;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  height: 600px;
-  width: 600px;
+  height: 100%;
+  width: 400px;
 }
 
 .hidden {
@@ -31,8 +31,5 @@ body {
 }
 
 .activated {
-  border-top: solid 1px #000;
-  border-right: solid 1px #000;
-  border-bottom: none;
-  border-left: solid 1px #000;
+  border-left: solid 1px #c1c1c1;
 }

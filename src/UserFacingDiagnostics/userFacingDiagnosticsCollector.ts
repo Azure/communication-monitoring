@@ -28,6 +28,7 @@ export class UserFacingDiagnosticsImpl implements Collector {
         | NetworkDiagnosticChangedEventArgs
     ) => {
       userFacingDiagnosticsData = diagnosticInfo
+      console.log(diagnosticInfo)
     }
     try {
       userFacingDiagnosticsFeature = this.call.feature(

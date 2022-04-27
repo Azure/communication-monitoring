@@ -25,8 +25,12 @@ export class CommunicationInspector {
 
   start() {
     if (!this.isCollectionStarted) {
-      startCollection(this.collectors)
-      this.isCollectionStarted = true
+      try {
+        startCollection(this.collectors)
+        this.isCollectionStarted = true
+      } catch (e) {
+        throw e
+      }
     }
   }
 

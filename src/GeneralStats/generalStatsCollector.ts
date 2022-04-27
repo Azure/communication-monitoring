@@ -45,8 +45,13 @@ export class GeneralStatsCollectorImpl implements Collector {
 
   startCollector(): void {
     generalStatsCollector = setInterval(() => {
-      this.updateData()
-    }, 500)
+      try {
+        this.updateData()
+      } catch (e) {
+        this.stopCollector()
+        throw e
+      }
+    }, 1000)
   }
 
   stopCollector(): void {
@@ -58,43 +63,47 @@ export class GeneralStatsCollectorImpl implements Collector {
   }
 
   async updateData() {
-    const remoteParticipantsIds = this.call.remoteParticipants.map(
-      (remoteParticipant) =>
-        this.getParticipantId(
-          remoteParticipant.identifier as CommunicationIdentifierKind
-        )
-    )
-
-    const dominantSpeakersIds =
-      this.dominantSpeakersCallFeature?.dominantSpeakers.speakersList.map(
-        (speaker) => this.getParticipantId(speaker)
+    try {
+      const remoteParticipantsIds = this.call.remoteParticipants.map(
+        (remoteParticipant) =>
+          this.getParticipantId(
+            remoteParticipant.identifier as CommunicationIdentifierKind
+          )
       )
 
-    const chosenCamera =
-      this.call.localVideoStreams.length !== 0
-        ? this.call.localVideoStreams[0].source.name
-        : 'None'
+      const dominantSpeakersIds =
+        this.dominantSpeakersCallFeature?.dominantSpeakers.speakersList.map(
+          (speaker) => this.getParticipantId(speaker)
+        )
 
-    const deviceManager = await this.callClient.getDeviceManager()
-    const selectedMicrophone = await deviceManager.selectedMicrophone?.name
+      const chosenCamera =
+        this.call.localVideoStreams.length !== 0
+          ? this.call.localVideoStreams[0].source.name
+          : 'None'
 
-    generalStatsData = {
-      callId: this.call.info.groupId!,
-      participantId: this.debugInfoCallFeature?.localParticipantId,
-      remoteParticipants:
-        remoteParticipantsIds.length > 0
-          ? remoteParticipantsIds.toString()
-          : 'Remote participants feature not available',
-      dominantSpeakers:
-        dominantSpeakersIds!.length > 0
-          ? dominantSpeakersIds!.toString()
-          : 'Dominant speaker feature not available',
-      isRecording: this.recordingCallFeature!.isRecordingActive,
-      isTranscribing: this.transcriptionCallFeature?.isTranscriptionActive,
-      // isScreenSharing: this.call.info._tsCall.isScreenSharingOn,
-      chosenCamera: chosenCamera,
-      chosenMicrophone: selectedMicrophone,
-      userInfo: navigator.userAgent,
+      const deviceManager = await this.callClient.getDeviceManager()
+      const selectedMicrophone = await deviceManager.selectedMicrophone?.name
+
+      generalStatsData = {
+        callId: this.call.info.groupId!,
+        participantId: this.debugInfoCallFeature?.localParticipantId,
+        remoteParticipants:
+          remoteParticipantsIds.length > 0
+            ? remoteParticipantsIds.toString()
+            : 'Remote participants feature not available',
+        dominantSpeakers:
+          dominantSpeakersIds!.length > 0
+            ? dominantSpeakersIds!.toString()
+            : 'Dominant speaker feature not available',
+        isRecording: this.recordingCallFeature!.isRecordingActive,
+        isTranscribing: this.transcriptionCallFeature?.isTranscriptionActive,
+        // isScreenSharing: this.call.info._tsCall.isScreenSharingOn,
+        chosenCamera: chosenCamera,
+        chosenMicrophone: selectedMicrophone,
+        userInfo: navigator.userAgent,
+      }
+    } catch (e) {
+      throw e
     }
 
     return generalStatsData

@@ -19,7 +19,7 @@ const stopVideoButton = document.getElementById('stop-Video')
 const startVideoButton = document.getElementById('start-Video')
 const renderButton = document.getElementById('render')
 const stopRenderButton = document.getElementById('stopRender')
-const statsContainer = document.getElementById('things')
+const statsContainer = document.getElementById('inspectorContainer')
 
 let placeCallOptions
 let deviceManager

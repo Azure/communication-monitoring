@@ -9,7 +9,7 @@ export function startCollection(collectorArray: Collector[]) {
     try {
       collector.startCollector()
     } catch (e) {
-      console.error(e)
+      throw e
     }
   })
 }

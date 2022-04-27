@@ -200,7 +200,7 @@ dl dd.sectionHeader:nth-child(2) {
 }
 
 #media-stats-pop-up {
-  line-height: 1;
+  line-height: 0.5;
 }
 
 #myChart {

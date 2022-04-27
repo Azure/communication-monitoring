@@ -47,6 +47,7 @@ export class MediaStatsCollectorImpl implements Collector {
         mediaStatsCollectorOptions
       )
     } catch (e) {
+      this.stopCollector()
       throw new Error('Media Stats Collector could not be started')
     }
 
