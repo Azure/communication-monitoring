@@ -126,12 +126,16 @@ async function localVideoView() {
   rendererLocal = new VideoStreamRenderer(localVideoStream)
   const view = await rendererLocal.createView()
   document.getElementById('myVideo').appendChild(view.target)
+  const lastChild = document.getElementById('myVideo').lastChild
+  lastChild.classList.add('localVideoStream')
 }
 
 async function remoteVideoView(remoteVideoStream) {
   rendererRemote = new VideoStreamRenderer(remoteVideoStream)
   const view = await rendererRemote.createView()
   document.getElementById('remoteVideo').appendChild(view.target)
+  const lastChild = document.getElementById('remoteVideo').lastChild
+  lastChild.classList.add('remoteVideoStream')
 }
 
 /*

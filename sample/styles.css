@@ -19,7 +19,7 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   height: 100%;
-  width: 400px;
+  width: 25%;
 }
 
 .hidden {
@@ -32,4 +32,16 @@ body {
 
 .activated {
   border-left: solid 1px #c1c1c1;
+}
+
+.remoteVideoStream {
+  width: 300px !important;
+  height: 200px !important;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.localVideoStream {
+  width: 300px !important;
+  height: 200px !important;
 }

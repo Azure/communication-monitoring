@@ -16,6 +16,7 @@ import {
   UnknownIdentifierKind,
 } from '@azure/communication-common'
 import { Collector, GeneralStatsData, Options, Tabs } from '../types'
+import { BrowserKeyType, BrowserName } from './constants'
 
 let generalStatsCollector: NodeJS.Timer
 let generalStatsData: GeneralStatsData
@@ -89,18 +90,19 @@ export class GeneralStatsCollectorImpl implements Collector {
         participantId: this.debugInfoCallFeature?.localParticipantId,
         remoteParticipants:
           remoteParticipantsIds.length > 0
-            ? remoteParticipantsIds.toString()
-            : 'Remote participants feature not available',
+            ? remoteParticipantsIds
+            : ['Not available'],
         dominantSpeakers:
           dominantSpeakersIds!.length > 0
-            ? dominantSpeakersIds!.toString()
-            : 'Dominant speaker feature not available',
+            ? dominantSpeakersIds
+            : ['Not available'],
         isRecording: this.recordingCallFeature!.isRecordingActive,
         isTranscribing: this.transcriptionCallFeature?.isTranscriptionActive,
         // isScreenSharing: this.call.info._tsCall.isScreenSharingOn,
         chosenCamera: chosenCamera,
         chosenMicrophone: selectedMicrophone,
         userInfo: navigator.userAgent,
+        browser: this.getBrowserName(navigator.userAgent),
       }
     } catch (e) {
       throw e
@@ -124,6 +126,25 @@ export class GeneralStatsCollectorImpl implements Collector {
           .microsoftTeamsUserId
       case 'unknown':
         return (remoteParticipant as UnknownIdentifierKind).id
+    }
+  }
+
+  private getBrowserName(userAgent: string): string {
+    if (
+      userAgent.indexOf(BrowserKeyType.Edge) !== -1 ||
+      userAgent.indexOf(BrowserKeyType.EdgeAnaheim) !== -1
+    ) {
+      return BrowserName.edge
+    } else if (userAgent.indexOf(BrowserKeyType.Chrome) !== -1) {
+      return BrowserName.chrome
+    } else if (userAgent.indexOf(BrowserKeyType.Firefox) !== -1) {
+      return BrowserName.firefox
+    } else if (userAgent.indexOf(BrowserKeyType.Safari) !== -1) {
+      return BrowserName.safari
+    } else if (userAgent.indexOf(BrowserKeyType.MSIE) !== -1) {
+      return BrowserName.ie
+    } else {
+      return BrowserName.unknown
     }
   }
 }

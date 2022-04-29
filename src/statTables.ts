@@ -25,6 +25,7 @@ import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
+let parentElement: HTMLElement
 let generalTab: HTMLElement
 let mediaStatsTab: HTMLElement
 let userFacingDiagnosticsTab: HTMLElement
@@ -153,7 +154,7 @@ function updateUserFacingDiagnostics() {
 
 export function initializeTables(collectors: Collector[], options: Options) {
   collectorArray = collectors
-  const parentElement = options.divElement
+  parentElement = options.divElement
   statsContainer = document.createElement('div')
   statsContainer.id = 'media-stats-pop-up'
   mediaStatsTable = createMediaStatsTable()!
@@ -190,7 +191,7 @@ export function initializeTables(collectors: Collector[], options: Options) {
 
 export function removeTables() {
   activeTab = Tabs.None
-  statsContainer.innerHTML = ''
+  parentElement.innerHTML = ''
   clearInterval(tableUpdater)
 }
 
@@ -203,5 +204,5 @@ export function showErrorScreen() {
   errorMessage.id = 'errorMessage'
   errorDiv.appendChild(errorMessage)
   errorDiv.appendChild(downloadButton)
-  statsContainer.appendChild(errorDiv)
+  parentElement.appendChild(errorDiv)
 }
