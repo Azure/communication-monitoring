@@ -3,6 +3,7 @@ import {
   Features,
   MediaStats,
   MediaStatsCallFeature,
+  MediaStatsCollector,
 } from '@azure/communication-calling'
 import { MediaStatsData, Collector, Tabs, Options } from '../types'
 import { MediaStatsMap } from './mediaStatsMap'
@@ -28,6 +29,7 @@ export class MediaStatsCollectorImpl implements Collector {
 
   startCollector() {
     // Start collecting stats
+    let mediaStatsCollector: MediaStatsCollector
 
     try {
       this.mediaStatsFeature = this.call.feature(Features.MediaStats)
@@ -40,9 +42,15 @@ export class MediaStatsCollectorImpl implements Collector {
       dataPointsPerAggregation: 1,
     }
 
-    const mediaStatsCollector = this.mediaStatsFeature.startCollector(
-      mediaStatsCollectorOptions
-    )
+    try {
+      mediaStatsCollector = this.mediaStatsFeature.startCollector(
+        mediaStatsCollectorOptions
+      )
+    } catch (e) {
+      this.stopCollector()
+      throw new Error('Media Stats Collector could not be started')
+    }
+
     mediaStatsCollector.on('mediaStatsEmitted', (mediaStats) => {
       this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
     })

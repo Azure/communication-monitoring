@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Communication Client - 1:1 Video Calling Sample</title>
+    <title>Communication Inspector - Sample</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   </head>
 
   <body>
-    <h4>Azure Communication Services</h4>
-    <h1>1:1 Video Calling Quickstart</h1>
-    <input 
-      id="callee-id-input"
-      type="text"
-      placeholder="Enter call's group id here"
-      style="margin-bottom:1em; width: 200px;"
-    />
-
-    <div>
-      <button id="call-button" type="button" disabled="true">
-        start call
-      </button>
-      &nbsp;
-      <button id="hang-up-button" type="button" disabled="true">
-        hang up
-      </button>
-      &nbsp;
-      <button id="start-Video" type="button" disabled="true">
-        start video
-      </button>
-      &nbsp;
-      <button id="stop-Video" type="button" disabled="true">
-        stop video
-      </button>     
-      <button id="render" type="button" disabled="true">
-        open pop up
-      </button>
-      <button id="stopRender" type="button" disabled="true">
-        close pop up
-      </button>   
-    </div>
-
-    <div>Local Video</div>
-    <div style="height:200px; width:300px; background-color:black; position:relative;">
-      <div id="myVideo" style="background-color: black; position:absolute; top:50%; transform: translateY(-50%);">
+    <div style="width: 75%">
+      <h4>Azure Communication Services</h4>
+      <h1>Communication Inspector - Calling Sample</h1>
+      <input 
+        id="callee-id-input"
+        type="text"
+        placeholder="Enter call's group id here"
+        style="margin-bottom:1em; width: 200px;"
+      />
+  
+      <div style="margin-bottom: 10px;">
+        <button id="call-button" type="button" disabled="true">
+          start call
+        </button>
+        &nbsp;
+        <button id="hang-up-button" type="button" disabled="true">
+          hang up
+        </button>
+        &nbsp;
+        <button id="start-Video" type="button" disabled="true">
+          start video
+        </button>
+        &nbsp;
+        <button id="stop-Video" type="button" disabled="true">
+          stop video
+        </button>     
+        <button id="render" type="button" disabled="true">
+          open inspector
+        </button>
+        <button id="stopRender" type="button" disabled="true">
+          close inspector
+        </button>   
       </div>
-    </div>
-    <div>Remote Video</div>
-    <div style="height:200px; width:300px; background-color:black; position:relative;"> 
-      <div id="remoteVideo" style="background-color: black; position:absolute; top:50%; transform: translateY(-50%);">
+      
+      <div>Local Video</div>
+      <div>
+        <div style="height:200px; width:300px; position:relative;">
+          <div id="myVideo" style="position:absolute;">
+          </div>
+        </div>   
       </div>
-    </div>
 
-    <div id="container">
-      <div id="media-stats-pop-up"></div>
+        <div>Remote Video</div>
+        <div>
+          <div style="position:relative;"> 
+            <div id="remoteVideo" style="position:absolute; display:flex; flex-wrap: wrap;">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    <div id="inspectorContainer">
     </div>
 
     <!-- <script src="bundle.js"></script> -->

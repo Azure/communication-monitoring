@@ -1,10 +1,15 @@
-import { startCollection, stopCollection, createCollectorArray } from './stats'
+import {
+  startCollection,
+  stopCollection,
+  createCollectorArray,
+  listenToCall,
+} from './stats'
 import { initializeTables, removeTables } from './statTables'
 import { Collector, Options } from './types'
 import { destroyChart } from './MediaStats/mediaStatsGraphState'
 
 export class CommunicationInspector {
-  isOpened: boolean
+  isOpened: { value: boolean }
 
   private options: Options
   private isCollectionStarted: boolean
@@ -13,14 +18,19 @@ export class CommunicationInspector {
   constructor(options: Options) {
     this.options = options
     this.isCollectionStarted = false
-    this.isOpened = false
+    this.isOpened = { value: false }
     this.collectors = createCollectorArray(this.options)
+    listenToCall(this.options, this.isOpened)
   }
 
   start() {
     if (!this.isCollectionStarted) {
-      startCollection(this.collectors)
-      this.isCollectionStarted = true
+      try {
+        startCollection(this.collectors)
+        this.isCollectionStarted = true
+      } catch (e) {
+        throw e
+      }
     }
   }
 
@@ -33,10 +43,10 @@ export class CommunicationInspector {
 
   open() {
     if (!this.isCollectionStarted) {
-      console.error('Communication Inspector must be started first')
-    } else if (!this.isOpened) {
+      throw new Error('Communication Inspector must be started first')
+    } else if (!this.isOpened.value) {
       initializeTables(this.collectors, this.options)
-      this.isOpened = true
+      this.isOpened.value = true
     }
   }
 
@@ -46,10 +56,10 @@ export class CommunicationInspector {
   }
 
   close() {
-    if (this.isOpened) {
+    if (this.isOpened.value) {
       destroyChart()
       removeTables()
-      this.isOpened = false
+      this.isOpened.value = false
     }
   }
 }

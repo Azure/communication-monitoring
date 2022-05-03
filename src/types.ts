@@ -28,14 +28,15 @@ export interface Collector {
 export interface GeneralStatsData {
   callId: string
   participantId?: string
-  remoteParticipants?: string
-  dominantSpeakers?: string
+  remoteParticipants?: string[]
+  dominantSpeakers?: string[]
   isRecording: boolean
   isTranscribing?: boolean
   isScreenSharing?: boolean
   chosenCamera?: string
   chosenMicrophone?: string
   userInfo?: string
+  browser?: string
 }
 
 export interface MediaStatsDataValue {
@@ -121,6 +122,24 @@ export interface MediaStatsData {
   videoRecvLongestFreezeDurationValue?: MediaStatsDataValue[]
   videoRecvTotalFreezeDuration?: MediaStatsDataValue[]
   videoRecvTotalFreezeDurationValue?: MediaStatsDataValue[]
+  screenSharingRecvLongestFreezeDuration?: MediaStatsDataValue[]
+  screenSharingRecvTotalFreezeDuration?: MediaStatsDataValue[]
+  screenSharingSendFrameWidthInput?: MediaStatsDataValue[]
+  screenSharingSendFrameHeightInput?: MediaStatsDataValue[]
+  screenSharingSendFrameWidthSent?: MediaStatsDataValue[]
+  screenSharingSendFrameHeightSent?: MediaStatsDataValue[]
+  screenSharingRecvFrameWidthReceived?: MediaStatsDataValue[]
+  screenSharingRecvFrameHeightReceived?: MediaStatsDataValue[]
+  screenSharingSendFrameRateInput?: MediaStatsDataValue[]
+  screenSharingSendFrameRateSent?: MediaStatsDataValue[]
+  screenSharingRecvFrameRateReceived?: MediaStatsDataValue[]
+  screenSharingRecvFrameRateDecoded?: MediaStatsDataValue[]
+  screenSharingRecvFrameRateOutput?: MediaStatsDataValue[]
+  screenSharingSendCodecName?: MediaStatsDataValue[]
+  screenSharingRecvCodecName?: MediaStatsDataValue[]
+  screenSharingRecvPacketsLost?: MediaStatsDataValue[]
+  screenSharingSendPacketsLost?: MediaStatsDataValue[]
+  screenSharingRecvJitterBufferMs?: MediaStatsDataValue[]
 }
 
 export interface Options {

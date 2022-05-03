@@ -54,7 +54,7 @@ let html = `
     <dd hidden=false id='videoSendPairRttValue'>—</dd>
     <dt hidden=false id='videoSendPacketsLost'>Send Packet Loss</dt>
     <dd hidden=false id='videoSendPacketsLostValue'>—</dd>
-    <dt hidden=false id='videoSendFrameRateInput'>Sent Framerate Input</dt>
+    <dt hidden=false id='videoSendFrameRateInput'>Sent Frame Rate Input</dt>
     <dd hidden=false id='videoSendFrameRateInputValue'>—</dd>
     <dt hidden=false id='videoSendFrameWidthInput'>Sent Frame Width Input</dt>
     <dd hidden=false id='videoSendFrameWidthInputValue'>—</dd>
@@ -78,14 +78,32 @@ let html = `
     <dd hidden=false id='videoRecvFrameWidthReceivedValue'>—</dd>
     <dt hidden=false id='videoRecvFrameHeightReceived'>Received Height</dt>
     <dd hidden=false id='videoRecvFrameHeightReceivedValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameRateOutput'>Received Framerate Output</dt>
+    <dt hidden=false id='videoRecvFrameRateOutput'>Received Frame Rate Output</dt>
     <dd hidden=false id='videoRecvFrameRateOutputValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameRateDecoded'>Received Decoded Framerate</dt>
+    <dt hidden=false id='videoRecvFrameRateDecoded'>Received Decoded Frame Rate</dt>
     <dd hidden=false id='videoRecvFrameRateDecodedValue'>—</dd>
     <dt hidden=false id='videoRecvLongestFreezeDuration'>Received Longest Freeze Duration</dt>
     <dd hidden=false id='videoRecvLongestFreezeDurationValue'>—</dd>
     <dt hidden=false id='videoRecvTotalFreezeDuration'>Received Total Freeze Duration</dt>
     <dd hidden=false id='videoRecvTotalFreezeDurationValue'>—</dd>
+    <dt class='sectionHeader'>Screen Sharing</dt>
+    <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk#video-quality-metrics" target="_blank">Learn more</a></dd>
+    <dt hidden=false id='screenSharingRecvFrameRateReceived'>Received Frame Rate</dt>
+    <dd hidden=false id='screenSharingRecvFrameRateReceivedValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvFrameRateDecoded'>Received Decoded Frame Rate</dt>
+    <dd hidden=false id='screenSharingRecvFrameRateDecodedValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvFrameWidthReceived'>Received Width</dt>
+    <dd hidden=false id='screenSharingRecvFrameWidthReceivedValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvFrameHeightReceived'>Received Height</dt>
+    <dd hidden=false id='screenSharingRecvFrameHeightReceivedValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvLongestFreezeDuration'>Received Longest Freeze Duration</dt>
+    <dd hidden=false id='screenSharingRecvLongestFreezeDurationValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvTotalFreezeDuration'>Received Total Decoded Frame Rate</dt>
+    <dd hidden=false id='screenSharingRecvTotalFreezeDurationValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvJitterBufferMs'>Received Jitter</dt>
+    <dd hidden=false id='screenSharingRecvJitterBufferMsValue'>—</dd>
+    <dt hidden=false id='screenSharingRecvPacketsLost'>Received Packet Loss</dt>
+    <dd hidden=false id='screenSharingRecvPacketsLostValue'>—</dd>
 </dl>
 `
 
@@ -139,6 +157,14 @@ export function updateMediaStatsTable(mediaStatsData: MediaStatsData) {
     updateValue(mediaStatsData, 'videoRecvFrameRateDecoded')
     updateValue(mediaStatsData, 'videoRecvLongestFreezeDuration')
     updateValue(mediaStatsData, 'videoRecvTotalFreezeDuration')
+    updateValue(mediaStatsData, 'screenSharingRecvFrameRateReceived')
+    updateValue(mediaStatsData, 'screenSharingRecvFrameRateDecoded')
+    updateValue(mediaStatsData, 'screenSharingRecvFrameWidthReceived')
+    updateValue(mediaStatsData, 'screenSharingRecvFrameHeightReceived')
+    updateValue(mediaStatsData, 'screenSharingRecvLongestFreezeDuration')
+    updateValue(mediaStatsData, 'screenSharingRecvTotalFreezeDuration')
+    updateValue(mediaStatsData, 'screenSharingRecvJitterBufferMs')
+    updateValue(mediaStatsData, 'screenSharingRecvPacketsLost')
   }
 }
 

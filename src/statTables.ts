@@ -22,9 +22,11 @@ import {
   updateUserFacingDiagnosticsTable,
 } from './UserFacingDiagnostics/userFacingDiagnosticsTable'
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
+import './styles/styles.css'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
+let parentElement: HTMLElement
 let generalTab: HTMLElement
 let mediaStatsTab: HTMLElement
 let userFacingDiagnosticsTab: HTMLElement
@@ -75,12 +77,15 @@ function createNavigationTabs() {
   generalTab = document.createElement('button')
   generalTab.innerText = 'General'
   generalTab.classList.add('active')
+  generalTab.classList.add('navigationButton')
 
   mediaStatsTab = document.createElement('button')
   mediaStatsTab.innerText = 'Stats'
+  mediaStatsTab.classList.add('navigationButton')
 
   userFacingDiagnosticsTab = document.createElement('button')
   userFacingDiagnosticsTab.innerText = 'UFDs'
+  userFacingDiagnosticsTab.classList.add('navigationButton')
 
   generalTab.addEventListener('click', () => {
     activeTab = Tabs.GeneralStats
@@ -150,7 +155,9 @@ function updateUserFacingDiagnostics() {
 
 export function initializeTables(collectors: Collector[], options: Options) {
   collectorArray = collectors
-  statsContainer = options.divElement
+  parentElement = options.divElement
+  statsContainer = document.createElement('div')
+  statsContainer.id = 'media-stats-pop-up'
   mediaStatsTable = createMediaStatsTable()!
   generalStatsTable = createGeneralStatsTable()!
   userFacingDiagnosticsTable = createUserFacingDiagnosticsTable()!
@@ -165,6 +172,8 @@ export function initializeTables(collectors: Collector[], options: Options) {
   statsContainer.appendChild(mediaStatsTable as HTMLElement)
   statsContainer.appendChild(generalStatsTable as HTMLElement)
   statsContainer.appendChild(userFacingDiagnosticsTable as HTMLElement)
+
+  parentElement.appendChild(statsContainer)
 
   renderActiveTab()
 
@@ -183,6 +192,18 @@ export function initializeTables(collectors: Collector[], options: Options) {
 
 export function removeTables() {
   activeTab = Tabs.None
-  statsContainer.innerHTML = ''
+  parentElement.innerHTML = ''
   clearInterval(tableUpdater)
+}
+
+export function showErrorScreen() {
+  const downloadButton = createDownloadLogsButton(collectorArray)
+  const errorDiv = document.createElement('div')
+  errorDiv.id = 'errorDiv'
+  const errorMessage = document.createElement('div')
+  errorMessage.innerText = 'Call is not connected'
+  errorMessage.id = 'errorMessage'
+  errorDiv.appendChild(errorMessage)
+  errorDiv.appendChild(downloadButton)
+  parentElement.appendChild(errorDiv)
 }

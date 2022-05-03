@@ -18,7 +18,7 @@ const stopVideoButton = document.getElementById('stop-Video')
 const startVideoButton = document.getElementById('start-Video')
 const renderButton = document.getElementById('render')
 const stopRenderButton = document.getElementById('stopRender')
-const statsContainer = document.getElementById('media-stats-pop-up')
+const statsContainer = document.getElementById('inspectorContainer')
 
 let placeCallOptions
 let deviceManager
@@ -94,13 +94,29 @@ async function init() {
 
   callAgent.on('callsUpdated', (e) => {
     e.removed.forEach((removedCall) => {
-      // dispose of video renderers
-      rendererLocal.dispose()
-      rendererRemote.dispose()
-      // toggle button states
       hangUpButton.disabled = true
       callButton.disabled = false
       stopVideoButton.disabled = true
+      renderButton.disabled = true
+      stopRenderButton.disabled = true
+      // dispose of video renderers
+      if (!rendererLocal.disposed) {
+        rendererLocal.dispose()
+      }
+
+      if (rendererRemote && !rendererRemote.disposed) {
+        rendererRemote.dispose()
+      }
+
+      if (communicationInspector.isOpened.value) {
+        stopRenderButton.disabled = false
+        renderButton.disabled = true
+      } else {
+        stopRenderButton.disabled = true
+        renderButton.disabled = false
+      }
+
+      communicationInspector.stop()
     })
   })
 }
@@ -109,12 +125,16 @@ async function localVideoView() {
   rendererLocal = new VideoStreamRenderer(localVideoStream)
   const view = await rendererLocal.createView()
   document.getElementById('myVideo').appendChild(view.target)
+  const lastChild = document.getElementById('myVideo').lastChild
+  lastChild.classList.add('localVideoStream')
 }
 
 async function remoteVideoView(remoteVideoStream) {
   rendererRemote = new VideoStreamRenderer(remoteVideoStream)
   const view = await rendererRemote.createView()
   document.getElementById('remoteVideo').appendChild(view.target)
+  const lastChild = document.getElementById('remoteVideo').lastChild
+  lastChild.classList.add('remoteVideoStream')
 }
 
 /*
@@ -122,33 +142,51 @@ async function remoteVideoView(remoteVideoStream) {
  */
 
 callButton.addEventListener('click', async () => {
-  const videoDevices = await deviceManager.getCameras()
-  const videoDeviceInfo = videoDevices[0]
-  localVideoStream = new LocalVideoStream(videoDeviceInfo)
-  placeCallOptions = {
-    videoOptions: { localVideoStreams: [localVideoStream] },
-    audioOptions: null,
+  if (communicationInspector && communicationInspector.isOpened.value) {
+    communicationInspector.close()
   }
+  if (document.getElementById('callee-id-input').value.length === 0) {
+    window.alert('Enter a valid call id')
+  } else {
+    const videoDevices = await deviceManager.getCameras()
+    const videoDeviceInfo = videoDevices[0]
+    localVideoStream = new LocalVideoStream(videoDeviceInfo)
+    placeCallOptions = {
+      videoOptions: { localVideoStreams: [localVideoStream] },
+      audioOptions: null,
+    }
 
-  localVideoView()
-  stopVideoButton.disabled = false
-  startVideoButton.disabled = true
+    localVideoView()
+    stopVideoButton.disabled = false
+    startVideoButton.disabled = true
 
-  const userToCall = calleeInput.value
-  call = callAgent.join({ groupId: userToCall }, placeCallOptions)
-  const options = {
-    callAgent: callAgent,
-    callClient: callClient,
-    divElement: statsContainer,
+    const userToCall = calleeInput.value
+    call = callAgent.join({ groupId: userToCall }, placeCallOptions)
+    const options = {
+      callAgent: callAgent,
+      callClient: callClient,
+      divElement: statsContainer,
+    }
+
+    communicationInspector = new CommunicationInspector(options)
+    communicationInspector.start()
+
+    setInterval(() => {
+      if (communicationInspector.isOpened.value) {
+        statsContainer.classList.add('activated')
+      } else {
+        statsContainer.classList.remove('activated')
+      }
+    }, 500)
+
+    communicationInspector.open()
+    subscribeToRemoteParticipantInCall(call)
+
+    hangUpButton.disabled = false
+    callButton.disabled = true
+    renderButton.disabled = true
+    stopRenderButton.disabled = false
   }
-  communicationInspector = new CommunicationInspector(options)
-  communicationInspector.start()
-
-  subscribeToRemoteParticipantInCall(call)
-
-  hangUpButton.disabled = false
-  callButton.disabled = true
-  renderButton.disabled = false
 })
 
 stopVideoButton.addEventListener('click', async () => {
@@ -166,9 +204,13 @@ startVideoButton.addEventListener('click', async () => {
 })
 
 renderButton.addEventListener('click', async () => {
-  communicationInspector.open()
-  stopRenderButton.disabled = false
-  renderButton.disabled = true
+  try {
+    communicationInspector.open()
+    stopRenderButton.disabled = false
+    renderButton.disabled = true
+  } catch (e) {
+    window.alert(e)
+  }
 })
 
 stopRenderButton.addEventListener('click', async () => {
@@ -179,8 +221,14 @@ stopRenderButton.addEventListener('click', async () => {
 
 hangUpButton.addEventListener('click', async () => {
   // dispose of video renderers
-  rendererLocal.dispose()
-  rendererRemote.dispose()
+  if (!rendererLocal.disposed) {
+    rendererLocal.dispose()
+  }
+
+  if (rendererRemote && !rendererRemote.disposed) {
+    rendererRemote.dispose()
+  }
+
   communicationInspector.stop()
   // end the current call
   await call.hangUp()
@@ -188,6 +236,14 @@ hangUpButton.addEventListener('click', async () => {
   hangUpButton.disabled = true
   callButton.disabled = false
   stopVideoButton.disabled = true
+  startVideoButton.disabled = true
+  if (communicationInspector.isOpened.value) {
+    stopRenderButton.disabled = false
+    renderButton.disabled = true
+  } else {
+    stopRenderButton.disabled = true
+    renderButton.disabled = false
+  }
 })
 
 /*

@@ -120,7 +120,7 @@ git clone https://github.com/Azure/communication-inspector.git
 
 ### Install the application
 
-Make sure to position yourself in the root folder and then run the following command:
+Make sure to position yourself in the `sample` folder and then run the following command:
 
 ```bash
 npm run start

@@ -11,52 +11,52 @@ let html = `
     <dt class='sectionHeader'>Network</dt>
     <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics#network-values" target="_blank">Learn more</a></dd>
     <dt id='noNetwork'>noNetwork</dt>
-    <dd id='noNetworkValue'>False</dd>
+    <dd id='noNetworkValue' class='redText'>False</dd>
     <dt id='networkRelaysNotReachable'>networkRelaysNotReachable</dt>
-    <dd id='networkRelaysNotReachableValue'>False</dd>
+    <dd id='networkRelaysNotReachableValue' class='redText'>False</dd>
     <dt id='networkReconnect'>networkReconnect</dt>
-    <dd id='networkReconnectValue'>Good</dd>
+    <dd id='networkReconnectValue'class='greenText'>Good</dd>
     <dt id='networkReceiveQuality'>networkReceiveQuality</dt>
-    <dd id='networkReceiveQualityValue'>Good</dd>
+    <dd id='networkReceiveQualityValue' class='greenText'>Good</dd>
     <dt id='networkSendQuality'>networkSendQuality</dt>
-    <dd id='networkSendQualityValue'>Good</dd>
+    <dd id='networkSendQualityValue' class='greenText'>Good</dd>
 
     <dt class='sectionHeader'>Audio</dt>
     <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics#audio-values" target="_blank">Learn more</a></dd>
     <dt id='noSpeakerDevicesEnumerated'>noSpeakerDevicesEnumerated</dt>
-    <dd id='noSpeakerDevicesEnumeratedValue'>False</dd>
+    <dd id='noSpeakerDevicesEnumeratedValue'class='redText'>False</dd>
     <dt id='speakingWhileMicrophoneIsMuted'>speakingWhileMicrophoneIsMuted</dt>
-    <dd id='speakingWhileMicrophoneIsMutedValue'>False</dd>
+    <dd id='speakingWhileMicrophoneIsMutedValue' class='redText'>False</dd>
     <dt id='noMicrophoneDevicesEnumerated'>noMicrophoneDevicesEnumerated</dt>
-    <dd id='noMicrophoneDevicesEnumeratedValue'>False</dd>
+    <dd id='noMicrophoneDevicesEnumeratedValue' class='redText'>False</dd>
     <dt id='microphoneNotFunctioning'>microphoneNotFunctioning</dt>
-    <dd id='microphoneNotFunctioningValue'>False</dd>
+    <dd id='microphoneNotFunctioningValue' class='redText'>False</dd>
     <dt id='microphoneMuteUnexpectedly'>microphoneMuteUnexpectedly</dt>
-    <dd id='microphoneMuteUnexpectedlyValue'>False</dd>
+    <dd id='microphoneMuteUnexpectedlyValue' class='redText'>False</dd>
     <dt id='microphonePermissionDenied'>microphonePermissionDenied</dt>
-    <dd id='microphonePermissionDeniedValue'>False</dd>
+    <dd id='microphonePermissionDeniedValue' class='redText'>False</dd>
 
     <dt class='sectionHeader'>Camera</dt>
     <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics#camera-values" target="_blank">Learn more</a></dd>
     <dt id='cameraFreeze'>cameraFreeze</dt>
-    <dd id='cameraFreezeValue'>False</dd>
+    <dd id='cameraFreezeValue' class='redText'>False</dd>
     <dt id='cameraStartFailed'>cameraStartFailed</dt>
-    <dd id='cameraStartFailedValue'>False</dd>
+    <dd id='cameraStartFailedValue' class='redText'>False</dd>
     <dt id='cameraStartTimedOut'>cameraStartTimedOut</dt>
-    <dd id='cameraStartTimedOutValue'>False</dd>
+    <dd id='cameraStartTimedOutValue' class='redText'>False</dd>
     <dt id='cameraPermissionDenied'>cameraPermissionDenied</dt>
-    <dd id='cameraPermissionDeniedValue'>False</dd>
+    <dd id='cameraPermissionDeniedValue' class='redText'>False</dd>
     <dt id='cameraStoppedUnexpectedly'>cameraStoppedUnexpectedly</dt>
-    <dd id='cameraStoppedUnexpectedlyValue'>False</dd>
+    <dd id='cameraStoppedUnexpectedlyValue' class='redText'>False</dd>
 
     <dt class='sectionHeader'>Miscellaneous</dt>
     <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics#misc-values" target="_blank">Learn more</a></dd>
     <dt id='screenshareRecordingDisabled'>screenshareRecordingDisabled</dt>
-    <dd id='screenshareRecordingDisabledValue'>False</dd>
+    <dd id='screenshareRecordingDisabledValue' class='redText'>False</dd>
     <dt id='capturerStartFailed'>capturerStartFailed</dt>
-    <dd id='capturerStartFailedValue'>False</dd>
+    <dd id='capturerStartFailedValue' class='redText'>False</dd>
     <dt id='capturerStoppedUnexpectedly'>capturerStoppedUnexpectedly</dt>
-    <dd id='capturerStoppedUnexpectedlyValue'>False</dd>
+    <dd id='capturerStoppedUnexpectedlyValue' class='redText'>False</dd>
 </dl>
 `
 
@@ -74,12 +74,23 @@ export function updateUserFacingDiagnosticsTable(
 ) {
   const value = diagnosticsData?.value
   const element = document.getElementById(diagnosticsData?.diagnostic + 'Value')
-  if (
-    element &&
-    element.innerText !==
-      String(value).charAt(0).toUpperCase() + String(value).slice(1)
-  ) {
-    element.innerText =
-      String(value).charAt(0).toUpperCase() + String(value).slice(1)
+  const innerText =
+    String(value).charAt(0).toUpperCase() + String(value).slice(1)
+  if (element && element.innerText !== innerText) {
+    element.innerText = innerText
+    element.className = ''
+    switch (innerText) {
+      case 'Good':
+      case 'True':
+        element.classList.add('greenText')
+        break
+      case 'False':
+      case 'Bad':
+        element.classList.add('redText')
+        break
+      case 'Poor':
+        element.classList.add('orangeText')
+        break
+    }
   }
 }
