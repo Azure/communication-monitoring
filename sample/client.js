@@ -6,7 +6,6 @@ import {
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
 import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
-import 'communication-inspector/ts-built/src/styles/styles.css'
 import './styles.css'
 
 let call
@@ -162,7 +161,7 @@ callButton.addEventListener('click', async () => {
     startVideoButton.disabled = true
 
     const userToCall = calleeInput.value
-    call = await callAgent.join({ groupId: userToCall }, placeCallOptions)
+    call = callAgent.join({ groupId: userToCall }, placeCallOptions)
     const options = {
       callAgent: callAgent,
       callClient: callClient,

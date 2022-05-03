@@ -22,6 +22,7 @@ import {
   updateUserFacingDiagnosticsTable,
 } from './UserFacingDiagnostics/userFacingDiagnosticsTable'
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
+import './styles/styles.css'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
