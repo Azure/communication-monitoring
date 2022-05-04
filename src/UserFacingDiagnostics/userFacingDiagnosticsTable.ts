@@ -2,6 +2,9 @@ import {
   MediaDiagnosticChangedEventArgs,
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
+import { showErrorScreen } from '../statTables'
+import { TableName } from '../types'
+import { UserFacingDiagnosticsImpl } from './userFacingDiagnosticsCollector'
 
 let html = `
 <dl id="userFacingDiagnosticsTable">
@@ -59,11 +62,19 @@ let html = `
     <dd id='capturerStoppedUnexpectedlyValue' class='redText'>False</dd>
 </dl>
 `
+let collectorStartedSuccessfully: boolean
+let errorScreenAlreadyShown = false
 
-export function createUserFacingDiagnosticsTable() {
+export function resetErrorScreenAlreadyShown() {
+  errorScreenAlreadyShown = false
+}
+export function createUserFacingDiagnosticsTable(
+  collector: UserFacingDiagnosticsImpl
+) {
   const template = document.createElement('template')
   html = html.trim() // Never return a text node of whitespace as the result
   template.innerHTML = html
+  collectorStartedSuccessfully = collector.getUFDSuccessfulStart()
   return template.content.firstChild
 }
 
@@ -72,25 +83,37 @@ export function updateUserFacingDiagnosticsTable(
     | MediaDiagnosticChangedEventArgs
     | NetworkDiagnosticChangedEventArgs
 ) {
-  const value = diagnosticsData?.value
-  const element = document.getElementById(diagnosticsData?.diagnostic + 'Value')
-  const innerText =
-    String(value).charAt(0).toUpperCase() + String(value).slice(1)
-  if (element && element.innerText !== innerText) {
-    element.innerText = innerText
-    element.className = ''
-    switch (innerText) {
-      case 'Good':
-      case 'True':
-        element.classList.add('greenText')
-        break
-      case 'False':
-      case 'Bad':
-        element.classList.add('redText')
-        break
-      case 'Poor':
-        element.classList.add('orangeText')
-        break
+  if (collectorStartedSuccessfully) {
+    const value = diagnosticsData?.value
+    const element = document.getElementById(
+      diagnosticsData?.diagnostic + 'Value'
+    )
+    const innerText =
+      String(value).charAt(0).toUpperCase() + String(value).slice(1)
+    if (element && element.innerText !== innerText) {
+      element.innerText = innerText
+      element.className = ''
+      switch (innerText) {
+        case 'Good':
+        case 'True':
+          element.classList.add('greenText')
+          break
+        case 'False':
+        case 'Bad':
+          element.classList.add('redText')
+          break
+        case 'Poor':
+          element.classList.add('orangeText')
+          break
+      }
+    }
+  } else {
+    if (!errorScreenAlreadyShown) {
+      errorScreenAlreadyShown = true
+      showErrorScreen(
+        'User Facing Diagnostics feature not available',
+        TableName.UFDs
+      )
     }
   }
 }

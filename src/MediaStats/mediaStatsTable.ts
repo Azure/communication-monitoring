@@ -1,4 +1,6 @@
-import { MediaStatsData } from '../types.js'
+import { showErrorScreen } from '../statTables.js'
+import { MediaStatsData, TableName } from '../types.js'
+import { MediaStatsCollectorImpl } from './mediaStatsCollector.js'
 import { initializeGraph } from './mediaStatsGraph'
 import { MediaStatsMap } from './mediaStatsMap.js'
 
@@ -108,9 +110,16 @@ let html = `
 `
 
 let eventListenerSet: Set<string>
+let collectorStartedSuccessfully: boolean
+let errorScreenAlreadyShown = false
 
-export function createMediaStatsTable() {
+export function resetErrorScreenAlreadyShown() {
+  errorScreenAlreadyShown = false
+}
+
+export function createMediaStatsTable(collector: MediaStatsCollectorImpl) {
   eventListenerSet = new Set()
+  collectorStartedSuccessfully = collector.getMediaSuccessfulStart()
   const template = document.createElement('template')
   html = html.trim() // Never return a text node of whitespace as the result
   template.innerHTML = html
@@ -118,53 +127,63 @@ export function createMediaStatsTable() {
 }
 
 export function updateMediaStatsTable(mediaStatsData: MediaStatsData) {
-  if (mediaStatsData) {
-    updateValue(mediaStatsData, 'sentBWEstimate')
-    updateValue(mediaStatsData, 'audioSendBitrate')
-    updateValue(mediaStatsData, 'audioSendPackets')
-    updateValue(mediaStatsData, 'audioSendPacketsLost')
-    updateValue(mediaStatsData, 'audioSendCodecName')
-    updateValue(mediaStatsData, 'audioSendRtt')
-    updateValue(mediaStatsData, 'audioSendPairRtt')
-    updateValue(mediaStatsData, 'audioSendAudioInputLevel')
-    updateValue(mediaStatsData, 'audioRecvBitrate')
-    updateValue(mediaStatsData, 'audioRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'audioRecvPacketsLost')
-    updateValue(mediaStatsData, 'audioRecvPackets')
-    updateValue(mediaStatsData, 'audioRecvPairRtt')
-    updateValue(mediaStatsData, 'audioRecvAudioOutputLevel')
-    updateValue(mediaStatsData, 'videoSendFrameRateSent')
-    updateValue(mediaStatsData, 'videoSendFrameWidthSent')
-    updateValue(mediaStatsData, 'videoSendFrameHeightSent')
-    updateValue(mediaStatsData, 'videoSendBitrate')
-    updateValue(mediaStatsData, 'videoSendPackets')
-    updateValue(mediaStatsData, 'videoSendRtt')
-    updateValue(mediaStatsData, 'videoSendPairRtt')
-    updateValue(mediaStatsData, 'videoSendPacketsLost')
-    updateValue(mediaStatsData, 'videoSendFrameRateInput')
-    updateValue(mediaStatsData, 'videoSendFrameWidthInput')
-    updateValue(mediaStatsData, 'videoSendFrameHeightInput')
-    updateValue(mediaStatsData, 'videoSendCodecName')
-    updateValue(mediaStatsData, 'videoRecvBitrate')
-    updateValue(mediaStatsData, 'videoRecvPackets')
-    updateValue(mediaStatsData, 'videoRecvPacketsLost')
-    updateValue(mediaStatsData, 'videoRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'videoRecvPairRtt')
-    updateValue(mediaStatsData, 'videoRecvFrameRateReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameWidthReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameHeightReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameRateOutput')
-    updateValue(mediaStatsData, 'videoRecvFrameRateDecoded')
-    updateValue(mediaStatsData, 'videoRecvLongestFreezeDuration')
-    updateValue(mediaStatsData, 'videoRecvTotalFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameRateReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameRateDecoded')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameWidthReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameHeightReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvLongestFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvTotalFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'screenSharingRecvPacketsLost')
+  if (collectorStartedSuccessfully) {
+    if (mediaStatsData) {
+      updateValue(mediaStatsData, 'sentBWEstimate')
+      updateValue(mediaStatsData, 'audioSendBitrate')
+      updateValue(mediaStatsData, 'audioSendPackets')
+      updateValue(mediaStatsData, 'audioSendPacketsLost')
+      updateValue(mediaStatsData, 'audioSendCodecName')
+      updateValue(mediaStatsData, 'audioSendRtt')
+      updateValue(mediaStatsData, 'audioSendPairRtt')
+      updateValue(mediaStatsData, 'audioSendAudioInputLevel')
+      updateValue(mediaStatsData, 'audioRecvBitrate')
+      updateValue(mediaStatsData, 'audioRecvJitterBufferMs')
+      updateValue(mediaStatsData, 'audioRecvPacketsLost')
+      updateValue(mediaStatsData, 'audioRecvPackets')
+      updateValue(mediaStatsData, 'audioRecvPairRtt')
+      updateValue(mediaStatsData, 'audioRecvAudioOutputLevel')
+      updateValue(mediaStatsData, 'videoSendFrameRateSent')
+      updateValue(mediaStatsData, 'videoSendFrameWidthSent')
+      updateValue(mediaStatsData, 'videoSendFrameHeightSent')
+      updateValue(mediaStatsData, 'videoSendBitrate')
+      updateValue(mediaStatsData, 'videoSendPackets')
+      updateValue(mediaStatsData, 'videoSendRtt')
+      updateValue(mediaStatsData, 'videoSendPairRtt')
+      updateValue(mediaStatsData, 'videoSendPacketsLost')
+      updateValue(mediaStatsData, 'videoSendFrameRateInput')
+      updateValue(mediaStatsData, 'videoSendFrameWidthInput')
+      updateValue(mediaStatsData, 'videoSendFrameHeightInput')
+      updateValue(mediaStatsData, 'videoSendCodecName')
+      updateValue(mediaStatsData, 'videoRecvBitrate')
+      updateValue(mediaStatsData, 'videoRecvPackets')
+      updateValue(mediaStatsData, 'videoRecvPacketsLost')
+      updateValue(mediaStatsData, 'videoRecvJitterBufferMs')
+      updateValue(mediaStatsData, 'videoRecvPairRtt')
+      updateValue(mediaStatsData, 'videoRecvFrameRateReceived')
+      updateValue(mediaStatsData, 'videoRecvFrameWidthReceived')
+      updateValue(mediaStatsData, 'videoRecvFrameHeightReceived')
+      updateValue(mediaStatsData, 'videoRecvFrameRateOutput')
+      updateValue(mediaStatsData, 'videoRecvFrameRateDecoded')
+      updateValue(mediaStatsData, 'videoRecvLongestFreezeDuration')
+      updateValue(mediaStatsData, 'videoRecvTotalFreezeDuration')
+      updateValue(mediaStatsData, 'screenSharingRecvFrameRateReceived')
+      updateValue(mediaStatsData, 'screenSharingRecvFrameRateDecoded')
+      updateValue(mediaStatsData, 'screenSharingRecvFrameWidthReceived')
+      updateValue(mediaStatsData, 'screenSharingRecvFrameHeightReceived')
+      updateValue(mediaStatsData, 'screenSharingRecvLongestFreezeDuration')
+      updateValue(mediaStatsData, 'screenSharingRecvTotalFreezeDuration')
+      updateValue(mediaStatsData, 'screenSharingRecvJitterBufferMs')
+      updateValue(mediaStatsData, 'screenSharingRecvPacketsLost')
+    }
+  } else {
+    if (!errorScreenAlreadyShown) {
+      errorScreenAlreadyShown = true
+      showErrorScreen(
+        'Media Stats Collector could not start',
+        TableName.MediaStats
+      )
+    }
   }
 }
 

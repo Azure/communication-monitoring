@@ -155,6 +155,12 @@ dd.sectionHeader {
   clear: both;
 }
 
+#mediaStatsTable #errorDiv,
+#userFacingDiagnosticsTable #errorDiv {
+  padding: 0px;
+  justify-content: center;
+}
+
 /** DARK THEME **/
 
 #media-stats-pop-up.dark {

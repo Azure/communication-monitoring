@@ -36,22 +36,15 @@ export class GeneralStatsCollectorImpl implements Collector {
     this.callClient = options.callClient
     this.callAgent = options.callAgent
     this.tab = Tabs.GeneralStats
-    this.recordingCallFeature = this.call.feature(Features.Recording)
-    this.transcriptionCallFeature = this.call.feature(Features.Transcription)
-    this.dominantSpeakersCallFeature = this.call.feature(
-      Features.DominantSpeakers
-    )
-    this.debugInfoCallFeature = this.callClient.feature(Features.DebugInfo)
+    this.recordingCallFeature = undefined
+    this.transcriptionCallFeature = undefined
+    this.dominantSpeakersCallFeature = undefined
+    this.debugInfoCallFeature = undefined
   }
 
   startCollector(): void {
     generalStatsCollector = setInterval(() => {
-      try {
-        this.updateData()
-      } catch (e) {
-        this.stopCollector()
-        throw e
-      }
+      this.updateData()
     }, 1000)
   }
 
@@ -64,54 +57,101 @@ export class GeneralStatsCollectorImpl implements Collector {
   }
 
   async updateData() {
+    let remoteParticipantsIds: string[]
     try {
-      const remoteParticipantsIds = this.call.remoteParticipants.map(
+      remoteParticipantsIds = this.call.remoteParticipants.map(
         (remoteParticipant) =>
           this.getParticipantId(
             remoteParticipant.identifier as CommunicationIdentifierKind
           )
       )
-
-      const dominantSpeakersIds =
-        this.dominantSpeakersCallFeature?.dominantSpeakers.speakersList.map(
-          (speaker) => this.getParticipantId(speaker)
-        )
-
-      const chosenCamera =
-        this.call.localVideoStreams.length !== 0
-          ? this.call.localVideoStreams[0].source.name
-          : 'None'
-
-      const deviceManager = await this.callClient.getDeviceManager()
-      const selectedMicrophone = await deviceManager.selectedMicrophone?.name
-
-      generalStatsData = {
-        callId: this.call.info.groupId!,
-        participantId: this.debugInfoCallFeature?.localParticipantId,
-        remoteParticipants:
-          remoteParticipantsIds.length > 0
-            ? remoteParticipantsIds
-            : ['Not available'],
-        dominantSpeakers:
-          dominantSpeakersIds!.length > 0
-            ? dominantSpeakersIds
-            : ['Not available'],
-        isRecording: this.recordingCallFeature!.isRecordingActive,
-        isTranscribing: this.transcriptionCallFeature?.isTranscriptionActive,
-        // isScreenSharing: this.call.info._tsCall.isScreenSharingOn,
-        chosenCamera: chosenCamera,
-        chosenMicrophone: selectedMicrophone,
-        userInfo: navigator.userAgent,
-        browser: this.getBrowserName(navigator.userAgent),
-      }
     } catch (e) {
-      throw e
+      console.error(
+        'Something went wrong when fetching the remote participants'
+      )
+      console.error(e)
+      remoteParticipantsIds = []
+    }
+
+    let dominantSpeakersIds: string[]
+    try {
+      this.dominantSpeakersCallFeature = this.call.feature(
+        Features.DominantSpeakers
+      )
+      dominantSpeakersIds =
+        this.dominantSpeakersCallFeature?.dominantSpeakers.speakersList.map(
+          (speaker: CommunicationIdentifierKind) =>
+            this.getParticipantId(speaker)
+        )
+    } catch (e) {
+      console.error('Something went wrong when fetching the dominant speakers')
+      console.error(e)
+      dominantSpeakersIds = []
+    }
+
+    let selectedMicrophone: string | undefined
+    try {
+      const deviceManager = await this.callClient.getDeviceManager()
+      selectedMicrophone = await deviceManager.selectedMicrophone?.name
+    } catch (e) {
+      console.error('Device manager not available')
+      selectedMicrophone = ''
+    }
+
+    let isRecording: string
+    try {
+      this.recordingCallFeature = this.call.feature(Features.Recording)
+      isRecording = String(this.recordingCallFeature.isRecordingActive)
+    } catch (e) {
+      isRecording = ''
+      console.error('Something went wrong when fetching the recording feature')
+      console.error(e)
+    }
+
+    let isTranscribing: string
+    try {
+      this.transcriptionCallFeature = this.call.feature(Features.Transcription)
+      isTranscribing = String(
+        this.transcriptionCallFeature.isTranscriptionActive
+      )
+    } catch (e) {
+      isTranscribing = ''
+      console.error(
+        'Something went wrong when fetching the transcribing feature'
+      )
+      console.error(e)
+    }
+
+    const chosenCamera =
+      this.call.localVideoStreams.length !== 0
+        ? this.call.localVideoStreams[0].source.name
+        : 'None'
+
+    generalStatsData = {
+      callId: this.call.info.groupId!,
+      participantId: this.debugInfoCallFeature?.localParticipantId,
+      remoteParticipants:
+        remoteParticipantsIds.length > 0
+          ? remoteParticipantsIds
+          : ['Not available'],
+      dominantSpeakers:
+        dominantSpeakersIds!.length > 0
+          ? dominantSpeakersIds
+          : ['Not available'],
+      isRecording: isRecording,
+      isTranscribing: isTranscribing,
+      // isScreenSharing: this.call.info._tsCall.isScreenSharingOn,
+      chosenCamera: chosenCamera,
+      chosenMicrophone: selectedMicrophone,
+      userInfo: navigator.userAgent,
+      browser: this.getBrowserName(navigator.userAgent),
     }
 
     return generalStatsData
   }
 
   getLogs() {
+    this.debugInfoCallFeature = this.callClient.feature(Features.DebugInfo)
     return this.debugInfoCallFeature?.dumpDebugInfo()
   }
 

@@ -8,6 +8,7 @@ import {
 } from './GeneralStats/generalStatsTable'
 import {
   createMediaStatsTable,
+  resetErrorScreenAlreadyShown,
   updateMediaStatsTable,
 } from './MediaStats/mediaStatsTable.js'
 import {
@@ -15,6 +16,7 @@ import {
   GeneralStatsData,
   MediaStatsData,
   Options,
+  TableName,
   Tabs,
 } from './types.js'
 import {
@@ -23,6 +25,8 @@ import {
 } from './UserFacingDiagnostics/userFacingDiagnosticsTable'
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 import './styles/styles.css'
+import { MediaStatsCollectorImpl } from './MediaStats/mediaStatsCollector'
+import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDiagnosticsCollector'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
@@ -158,9 +162,19 @@ export function initializeTables(collectors: Collector[], options: Options) {
   parentElement = options.divElement
   statsContainer = document.createElement('div')
   statsContainer.id = 'media-stats-pop-up'
-  mediaStatsTable = createMediaStatsTable()!
+  const mediaStatsCollector = collectorArray.find(
+    (collector) => collector instanceof MediaStatsCollectorImpl
+  )
+  const ufdCollector = collectorArray.find(
+    (collector) => collector instanceof UserFacingDiagnosticsImpl
+  )
+  mediaStatsTable = createMediaStatsTable(
+    mediaStatsCollector as MediaStatsCollectorImpl
+  )!
   generalStatsTable = createGeneralStatsTable()!
-  userFacingDiagnosticsTable = createUserFacingDiagnosticsTable()!
+  userFacingDiagnosticsTable = createUserFacingDiagnosticsTable(
+    ufdCollector as UserFacingDiagnosticsImpl
+  )!
   activeTab = Tabs.GeneralStats
 
   const navigationTabs = createNavigationTabs()
@@ -190,20 +204,38 @@ export function initializeTables(collectors: Collector[], options: Options) {
   }, 1000)
 }
 
-export function removeTables() {
-  activeTab = Tabs.None
-  parentElement.innerHTML = ''
-  clearInterval(tableUpdater)
+export function removeTable(componentName: TableName) {
+  if (componentName === TableName.Parent) {
+    activeTab = Tabs.None
+    parentElement.innerHTML = ''
+    resetErrorScreenAlreadyShown()
+    clearInterval(tableUpdater)
+    return
+  }
+  getComponentBasedOnName(componentName)!.innerHTML = ''
 }
 
-export function showErrorScreen() {
-  const downloadButton = createDownloadLogsButton(collectorArray)
+export function showErrorScreen(
+  message: string,
+  componentToShowErrorIn: TableName
+) {
+  removeTable(componentToShowErrorIn)
   const errorDiv = document.createElement('div')
   errorDiv.id = 'errorDiv'
   const errorMessage = document.createElement('div')
-  errorMessage.innerText = 'Call is not connected'
+  errorMessage.innerText = message
   errorMessage.id = 'errorMessage'
   errorDiv.appendChild(errorMessage)
-  errorDiv.appendChild(downloadButton)
-  parentElement.appendChild(errorDiv)
+  if (componentToShowErrorIn === TableName.Parent) {
+    const downloadButton = createDownloadLogsButton(collectorArray)
+    errorDiv.appendChild(downloadButton)
+  }
+  getComponentBasedOnName(componentToShowErrorIn)!.appendChild(errorDiv)
+}
+
+function getComponentBasedOnName(componentName: TableName) {
+  if (componentName === TableName.Parent) {
+    return parentElement
+  }
+  return document.getElementById(componentName)
 }

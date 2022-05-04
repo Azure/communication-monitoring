@@ -6,6 +6,7 @@ import {
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
 import { Collector, Options, Tabs } from '../types'
+import { resetErrorScreenAlreadyShown } from './userFacingDiagnosticsTable'
 
 let userFacingDiagnosticsFeature: UserFacingDiagnosticsFeature
 let userFacingDiagnosticsData:
@@ -15,10 +16,16 @@ let userFacingDiagnosticsData:
 export class UserFacingDiagnosticsImpl implements Collector {
   call: Call
   tab: Tabs
+  successfulStart: boolean
 
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
     this.tab = Tabs.UserFacingDiagnostics
+    this.successfulStart = true
+  }
+
+  getUFDSuccessfulStart() {
+    return this.successfulStart
   }
 
   startCollector(): void {
@@ -34,7 +41,9 @@ export class UserFacingDiagnosticsImpl implements Collector {
         Features.UserFacingDiagnostics
       )
     } catch (e) {
-      throw new Error('User facing diagnostic features not available')
+      console.error(e)
+      console.error('User Facing Diagnostics Feature not available')
+      this.successfulStart = false
     }
 
     userFacingDiagnosticsFeature.network.on(
@@ -49,6 +58,7 @@ export class UserFacingDiagnosticsImpl implements Collector {
 
   stopCollector(): void {
     // userFacingDiagnosticsFeature.disposeAllCollectors();
+    resetErrorScreenAlreadyShown()
   }
 
   getStats():
