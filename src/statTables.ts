@@ -8,7 +8,6 @@ import {
 } from './GeneralStats/generalStatsTable'
 import {
   createMediaStatsTable,
-  resetErrorScreenAlreadyShown,
   updateMediaStatsTable,
 } from './MediaStats/mediaStatsTable.js'
 import {
@@ -25,8 +24,6 @@ import {
 } from './UserFacingDiagnostics/userFacingDiagnosticsTable'
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 import './styles/styles.css'
-import { MediaStatsCollectorImpl } from './MediaStats/mediaStatsCollector'
-import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDiagnosticsCollector'
 
 let tableUpdater: NodeJS.Timer
 let statsContainer: HTMLElement
@@ -39,6 +36,8 @@ let mediaStatsTable: ChildNode
 let generalStatsTable: ChildNode
 let userFacingDiagnosticsTable: ChildNode
 let collectorArray: Collector[]
+let mediaStatsFailedToStart = false
+let ufdFailedToStart = false
 
 function getCollectorBasedOnTab(): Collector | undefined {
   return collectorArray.find((collector) => {
@@ -146,15 +145,21 @@ function updateGeneralStats() {
 }
 
 function updateMediaStats() {
-  updateMediaStatsTable(getCollectorBasedOnTab()?.getStats() as MediaStatsData)
+  if (!mediaStatsFailedToStart) {
+    updateMediaStatsTable(
+      getCollectorBasedOnTab()?.getStats() as MediaStatsData
+    )
+  }
 }
 
 function updateUserFacingDiagnostics() {
-  updateUserFacingDiagnosticsTable(
-    getCollectorBasedOnTab()?.getStats() as
-      | MediaDiagnosticChangedEventArgs
-      | NetworkDiagnosticChangedEventArgs
-  )
+  if (!ufdFailedToStart) {
+    updateUserFacingDiagnosticsTable(
+      getCollectorBasedOnTab()?.getStats() as
+        | MediaDiagnosticChangedEventArgs
+        | NetworkDiagnosticChangedEventArgs
+    )
+  }
 }
 
 export function initializeTables(collectors: Collector[], options: Options) {
@@ -162,19 +167,9 @@ export function initializeTables(collectors: Collector[], options: Options) {
   parentElement = options.divElement
   statsContainer = document.createElement('div')
   statsContainer.id = 'media-stats-pop-up'
-  const mediaStatsCollector = collectorArray.find(
-    (collector) => collector instanceof MediaStatsCollectorImpl
-  )
-  const ufdCollector = collectorArray.find(
-    (collector) => collector instanceof UserFacingDiagnosticsImpl
-  )
-  mediaStatsTable = createMediaStatsTable(
-    mediaStatsCollector as MediaStatsCollectorImpl
-  )!
+  mediaStatsTable = createMediaStatsTable()!
   generalStatsTable = createGeneralStatsTable()!
-  userFacingDiagnosticsTable = createUserFacingDiagnosticsTable(
-    ufdCollector as UserFacingDiagnosticsImpl
-  )!
+  userFacingDiagnosticsTable = createUserFacingDiagnosticsTable()!
   activeTab = Tabs.GeneralStats
 
   const navigationTabs = createNavigationTabs()
@@ -188,6 +183,17 @@ export function initializeTables(collectors: Collector[], options: Options) {
   statsContainer.appendChild(userFacingDiagnosticsTable as HTMLElement)
 
   parentElement.appendChild(statsContainer)
+
+  if (mediaStatsFailedToStart) {
+    showErrorScreen('Media Stats feature not available', TableName.MediaStats)
+  }
+
+  if (ufdFailedToStart) {
+    showErrorScreen(
+      'User Facing Diagnostics feature not available',
+      TableName.UFDs
+    )
+  }
 
   renderActiveTab()
 
@@ -208,7 +214,6 @@ export function removeTable(componentName: TableName) {
   if (componentName === TableName.Parent) {
     activeTab = Tabs.None
     parentElement.innerHTML = ''
-    resetErrorScreenAlreadyShown()
     clearInterval(tableUpdater)
     return
   }
@@ -238,4 +243,12 @@ function getComponentBasedOnName(componentName: TableName) {
     return parentElement
   }
   return document.getElementById(componentName)
+}
+
+export function setMediaFailedToStart(value: boolean) {
+  mediaStatsFailedToStart = value
+}
+
+export function setUfdFailedToStart(value: boolean) {
+  ufdFailedToStart = value
 }

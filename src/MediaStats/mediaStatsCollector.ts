@@ -8,7 +8,7 @@ import {
 import { MediaStatsData, Collector, Tabs, Options } from '../types'
 import { MediaStatsMap } from './mediaStatsMap'
 import { MEDIA_STATS_AMOUNT_LIMIT } from './constants'
-import { resetErrorScreenAlreadyShown } from './mediaStatsTable'
+import { setMediaFailedToStart } from '../statTables'
 
 export class MediaStatsCollectorImpl implements Collector {
   call: Call
@@ -20,16 +20,11 @@ export class MediaStatsCollectorImpl implements Collector {
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
     this.tab = Tabs.MediaStats
-    this.mediaStatsFeature = undefined
     this.successfulStart = true
   }
 
   getStats() {
     return this.mediaStatsData
-  }
-
-  getMediaSuccessfulStart() {
-    return this.successfulStart
   }
 
   startCollector() {
@@ -40,7 +35,7 @@ export class MediaStatsCollectorImpl implements Collector {
     } catch (e) {
       console.error(e)
       console.error('Media Stats feature is not available')
-      this.successfulStart = false
+      setMediaFailedToStart(true)
       return
     }
 
@@ -56,7 +51,7 @@ export class MediaStatsCollectorImpl implements Collector {
     } catch (e) {
       console.error(e)
       console.error('Media stats collector could not start')
-      this.successfulStart = false
+      setMediaFailedToStart(true)
       return
     }
 
@@ -69,7 +64,6 @@ export class MediaStatsCollectorImpl implements Collector {
     // Stop collecting stats
     this.mediaStatsFeature?.disposeAllCollectors()
     this.successfulStart = true
-    resetErrorScreenAlreadyShown()
   }
 
   updateData(

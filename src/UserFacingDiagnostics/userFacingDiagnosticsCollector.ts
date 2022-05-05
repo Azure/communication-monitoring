@@ -5,8 +5,8 @@ import {
   MediaDiagnosticChangedEventArgs,
   NetworkDiagnosticChangedEventArgs,
 } from '@azure/communication-calling'
+import { setUfdFailedToStart } from '../statTables'
 import { Collector, Options, Tabs } from '../types'
-import { resetErrorScreenAlreadyShown } from './userFacingDiagnosticsTable'
 
 let userFacingDiagnosticsFeature: UserFacingDiagnosticsFeature
 let userFacingDiagnosticsData:
@@ -24,10 +24,6 @@ export class UserFacingDiagnosticsImpl implements Collector {
     this.successfulStart = true
   }
 
-  getUFDSuccessfulStart() {
-    return this.successfulStart
-  }
-
   startCollector(): void {
     const diagnosticChangedListener = (
       diagnosticInfo:
@@ -43,7 +39,7 @@ export class UserFacingDiagnosticsImpl implements Collector {
     } catch (e) {
       console.error(e)
       console.error('User Facing Diagnostics Feature not available')
-      this.successfulStart = false
+      setUfdFailedToStart(true)
     }
 
     userFacingDiagnosticsFeature.network.on(
@@ -58,7 +54,6 @@ export class UserFacingDiagnosticsImpl implements Collector {
 
   stopCollector(): void {
     // userFacingDiagnosticsFeature.disposeAllCollectors();
-    resetErrorScreenAlreadyShown()
   }
 
   getStats():

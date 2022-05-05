@@ -36,10 +36,6 @@ export class GeneralStatsCollectorImpl implements Collector {
     this.callClient = options.callClient
     this.callAgent = options.callAgent
     this.tab = Tabs.GeneralStats
-    this.recordingCallFeature = undefined
-    this.transcriptionCallFeature = undefined
-    this.dominantSpeakersCallFeature = undefined
-    this.debugInfoCallFeature = undefined
   }
 
   startCollector(): void {
@@ -92,7 +88,7 @@ export class GeneralStatsCollectorImpl implements Collector {
     let selectedMicrophone: string | undefined
     try {
       const deviceManager = await this.callClient.getDeviceManager()
-      selectedMicrophone = await deviceManager.selectedMicrophone?.name
+      selectedMicrophone = deviceManager.selectedMicrophone?.name
     } catch (e) {
       console.error('Device manager not available')
       selectedMicrophone = ''
