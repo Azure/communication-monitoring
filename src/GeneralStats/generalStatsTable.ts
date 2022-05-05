@@ -85,7 +85,7 @@ function updateValue(statToUpdate: any, key: string) {
     document.getElementById(key)!.hidden = false
     document.getElementById(elementId)!.hidden = false
   } else if (
-    statToUpdate &&
+    statToUpdate !== undefined &&
     document.getElementById(elementId)!.innerText !== statToUpdate
   ) {
     // to avoid updating the dom when incoming data is same as previous data

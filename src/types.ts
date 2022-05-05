@@ -13,6 +13,13 @@ export enum Tabs {
   None,
 }
 
+export enum TableName {
+  MediaStats = 'mediaStatsTable',
+  GeneralStats = 'generalStatsTable',
+  UFDs = 'userFacingDiagnosticsTable',
+  Parent = '',
+}
+
 export interface Collector {
   call: Call
   tab: Tabs
@@ -30,8 +37,8 @@ export interface GeneralStatsData {
   participantId?: string
   remoteParticipants?: string[]
   dominantSpeakers?: string[]
-  isRecording: boolean
-  isTranscribing?: boolean
+  isRecording: string
+  isTranscribing?: string
   isScreenSharing?: boolean
   chosenCamera?: string
   chosenMicrophone?: string

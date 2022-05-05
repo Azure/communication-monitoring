@@ -59,7 +59,6 @@ let html = `
     <dd id='capturerStoppedUnexpectedlyValue' class='redText'>False</dd>
 </dl>
 `
-
 export function createUserFacingDiagnosticsTable() {
   const template = document.createElement('template')
   html = html.trim() // Never return a text node of whitespace as the result

@@ -4,8 +4,8 @@ import {
   createCollectorArray,
   listenToCall,
 } from './stats'
-import { initializeTables, removeTables } from './statTables'
-import { Collector, Options } from './types'
+import { initializeTables, removeTable } from './statTables'
+import { Collector, Options, TableName } from './types'
 import { destroyChart } from './MediaStats/mediaStatsGraphState'
 
 export class CommunicationInspector {
@@ -58,7 +58,7 @@ export class CommunicationInspector {
   close() {
     if (this.isOpened.value) {
       destroyChart()
-      removeTables()
+      removeTable(TableName.Parent)
       this.isOpened.value = false
     }
   }

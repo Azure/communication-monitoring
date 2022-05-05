@@ -1,7 +1,7 @@
 import { GeneralStatsCollectorImpl } from './GeneralStats/generalStatsCollector'
 import { MediaStatsCollectorImpl } from './MediaStats/mediaStatsCollector'
-import { removeTables, showErrorScreen } from './statTables'
-import { Collector, Options } from './types'
+import { showErrorScreen } from './statTables'
+import { Collector, Options, TableName } from './types'
 import { UserFacingDiagnosticsImpl } from './UserFacingDiagnostics/userFacingDiagnosticsCollector'
 
 export function startCollection(collectorArray: Collector[]) {
@@ -31,8 +31,7 @@ export function listenToCall(options: Options, isOpened: { value: boolean }) {
   const listener = setInterval(() => {
     if (options.callAgent.calls[0] === undefined) {
       if (isOpened.value) {
-        removeTables()
-        showErrorScreen()
+        showErrorScreen('Call is no longer connected', TableName.Parent)
       }
       clearInterval(listener)
     }

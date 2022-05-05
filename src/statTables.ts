@@ -15,6 +15,7 @@ import {
   GeneralStatsData,
   MediaStatsData,
   Options,
+  TableName,
   Tabs,
 } from './types.js'
 import {
@@ -35,6 +36,8 @@ let mediaStatsTable: ChildNode
 let generalStatsTable: ChildNode
 let userFacingDiagnosticsTable: ChildNode
 let collectorArray: Collector[]
+let mediaStatsFailedToStart = false
+let ufdFailedToStart = false
 
 function getCollectorBasedOnTab(): Collector | undefined {
   return collectorArray.find((collector) => {
@@ -142,15 +145,21 @@ function updateGeneralStats() {
 }
 
 function updateMediaStats() {
-  updateMediaStatsTable(getCollectorBasedOnTab()?.getStats() as MediaStatsData)
+  if (!mediaStatsFailedToStart) {
+    updateMediaStatsTable(
+      getCollectorBasedOnTab()?.getStats() as MediaStatsData
+    )
+  }
 }
 
 function updateUserFacingDiagnostics() {
-  updateUserFacingDiagnosticsTable(
-    getCollectorBasedOnTab()?.getStats() as
-      | MediaDiagnosticChangedEventArgs
-      | NetworkDiagnosticChangedEventArgs
-  )
+  if (!ufdFailedToStart) {
+    updateUserFacingDiagnosticsTable(
+      getCollectorBasedOnTab()?.getStats() as
+        | MediaDiagnosticChangedEventArgs
+        | NetworkDiagnosticChangedEventArgs
+    )
+  }
 }
 
 export function initializeTables(collectors: Collector[], options: Options) {
@@ -175,6 +184,17 @@ export function initializeTables(collectors: Collector[], options: Options) {
 
   parentElement.appendChild(statsContainer)
 
+  if (mediaStatsFailedToStart) {
+    showErrorScreen('Media Stats feature not available', TableName.MediaStats)
+  }
+
+  if (ufdFailedToStart) {
+    showErrorScreen(
+      'User Facing Diagnostics feature not available',
+      TableName.UFDs
+    )
+  }
+
   renderActiveTab()
 
   tableUpdater = setInterval(() => {
@@ -190,20 +210,45 @@ export function initializeTables(collectors: Collector[], options: Options) {
   }, 1000)
 }
 
-export function removeTables() {
-  activeTab = Tabs.None
-  parentElement.innerHTML = ''
-  clearInterval(tableUpdater)
+export function removeTable(componentName: TableName) {
+  if (componentName === TableName.Parent) {
+    activeTab = Tabs.None
+    parentElement.innerHTML = ''
+    clearInterval(tableUpdater)
+    return
+  }
+  getComponentBasedOnName(componentName)!.innerHTML = ''
 }
 
-export function showErrorScreen() {
-  const downloadButton = createDownloadLogsButton(collectorArray)
+export function showErrorScreen(
+  message: string,
+  componentToShowErrorIn: TableName
+) {
+  removeTable(componentToShowErrorIn)
   const errorDiv = document.createElement('div')
   errorDiv.id = 'errorDiv'
   const errorMessage = document.createElement('div')
-  errorMessage.innerText = 'Call is not connected'
+  errorMessage.innerText = message
   errorMessage.id = 'errorMessage'
   errorDiv.appendChild(errorMessage)
-  errorDiv.appendChild(downloadButton)
-  parentElement.appendChild(errorDiv)
+  if (componentToShowErrorIn === TableName.Parent) {
+    const downloadButton = createDownloadLogsButton(collectorArray)
+    errorDiv.appendChild(downloadButton)
+  }
+  getComponentBasedOnName(componentToShowErrorIn)!.appendChild(errorDiv)
+}
+
+function getComponentBasedOnName(componentName: TableName) {
+  if (componentName === TableName.Parent) {
+    return parentElement
+  }
+  return document.getElementById(componentName)
+}
+
+export function setMediaFailedToStart(value: boolean) {
+  mediaStatsFailedToStart = value
+}
+
+export function setUfdFailedToStart(value: boolean) {
+  ufdFailedToStart = value
 }
