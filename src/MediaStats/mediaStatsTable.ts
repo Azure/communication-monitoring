@@ -172,8 +172,8 @@ function updateValue(mediaStatsData: MediaStatsData, key: string) {
   const elementId = key + 'Value'
   if (key in mediaStatsData) {
     const dataValue = mediaStatsData[key as keyof MediaStatsData]!
-    const value = dataValue[dataValue.length - 1].value
-    let unit = dataValue![dataValue.length - 1].unit
+    const value = MediaStatsMap[key as keyof typeof MediaStatsMap].hasOwnProperty('GranularityDivider') ? (dataValue[dataValue.length - 1].value as number) / ((MediaStatsMap[key as keyof typeof MediaStatsMap] as any).GranularityDivider as number) : dataValue[dataValue.length - 1].value 
+    let unit = MediaStatsMap[key as keyof typeof MediaStatsMap].hasOwnProperty('GranularityUnits') ? (MediaStatsMap[key as keyof typeof MediaStatsMap] as any).GranularityUnits : dataValue[dataValue.length - 1].unit
     if (unit === 'None') {
       unit = ''
     }

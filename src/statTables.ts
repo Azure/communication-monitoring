@@ -38,6 +38,7 @@ let userFacingDiagnosticsTable: ChildNode
 let collectorArray: Collector[]
 let mediaStatsFailedToStart = false
 let ufdFailedToStart = false
+let callId: string
 
 function getCollectorBasedOnTab(): Collector | undefined {
   return collectorArray.find((collector) => {
@@ -131,7 +132,7 @@ function createDownloadLogsButton(collectorArray: Collector[]) {
     collectorArray.forEach((collector) => {
       if (collector instanceof GeneralStatsCollectorImpl) {
         const logsString = collector.getLogs()?.dump
-        downloadLogs('logs.txt', logsString!)
+        downloadLogs(`call-log-${callId}.log`, logsString!)
       }
     })
   })
@@ -165,6 +166,7 @@ function updateUserFacingDiagnostics() {
 export function initializeTables(collectors: Collector[], options: Options) {
   collectorArray = collectors
   parentElement = options.divElement
+  callId = options.callAgent.calls[0].id
   statsContainer = document.createElement('div')
   statsContainer.id = 'media-stats-pop-up'
   mediaStatsTable = createMediaStatsTable()!

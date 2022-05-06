@@ -7,8 +7,8 @@
 
   <body>
     <div style="width: 75%">
-      <h4>Azure Communication Services</h4>
-      <h1>Communication Inspector - Calling Sample</h1>
+      <h4 style="margin-bottom: 5px;">Azure Communication Services</h4>
+      <h1 style="margin-top: 5px;">Communication Inspector - Calling Sample</h1>
       <input 
         id="callee-id-input"
         type="text"
@@ -18,7 +18,7 @@
   
       <div style="margin-bottom: 10px;">
         <button id="call-button" type="button" disabled="true">
-          start call
+          join call
         </button>
         &nbsp;
         <button id="hang-up-button" type="button" disabled="true">
@@ -39,7 +39,14 @@
           close inspector
         </button>   
       </div>
-      
+
+      <div style="margin-bottom: 10px">
+        <p>Or you can create your own call here</p>
+          <button id="create-call-button" type="button" disabled="true">
+            create new call
+          </button>
+      </div>
+
       <div>Local Video</div>
       <div>
         <div style="height:200px; width:300px; position:relative;">

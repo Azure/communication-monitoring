@@ -7,6 +7,7 @@ import { AzureCommunicationTokenCredential } from '@azure/communication-common'
 import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
 import './styles.css'
+import { v4 as uuidv4 } from 'uuid';
 
 let call
 let callAgent
@@ -16,6 +17,7 @@ const callButton = document.getElementById('call-button')
 const hangUpButton = document.getElementById('hang-up-button')
 const stopVideoButton = document.getElementById('stop-Video')
 const startVideoButton = document.getElementById('start-Video')
+const createCallButton = document.getElementById('create-call-button')
 const renderButton = document.getElementById('render')
 const stopRenderButton = document.getElementById('stopRender')
 const statsContainer = document.getElementById('inspectorContainer')
@@ -73,6 +75,7 @@ async function init() {
 
   deviceManager = await callClient.getDeviceManager()
   callButton.disabled = false
+  createCallButton.disabled = false
 
   callAgent.on('incomingCall', async (e) => {
     const videoDevices = await deviceManager.getCameras()
@@ -82,6 +85,7 @@ async function init() {
 
     stopVideoButton.disabled = false
     callButton.disabled = true
+    createCallButton.disabled = true
     hangUpButton.disabled = false
 
     const addedCall = await e.incomingCall.accept({
@@ -96,6 +100,7 @@ async function init() {
     e.removed.forEach((removedCall) => {
       hangUpButton.disabled = true
       callButton.disabled = false
+      createCallButton.disabled = false
       stopVideoButton.disabled = true
       renderButton.disabled = true
       stopRenderButton.disabled = true
@@ -141,7 +146,7 @@ async function remoteVideoView(remoteVideoStream) {
  * Click events start here
  */
 
-callButton.addEventListener('click', async () => {
+async function joinCall(){
   if (communicationInspector && communicationInspector.isOpened.value) {
     communicationInspector.close()
   }
@@ -186,8 +191,19 @@ callButton.addEventListener('click', async () => {
     callButton.disabled = true
     renderButton.disabled = true
     stopRenderButton.disabled = false
+    createCallButton.disabled = true
   }
+}
+
+createCallButton.addEventListener('click', async () => {
+  const guid = uuidv4()
+  document.getElementById('callee-id-input').value = guid
+  await joinCall()
 })
+
+callButton.addEventListener('click', async () =>
+  await joinCall()
+)
 
 stopVideoButton.addEventListener('click', async () => {
   await call.stopVideo(localVideoStream)
@@ -235,6 +251,7 @@ hangUpButton.addEventListener('click', async () => {
   // toggle button states
   hangUpButton.disabled = true
   callButton.disabled = false
+  createCallButton.disabled = false
   stopVideoButton.disabled = true
   startVideoButton.disabled = true
   if (communicationInspector.isOpened.value) {
