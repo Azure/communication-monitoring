@@ -7,7 +7,7 @@ import { AzureCommunicationTokenCredential } from '@azure/communication-common'
 import { CommunicationInspector } from 'communication-inspector'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
 import './styles.css'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 let call
 let callAgent
@@ -146,7 +146,7 @@ async function remoteVideoView(remoteVideoStream) {
  * Click events start here
  */
 
-async function joinCall(){
+async function joinCall() {
   if (communicationInspector && communicationInspector.isOpened.value) {
     communicationInspector.close()
   }
@@ -201,9 +201,7 @@ createCallButton.addEventListener('click', async () => {
   await joinCall()
 })
 
-callButton.addEventListener('click', async () =>
-  await joinCall()
-)
+callButton.addEventListener('click', async () => await joinCall())
 
 stopVideoButton.addEventListener('click', async () => {
   await call.stopVideo(localVideoStream)

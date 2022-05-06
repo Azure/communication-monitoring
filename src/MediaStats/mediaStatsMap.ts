@@ -10,7 +10,7 @@ export const MediaStatsMap = {
       '1.5 MBps or higher is recommended for high-quality video for upload/download.',
     Clickable: true,
     GranularityDivider: 1000,
-    GranularityUnits: 'kbps'
+    GranularityUnits: 'kbps',
   },
   audioSendBitrate: {
     Name: 'Send Bitrate',
@@ -21,7 +21,7 @@ export const MediaStatsMap = {
     Comments: 'General values are in the 24 kbps range (36-128kbps typical)',
     Clickable: true,
     GranularityDivider: 1000,
-    GranularityUnits: 'kbps'
+    GranularityUnits: 'kbps',
   },
   audioSendPackets: {
     Name: 'Sent Packets',
@@ -91,7 +91,7 @@ export const MediaStatsMap = {
     Comments: '',
     Clickable: true,
     GranularityDivider: 1000,
-    GranularityUnits: 'kbps'
+    GranularityUnits: 'kbps',
   },
   audioRecvJitterBufferMs: {
     Name: 'Receive Jitter',
@@ -183,7 +183,7 @@ export const MediaStatsMap = {
     Comments: '',
     Clickable: true,
     GranularityDivider: 1000,
-    GranularityUnits: 'kbps'
+    GranularityUnits: 'kbps',
   },
   videoSendPackets: {
     Name: 'Sent Packets',
@@ -271,7 +271,7 @@ export const MediaStatsMap = {
     Comments: 'Information only',
     Clickable: true,
     GranularityDivider: 1000,
-    GranularityUnits: 'kbps'
+    GranularityUnits: 'kbps',
   },
   videoRecvPackets: {
     Name: 'Received Packets',
