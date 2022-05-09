@@ -62,7 +62,7 @@ describe('Update data function', () => {
     })
     const results = await generalStats.updateData()
     expect(results.callId).toBe('mockGroupId')
-    expect(results.remoteParticipants).toBe('mockedCommunicationUser')
+    expect(results.remoteParticipants).toEqual(['mockedCommunicationUser'])
   }),
     test('Dominant speaker list and remote participant features not available', async () => {
       const callClient = new CallClient()
@@ -107,12 +107,8 @@ describe('Update data function', () => {
         divElement: divElement,
       })
       const results = await generalStats.updateData()
-      expect(results.dominantSpeakers).toBe(
-        'Dominant speaker feature not available'
-      )
-      expect(results.remoteParticipants).toBe(
-        'Remote participants feature not available'
-      )
+      expect(results.dominantSpeakers).toEqual(['Not available'])
+      expect(results.remoteParticipants).toEqual(['Not available'])
     })
   test('No camera permissions or no camera installed', async () => {
     const callClient = new CallClient()

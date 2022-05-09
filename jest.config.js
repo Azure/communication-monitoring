@@ -7,4 +7,7 @@ module.exports = {
         isolatedModules: true
     }
   },
+  moduleNameMapper: {
+    '\\.(css|less)$': '<rootDir>/src/\__mocks__/\styleMock.js',
+  }
 };

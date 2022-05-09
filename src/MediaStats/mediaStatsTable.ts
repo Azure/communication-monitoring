@@ -1,6 +1,6 @@
-import { MediaStatsData } from '../types.js'
+import { MediaStatsData } from '../types'
 import { initializeGraph } from './mediaStatsGraph'
-import { MediaStatsMap } from './mediaStatsMap.js'
+import { MediaStatsMap } from './mediaStatsMap'
 
 let html = `
 <dl id="mediaStatsTable">

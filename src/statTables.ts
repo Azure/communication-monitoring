@@ -9,7 +9,7 @@ import {
 import {
   createMediaStatsTable,
   updateMediaStatsTable,
-} from './MediaStats/mediaStatsTable.js'
+} from './MediaStats/mediaStatsTable'
 import {
   Collector,
   GeneralStatsData,
@@ -17,7 +17,7 @@ import {
   Options,
   TableName,
   Tabs,
-} from './types.js'
+} from './types'
 import {
   createUserFacingDiagnosticsTable,
   updateUserFacingDiagnosticsTable,

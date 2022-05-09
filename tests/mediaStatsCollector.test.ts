@@ -73,6 +73,7 @@ describe('Update data function', () => {
     )
   }),
     test('Not able to retrieve media stats features', async () => {
+      console.error = jest.fn()
       const callClient = new CallClient()
       callClient.createCallAgent = jest.fn().mockResolvedValueOnce({
         calls: [{}],
@@ -89,8 +90,7 @@ describe('Update data function', () => {
         callClient: callClient,
         divElement: divElement,
       })
-      expect(() => {
-        mediaStatsCollector.startCollector()
-      }).toThrowError('Media stats features are not available')
+      mediaStatsCollector.startCollector()
+      expect(console.error).toHaveBeenCalled()
     })
 })
