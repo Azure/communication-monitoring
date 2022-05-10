@@ -1,0 +1,57 @@
+{
+  "name": "communication-inspector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ts-built/src/communicationInspector.js",
+  "typings": "./ts-built/src/communicationInspector.d.ts",
+  "files": [
+    "ts-built/*"
+  ],
+  "scripts": {
+    "clean": "npx --ignore-existing --quiet rimraf ts-built && npx --ignore-existing --quiet rimraf *.tgz && npx --ignore-existing --quiet rimraf ./**/node_modules",
+    "lint": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --check .",
+    "prettier-fix": "prettier --write .",
+    "prebuild": "npm i",
+    "build": "npx tsc",
+    "postbuild": "copyfiles -u 1 ./src/styles/*.css ./ts-built/src/",
+    "prepack": "npm run build",
+    "pack": "npm pack",
+    "prepare": "husky install",
+    "pretest": "npm run build",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^3.7.1",
+    "chartjs-adapter-luxon": "^1.1.0",
+    "chartjs-plugin-streaming": "^2.0.0",
+    "chartjs-plugin-zoom": "^1.2.1",
+    "luxon": "^2.3.1"
+  },
+  "devDependencies": {
+    "@azure/communication-calling": "1.5.1-alpha.20220401.1",
+    "@azure/communication-common": "^1.1.0",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "husky": "^7.0.0",
+    "jest": "^27.5.1",
+    "prettier": "2.6.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1"
+  }
+}

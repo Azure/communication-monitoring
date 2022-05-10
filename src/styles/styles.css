@@ -1,0 +1,251 @@
+#media-stats-pop-up #navigationTabs {
+  padding: 4px 10px 0 10px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  font-size: 0.9rem;
+  display: flex;
+}
+
+#media-stats-pop-up #navigationTabs button:hover {
+  color: #000;
+}
+
+#media-stats-pop-up #navigationTabs #downloadLogsButton,
+#media-stats-pop-up #navigationTabs #toggleButton,
+#media-stats-pop-up #toggleButton {
+  float: right;
+  color: #000;
+  text-transform: none;
+  font-size: 0.86rem;
+  margin-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-left: auto;
+}
+
+#media-stats-pop-up #navigationTabs #toggleButton {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 36px;
+  font-size: 1.4rem;
+}
+
+#media-stats-pop-up #navigationTabs button.active {
+  border-bottom: solid #000 3px;
+  color: #000;
+}
+
+#generalStatsTable,
+#userFacingDiagnosticsTable,
+#mediaStatsTable {
+  padding: 20px 20px 10px 20px;
+  overflow: auto;
+  position: absolute;
+  top: 42px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+#generalStatsTable {
+  line-height: 1.2rem;
+}
+
+/* #historicalDataDiv {
+    width:60vh;
+    height:60vh;
+} */
+
+[hidden] {
+  display: none !important;
+}
+
+dl,
+dt {
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+dt {
+  /* width: 33%; */
+  /* flex-wrap: wrap; */
+  /* background-color: #CCC; */
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+#generalStatsTable dt {
+  padding-bottom: 0;
+}
+
+#generalStatsTable ul {
+  padding: 0px;
+  margin-left: 16px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+dd {
+  /* margin-left: auto;
+    width: 66%; */
+  /* background-color: rgb(150, 206, 243); */
+  padding: 0px 0 14px 0;
+  margin: 0;
+  display: block;
+}
+
+dt.interactive,
+dd.interactive {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#userFacingDiagnosticsTable dt,
+#mediaStatsTable dt {
+  /* display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;  */
+  display: block;
+  width: 70%;
+  float: left;
+  padding-bottom: 14px;
+  font-weight: normal;
+  line-height: 0.9;
+  word-wrap: break-word;
+}
+
+#userFacingDiagnosticsTable dt.sectionHeader,
+#mediaStatsTable dt.sectionHeader {
+  font-weight: bold;
+  margin-top: 8px;
+
+  /* font-size: .8rem; */
+  /* text-transform: uppercase; */
+}
+
+dd.sectionHeader {
+  margin-top: 8px;
+}
+
+#userFacingDiagnosticsTable dd,
+#mediaStatsTable dd {
+  /* margin-left: auto;
+    flex-direction: column;
+    display: flex; */
+  width: 30%;
+  display: block;
+  float: left;
+  line-height: 0.9;
+  word-wrap: break-word;
+}
+
+#userFacingDiagnosticsTable dd:after,
+#mediaStatsTable dd:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+#mediaStatsTable #errorDiv,
+#userFacingDiagnosticsTable #errorDiv {
+  padding: 0px;
+  justify-content: center;
+}
+
+/** DARK THEME **/
+
+#media-stats-pop-up.dark {
+  background-color: #000;
+  border-top: solid 1px #ccc;
+  border-right: solid 1px #ccc;
+  border-bottom: none;
+  border-left: solid 1px #ccc;
+  color: #eee;
+}
+
+#media-stats-pop-up.dark #navigationTabs {
+  background-color: #000;
+  color: #fff;
+}
+
+#media-stats-pop-up.dark #backButton,
+#media-stats-pop-up.dark #historicalDataDiv,
+#media-stats-pop-up.dark #navigationTabs button {
+  color: #fff;
+}
+
+#media-stats-pop-up.dark #navigationTabs button.active {
+  border-bottom: solid #fff 3px;
+}
+
+/** RESPONSIVE **/
+@media only screen and (max-width: 600px) {
+  #media-stats-pop-up.open {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+#media-stats-pop-up {
+  line-height: 0.5;
+}
+
+#myChart {
+  padding: 15px;
+  height: 500px;
+}
+
+#errorDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+#errorMessage {
+  padding: 10px;
+}
+
+#errorDiv #downloadLogsButton {
+  margin-left: auto;
+  color: #000;
+  text-transform: none;
+  font-size: 0.86rem;
+  color: #666;
+}
+
+.navigationButton {
+  background: #fff;
+  border: none;
+  font-size: 100%;
+  padding: 10px;
+  font-weight: 'regular';
+  cursor: pointer;
+  padding: 10px 0;
+  margin: 0 10px;
+}
+
+.greenText {
+  color: green;
+}
+
+.redText {
+  color: rgb(154, 3, 3);
+}
+
+.orangeText {
+  color: rgb(157, 86, 24);
+}
