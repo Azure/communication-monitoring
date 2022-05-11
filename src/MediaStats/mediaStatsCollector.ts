@@ -15,12 +15,10 @@ export class MediaStatsCollectorImpl implements Collector {
   tab: Tabs
   mediaStatsFeature?: MediaStatsCallFeature
   mediaStatsData: MediaStatsData = {}
-  successfulStart: boolean
 
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
     this.tab = Tabs.MediaStats
-    this.successfulStart = true
   }
 
   getStats() {
@@ -63,40 +61,66 @@ export class MediaStatsCollectorImpl implements Collector {
   stopCollector() {
     // Stop collecting stats
     this.mediaStatsFeature?.disposeAllCollectors()
-    this.successfulStart = true
   }
 
   updateData(
     mediaStats: MediaStats,
     mediaStatsData: MediaStatsData
   ): MediaStatsData {
-    for (const [statName, statValue] of Object.entries(mediaStats.stats)) {
-      if (statName in MediaStatsMap) {
-        if (statName in mediaStatsData) {
+    try {
+      for (const [statName, statValue] of Object.entries(mediaStats.stats)) {
+        if (statName in MediaStatsMap) {
+          let value: string | number
+          let unit: string
+
           if (
-            mediaStatsData[statName as keyof MediaStatsData]!.length >=
-            MEDIA_STATS_AMOUNT_LIMIT
+            MediaStatsMap[
+              statName as keyof typeof MediaStatsMap
+            ].hasOwnProperty('GranularityDivider')
           ) {
-            mediaStatsData[statName as keyof MediaStatsData]!.shift()
+            value =
+              (statValue.raw[0] as number) /
+              ((MediaStatsMap[statName as keyof typeof MediaStatsMap] as any)
+                .GranularityDivider as number)
+            unit = (
+              MediaStatsMap[statName as keyof typeof MediaStatsMap] as any
+            ).GranularityUnits
+          } else {
+            value = statValue.raw[0]
+            unit = MediaStatsMap[statName as keyof typeof MediaStatsMap].Units
           }
-          mediaStatsData[statName as keyof MediaStatsData]!.push({
-            timestamp: statValue.timestamp,
-            value: statValue.raw[0],
-            unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
-          })
-        } else {
-          mediaStatsData[statName as keyof MediaStatsData] = [
-            {
+
+          if (statName in mediaStatsData) {
+            if (
+              mediaStatsData[statName as keyof MediaStatsData]!.length >=
+              MEDIA_STATS_AMOUNT_LIMIT
+            ) {
+              mediaStatsData[statName as keyof MediaStatsData]!.shift()
+            }
+            mediaStatsData[statName as keyof MediaStatsData]!.push({
               timestamp: statValue.timestamp,
-              value: statValue.raw[0],
-              unit: MediaStatsMap[statName as keyof typeof MediaStatsMap].Units,
-            },
-          ]
+              value,
+              unit,
+            })
+          } else {
+            mediaStatsData[statName as keyof MediaStatsData] = [
+              {
+                timestamp: statValue.timestamp,
+                value,
+                unit,
+              },
+            ]
+          }
+        } else {
+          console.debug('%s is not present in MediaStatsMap', statName)
         }
-      } else {
-        console.debug('%s is not present in MediaStatsMap', statName)
       }
+    } catch (e) {
+      this.stopCollector()
+      console.error(e)
+      setMediaFailedToStart(true)
     }
+
     return mediaStatsData
   }
 }
