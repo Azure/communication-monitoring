@@ -150,6 +150,11 @@ function updateMediaStats() {
     updateMediaStatsTable(
       getCollectorBasedOnTab()?.getStats() as MediaStatsData
     )
+  } else {
+    showErrorScreen(
+      'Something went wrong with the media stats feature. Check your console for more information.',
+      TableName.MediaStats
+    )
   }
 }
 

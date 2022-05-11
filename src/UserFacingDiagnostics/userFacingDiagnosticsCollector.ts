@@ -16,12 +16,10 @@ let userFacingDiagnosticsData:
 export class UserFacingDiagnosticsImpl implements Collector {
   call: Call
   tab: Tabs
-  successfulStart: boolean
 
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
     this.tab = Tabs.UserFacingDiagnostics
-    this.successfulStart = true
   }
 
   startCollector(): void {
@@ -32,6 +30,7 @@ export class UserFacingDiagnosticsImpl implements Collector {
     ) => {
       userFacingDiagnosticsData = diagnosticInfo
     }
+
     try {
       userFacingDiagnosticsFeature = this.call.feature(
         Features.UserFacingDiagnostics
