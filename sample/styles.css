@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
 }
 
-#inspectorContainer {
+#monitorContainer {
   position: fixed;
   bottom: 0;
   right: 0;
