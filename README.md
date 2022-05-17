@@ -35,7 +35,7 @@ The Communication Monitoring component expects to receive an `Options` object th
 
 ```typescript
 import { CallAgent, CallClient } from '@azure/communication-calling'
-import { CommunicationMonitoring } from 'communication-monitoring'
+import { CommunicationMonitoring } from '@azure/communication-monitoring'
 
 interface Options {
   callClient: CallClient
