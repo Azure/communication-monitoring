@@ -26,7 +26,7 @@ The Communication Monitoring tool is compatible with the same browsers as the Ca
 This package is a UI component that can be installed through NPM to your web application. Paste the following command in your terminal while located in the project's root folder to install.
 
 ```bash
-placeholder
+npm i @azure/communication-monitoring --save
 ```
 
 ### Initialization

@@ -1,6 +1,7 @@
 {
-  "name": "communication-monitoring",
+  "name": "@azure/communication-monitoring",
   "version": "1.0.0-alpha.1",
+  "homepage": "https://github.com/Azure/communication-monitoring",
   "description": "",
   "main": "ts-built/src/communicationMonitoring.js",
   "typings": "./ts-built/src/communicationMonitoring.d.ts",
