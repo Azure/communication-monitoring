@@ -4,7 +4,7 @@
   "description": "",
   "main": "client.js",
   "scripts": {
-    "install": "npm i ../communication-monitoring-1.0.0-alpha.1.tgz",
+    "install": "npm i ../azure-communication-monitoring-1.0.0-alpha.1.tgz",
     "prestart": " cd .. && npm run pack && cd sample && npm run install",
     "start": "npx webpack serve --config ./webpack.config.js"
   },
@@ -14,7 +14,7 @@
   "dependencies": {
     "@azure/communication-calling": "1.5.4-alpha.20220510.1",
     "@azure/communication-common": "^1.1.0",
-    "communication-monitoring": "file:../communication-monitoring-1.0.0-alpha.1.tgz",
+    "@azure/communication-monitoring": "file:../azure-communication-monitoring-1.0.0-alpha.1.tgz",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
