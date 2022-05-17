@@ -4,7 +4,7 @@ import {
   LocalVideoStream,
 } from '@azure/communication-calling'
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
-import { CommunicationInspector } from 'communication-inspector'
+import { CommunicationMonitoring } from 'communication-monitoring'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
 import './styles.css'
 import { v4 as uuidv4 } from 'uuid'
@@ -20,14 +20,14 @@ const startVideoButton = document.getElementById('start-Video')
 const createCallButton = document.getElementById('create-call-button')
 const renderButton = document.getElementById('render')
 const stopRenderButton = document.getElementById('stopRender')
-const statsContainer = document.getElementById('inspectorContainer')
+const statsContainer = document.getElementById('monitorContainer')
 
 let placeCallOptions
 let deviceManager
 let localVideoStream
 let rendererLocal
 let rendererRemote
-let communicationInspector
+let communicationMonitoring
 
 function handleVideoStream(remoteVideoStream) {
   remoteVideoStream.on('isAvailableChanged', async () => {
@@ -113,7 +113,7 @@ async function init() {
         rendererRemote.dispose()
       }
 
-      if (communicationInspector.isOpened.value) {
+      if (communicationMonitoring.isOpened.value) {
         stopRenderButton.disabled = false
         renderButton.disabled = true
       } else {
@@ -121,7 +121,7 @@ async function init() {
         renderButton.disabled = false
       }
 
-      communicationInspector.stop()
+      communicationMonitoring.stop()
     })
   })
 }
@@ -147,8 +147,8 @@ async function remoteVideoView(remoteVideoStream) {
  */
 
 async function joinCall() {
-  if (communicationInspector && communicationInspector.isOpened.value) {
-    communicationInspector.close()
+  if (communicationMonitoring && communicationMonitoring.isOpened.value) {
+    communicationMonitoring.close()
   }
   if (document.getElementById('callee-id-input').value.length === 0) {
     window.alert('Enter a valid call id')
@@ -173,18 +173,18 @@ async function joinCall() {
       divElement: statsContainer,
     }
 
-    communicationInspector = new CommunicationInspector(options)
-    communicationInspector.start()
+    communicationMonitoring = new CommunicationMonitoring(options)
+    communicationMonitoring.start()
 
     setInterval(() => {
-      if (communicationInspector.isOpened.value) {
+      if (communicationMonitoring.isOpened.value) {
         statsContainer.classList.add('activated')
       } else {
         statsContainer.classList.remove('activated')
       }
     }, 500)
 
-    communicationInspector.open()
+    communicationMonitoring.open()
     subscribeToRemoteParticipantInCall(call)
 
     hangUpButton.disabled = false
@@ -219,7 +219,7 @@ startVideoButton.addEventListener('click', async () => {
 
 renderButton.addEventListener('click', async () => {
   try {
-    communicationInspector.open()
+    communicationMonitoring.open()
     stopRenderButton.disabled = false
     renderButton.disabled = true
   } catch (e) {
@@ -228,7 +228,7 @@ renderButton.addEventListener('click', async () => {
 })
 
 stopRenderButton.addEventListener('click', async () => {
-  communicationInspector.close()
+  communicationMonitoring.close()
   renderButton.disabled = false
   stopRenderButton.disabled = true
 })
@@ -243,7 +243,7 @@ hangUpButton.addEventListener('click', async () => {
     rendererRemote.dispose()
   }
 
-  communicationInspector.stop()
+  communicationMonitoring.stop()
   // end the current call
   await call.hangUp()
   // toggle button states
@@ -252,7 +252,7 @@ hangUpButton.addEventListener('click', async () => {
   createCallButton.disabled = false
   stopVideoButton.disabled = true
   startVideoButton.disabled = true
-  if (communicationInspector.isOpened.value) {
+  if (communicationMonitoring.isOpened.value) {
     stopRenderButton.disabled = false
     renderButton.disabled = true
   } else {

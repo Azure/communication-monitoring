@@ -8,7 +8,7 @@ import { initializeTables, removeTable } from './statTables'
 import { Collector, Options, TableName } from './types'
 import { destroyChart } from './MediaStats/mediaStatsGraphState'
 
-export class CommunicationInspector {
+export class CommunicationMonitoring {
   isOpened: { value: boolean }
 
   private options: Options
@@ -43,7 +43,7 @@ export class CommunicationInspector {
 
   open() {
     if (!this.isCollectionStarted) {
-      throw new Error('Communication Inspector must be started first')
+      throw new Error('Communication Monitoring must be started first')
     } else if (!this.isOpened.value) {
       initializeTables(this.collectors, this.options)
       this.isOpened.value = true
