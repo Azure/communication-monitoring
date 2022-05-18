@@ -16,6 +16,8 @@ export class MediaStatsCollectorImpl implements Collector {
   mediaStatsFeature?: MediaStatsCallFeature
   mediaStatsData: MediaStatsData = {}
 
+  private missingStats = new Set()
+
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
     this.tab = Tabs.MediaStats
@@ -112,7 +114,10 @@ export class MediaStatsCollectorImpl implements Collector {
             ]
           }
         } else {
-          console.debug('%s is not present in MediaStatsMap', statName)
+          if (!this.missingStats.has(statName)) {
+            console.debug('%s is not present in MediaStatsMap', statName)
+            this.missingStats.add(statName)
+          }
         }
       }
     } catch (e) {

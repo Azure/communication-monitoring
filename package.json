@@ -33,7 +33,7 @@
     "luxon": "^2.3.1"
   },
   "devDependencies": {
-    "@azure/communication-calling": "1.5.4-alpha.20220510.1",
+    "@azure/communication-calling": "1.5.4-beta.1",
     "@azure/communication-common": "^1.1.0",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.19.0",

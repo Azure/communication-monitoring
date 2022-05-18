@@ -125,7 +125,7 @@ export class GeneralStatsCollectorImpl implements Collector {
 
     generalStatsData = {
       callId: this.call.info.groupId!,
-      participantId: this.debugInfoCallFeature?.localParticipantId,
+      participantId: this.debugInfoCallFeature?.lastLocalParticipantId,
       remoteParticipants:
         remoteParticipantsIds.length > 0
           ? remoteParticipantsIds
