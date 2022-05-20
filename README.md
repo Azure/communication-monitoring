@@ -1,6 +1,6 @@
 # Azure Communication Services communication monitoring
 
-Azure Communication Services communication monitoring enables Azure Communication Services developers to inspect the state of a call to debug or monitor their solution. When building a solution, developers might need visibility for debugging into general call information such as the Call ID or advanced states (bitrate, received and sent packets are a few examples). The Communication Monitoring tool provides developers this information and more.
+Azure Communication Services communication monitoring is a UI component that enables Azure Communication Services developers to inspect the state of a local call to debug or monitor their solution. When building a solution, developers might need visibility for debugging into general call information such as the Call ID or advanced states (bitrate, received and sent packets are a few examples). The Communication Monitoring tool provides developers this information and more.
 
 ## Capabilities
 
@@ -11,7 +11,7 @@ The Communication Monitoring tool provides developers three categories of inform
 | Media Quality Stats | Metrics and statistics provided by [Media Quality APIs](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/media-quality-sdk). Metrics are clickable for timeseries view.|
 | User Facing Diagnostics | UFDs are a useful list of local attributes that may help to determine issues at a quick glance. These attributes include information such as camera status, speaker devices availability, etc. You can find the complete list of user facing diagnostics [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/user-facing-diagnostics).|
 
-Data collected by the tool is only kept locally and temporarily for charting purposes for up to 5 minutes. Downloading the logs from within the interface will store a file with the global information for the call from the time it was first started.
+Data collected by the tool is only kept locally and temporarily for charting purposes for up to 5 minutes. Downloading the logs from within the interface will save to the local machine with a zipped log dump with its unique identifier and hash.
 
 The Communication Monitoring tool is compatible with the same browsers as the Calling SDK. For the complete compatibility table click [here](https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/calling-sdk-features#javascript-calling-sdk-support-by-os-and-browser).
 
