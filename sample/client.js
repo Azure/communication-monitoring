@@ -4,7 +4,7 @@ import {
   LocalVideoStream,
 } from '@azure/communication-calling'
 import { AzureCommunicationTokenCredential } from '@azure/communication-common'
-import { CommunicationMonitoring } from 'communication-monitoring'
+import { CommunicationMonitoring } from '@azure/communication-monitoring'
 import { AZURE_COMMUNICATION_TOKEN } from './.env'
 import './styles.css'
 import { v4 as uuidv4 } from 'uuid'
