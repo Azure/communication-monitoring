@@ -33,21 +33,15 @@ npm i @azure/communication-monitoring --save
 
 The Communication Monitoring component expects to receive an `Options` object that consists of 3 different properties. Both the call client and call agent that are part of your already existing calling application are expected, as well as the div where you want the Communication Monitoring to be injected in once you call the `open()` function.
 
-```typescript
+```javascript
 import { CallAgent, CallClient } from '@azure/communication-calling'
 import { CommunicationMonitoring } from '@azure/communication-monitoring'
-
-interface Options {
-  callClient: CallClient
-  callAgent: CallAgent
-  divElement: HTMLDivElement
-}
 
 const selectedDiv = document.getElementById('selectedDiv')
 
 const options = {
-  callClient = this.callClient,
-  callAgent = this.callAgent,
+  callClient = {INSERT CALL CLIENT OBJECT},
+  callAgent = {INSERT CALL AGENT OBJECT},
   divElement = selectedDiv,
 }
 
