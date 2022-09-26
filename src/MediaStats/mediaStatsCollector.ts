@@ -1,11 +1,11 @@
 import {
   Call,
   Features,
-  MediaStats,
+  MediaStatsReportSample,
   MediaStatsCallFeature,
   MediaStatsCollector,
 } from '@azure/communication-calling'
-import { MediaStatsData, Collector, Tabs, Options } from '../types'
+import { MediaStatsData, Collector, MediaStatsDataKey, Tabs, Options } from '../types'
 import { MediaStatsMap } from './mediaStatsMap'
 import { MEDIA_STATS_AMOUNT_LIMIT } from './constants'
 import { setMediaFailedToStart } from '../statTables'
@@ -13,8 +13,21 @@ import { setMediaFailedToStart } from '../statTables'
 export class MediaStatsCollectorImpl implements Collector {
   call: Call
   tab: Tabs
-  mediaStatsFeature?: MediaStatsCallFeature
-  mediaStatsData: MediaStatsData = {}
+  mediaStatsCollector?: MediaStatsCollector;
+  mediaStatsData: MediaStatsData = {
+    audio: {
+      send: {},
+      receive: {}
+    },
+    video: {
+      send: {},
+      receive: {}
+    },
+    screenShare: {
+      send: {},
+      receive: {}
+    }
+  }
 
   constructor(options: Options) {
     this.call = options.callAgent.calls[0]
@@ -27,92 +40,118 @@ export class MediaStatsCollectorImpl implements Collector {
 
   startCollector() {
     // Start collecting stats
-    let mediaStatsCollector: MediaStatsCollector
     try {
-      this.mediaStatsFeature = this.call.feature(Features.MediaStats)
+      this.mediaStatsCollector = this.call.feature(Features.MediaStats).createCollector()
+      this.mediaStatsCollector.on('sampleReported', (mediaStats: MediaStatsReportSample) => {
+        this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
+      })
     } catch (e) {
       console.error(e)
       console.error('Media Stats feature is not available')
       setMediaFailedToStart(true)
       return
     }
-
-    const mediaStatsCollectorOptions = {
-      aggregationInterval: 1,
-      dataPointsPerAggregation: 1,
-    }
-
-    try {
-      mediaStatsCollector = this.mediaStatsFeature.startCollector(
-        mediaStatsCollectorOptions
-      )
-    } catch (e) {
-      console.error(e)
-      console.error('Media stats collector could not start')
-      setMediaFailedToStart(true)
-      return
-    }
-
-    mediaStatsCollector.on('mediaStatsEmitted', (mediaStats) => {
-      this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
-    })
   }
 
   stopCollector() {
     // Stop collecting stats
-    this.mediaStatsFeature?.disposeAllCollectors()
+    this.mediaStatsCollector?.dispose();
   }
 
   updateData(
-    mediaStats: MediaStats,
+    mediaStats: MediaStatsReportSample,
     mediaStatsData: MediaStatsData
   ): MediaStatsData {
     try {
-      for (const [statName, statValue] of Object.entries(mediaStats.stats)) {
-        if (statName in MediaStatsMap) {
-          let value: string | number
-          let unit: string
+      const checkItems = [
+        {
+          sourceItems: mediaStats.audio.send,
+          targetItems: mediaStatsData.audio.send,
+          str: 'audio.send'
+        },
+        {
+          sourceItems: mediaStats.audio.receive,
+          targetItems: mediaStatsData.audio.receive,
+          str: 'audio.receive'
+        },
+        {
+          sourceItems: mediaStats.video.send,
+          targetItems: mediaStatsData.video.send,
+          str: 'video.send'
+        },
+        {
+          sourceItems: mediaStats.video.receive,
+          targetItems: mediaStatsData.video.receive,
+          str: 'video.receive'
+        },
+        {
+          sourceItems: mediaStats.screenShare.send,
+          targetItems: mediaStatsData.screenShare.send,
+          str: 'screenShare.send'
+        },
+        {
+          sourceItems: mediaStats.screenShare.receive,
+          targetItems: mediaStatsData.screenShare.receive,
+          str: 'screenShare.receive'
+        }
+      ];
+      for (const obj of checkItems) {
+        const sourceItems = obj.sourceItems;
+        const targetItems = obj.targetItems;
+        const str = obj.str;
+        const sourceIds: string[] = [];
+        for (const sourceItem of sourceItems) {
+          sourceIds.push(sourceItem.id);
+          for (const [statKey, statValue] of Object.entries(sourceItem)) {
+            const statName = statKey as MediaStatsDataKey;
+            const mapKey = `${str}.${statName}`;
+            if (MediaStatsMap[mapKey] !== undefined) {
+              let value: string | number
+              let unit: string
 
-          if (
-            MediaStatsMap[
-              statName as keyof typeof MediaStatsMap
-            ].hasOwnProperty('GranularityDivider')
-          ) {
-            value =
-              (statValue.raw[0] as number) /
-              ((MediaStatsMap[statName as keyof typeof MediaStatsMap] as any)
-                .GranularityDivider as number)
-            unit = (
-              MediaStatsMap[statName as keyof typeof MediaStatsMap] as any
-            ).GranularityUnits
-          } else {
-            value = statValue.raw[0]
-            unit = MediaStatsMap[statName as keyof typeof MediaStatsMap].Units
-          }
+              if (MediaStatsMap[mapKey].GranularityDivider) {
+                value = (statValue as number) / MediaStatsMap[mapKey].GranularityDivider
+                unit = MediaStatsMap[mapKey].GranularityUnits
+              } else {
+                value = statValue
+                unit = MediaStatsMap[mapKey].Units
+              }
 
-          if (statName in mediaStatsData) {
-            if (
-              mediaStatsData[statName as keyof MediaStatsData]!.length >=
-              MEDIA_STATS_AMOUNT_LIMIT
-            ) {
-              mediaStatsData[statName as keyof MediaStatsData]!.shift()
+              if (sourceItem.id in targetItems) {
+                const targetItem = targetItems[sourceItem.id]
+                if (!targetItem[statName]) {
+                  targetItem[statName] = []
+                }
+                if (targetItem[statName]!.length >= MEDIA_STATS_AMOUNT_LIMIT) {
+                  targetItem[statName]!.shift()
+                }
+                targetItem[statName]!.push({
+                  timestamp: new Date(),
+                  value,
+                  unit,
+                })
+              } else {
+                targetItems[sourceItem.id] = {
+                  id: sourceItem.id 
+                }
+                targetItems[sourceItem.id][statName] = [
+                  {
+                    timestamp: new Date(),
+                    value,
+                    unit,
+                  },
+                ]
+              }
+            } else {
+              console.debug('%s is not present in MediaStatsMap', statName)
             }
-            mediaStatsData[statName as keyof MediaStatsData]!.push({
-              timestamp: statValue.timestamp,
-              value,
-              unit,
-            })
-          } else {
-            mediaStatsData[statName as keyof MediaStatsData] = [
-              {
-                timestamp: statValue.timestamp,
-                value,
-                unit,
-              },
-            ]
           }
-        } else {
-          console.debug('%s is not present in MediaStatsMap', statName)
+        }
+        //remove id not available in source
+        const targetIds = Object.keys(targetItems);
+        const diffIds = targetIds.filter(x => !sourceIds.includes(x));
+        for(const id of diffIds) {
+          delete targetItems[id];
         }
       }
     } catch (e) {

@@ -1,211 +1,294 @@
-import { MediaStatsData } from '../types'
+import { MediaStatsData, MediaStatsDataKey, MediaStatsDataValue } from '../types'
 import { initializeGraph } from './mediaStatsGraph'
 import { MediaStatsMap } from './mediaStatsMap'
 
 let html = `
 <dl id="mediaStatsTable">
-    <dt class='sectionHeader'>Bandwidth</dt>
-    <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk#bandwidth-metrics" target="_blank">Learn more</a></dd>
-    <dt hidden=false id='sentBWEstimate'>Sent Bandwidth Estimate</dt>
-    <dd hidden=false id='sentBWEstimateValue'>—</dd>
-    <dt class='sectionHeader'>Audio</dt>
-    <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk#audio-quality-metrics" target="_blank">Learn more</a></dd>
-    <dt hidden=false id='audioSendBitrate'>Send Bitrate</dt>
-    <dd hidden=false id='audioSendBitrateValue'>—</dd>
-    <dt hidden=false id='audioSendPackets'>Sent Packets</dt>
-    <dd hidden=false id='audioSendPacketsValue'>—</dd>
-    <dt hidden=false id='audioSendPacketsLost'>Lost Send Packets</dt>
-    <dd hidden=false id='audioSendPacketsLostValue'>—</dd>
-    <dt hidden=false id='audioSendCodecName'>Send codec</dt>
-    <dd hidden=false id='audioSendCodecNameValue'>—</dd>
-    <dt hidden=false id='audioSendRtt'>Send Round-Trip Time</dt>
-    <dd hidden=false id='audioSendRttValue'>—</dd>
-    <dt hidden=false id='audioSendPairRtt'>Send Pair Round-Trip Time</dt>
-    <dd hidden=false id='audioSendPairRttValue'>—</dd>
-    <dt hidden=false id='audioSendAudioInputLevel'>Microphone Input Level</dt>
-    <dd hidden=false id='audioSendAudioInputLevelValue'>—</dd>
-    <dt hidden=false id='audioRecvBitrate'>Receive Bitrate</dt>
-    <dd hidden=false id='audioRecvBitrateValue'>—</dd>
-    <dt hidden=false id='audioRecvJitterBufferMs'>Receive Jitter</dt>
-    <dd hidden=false id='audioRecvJitterBufferMsValue'>—</dd>
-    <dt hidden=false id='audioRecvPacketsLost'>Lost Receive Packets</dt>
-    <dd hidden=false id='audioRecvPacketsLostValue'>—</dd>
-    <dt hidden=false id='audioRecvPackets'>Received packets</dt>
-    <dd hidden=false id='audioRecvPacketsValue'>—</dd>
-    <dt hidden=false id='audioRecvPairRtt'>Receive Pair Round-Trip Time</dt>
-    <dd hidden=false id='audioRecvPairRttValue'>—</dd>
-    <dt hidden=false id='audioRecvAudioOutputLevel'>Speaker Output Level</dt>
-    <dd hidden=false id='audioRecvAudioOutputLevelValue'>—</dd>
-    <dt class='sectionHeader'>Video</dt>
-    <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk#video-quality-metrics" target="_blank">Learn more</a></dd>
-    <dt hidden=false id='videoSendFrameRateSent'>Sent Frame Rate</dt>
-    <dd hidden=false id='videoSendFrameRateSentValue'>—</dd>
-    <dt hidden=false id='videoSendFrameWidthSent'>Sent Width</dt>
-    <dd hidden=false id='videoSendFrameWidthSentValue'>—</dd>
-    <dt hidden=false id='videoSendFrameHeightSent'>Sent Height</dt>
-    <dd hidden=false id='videoSendFrameHeightSentValue'>—</dd>
-    <dt hidden=false id='videoSendBitrate'>Send Bitrate</dt>
-    <dd hidden=false id='videoSendBitrateValue'>—</dd>
-    <dt hidden=false id='videoSendPackets'>Sent Packets</dt>
-    <dd hidden=false id='videoSendPacketsValue'>—</dd>
-    <dt hidden=false id='videoSendRtt'>Send Round-Trip Time</dt>
-    <dd hidden=false id='videoSendRttValue'>—</dd>
-    <dt hidden=false id='videoSendPairRtt'>Send Pair Round-Trip Time</dt>
-    <dd hidden=false id='videoSendPairRttValue'>—</dd>
-    <dt hidden=false id='videoSendPacketsLost'>Send Packet Loss</dt>
-    <dd hidden=false id='videoSendPacketsLostValue'>—</dd>
-    <dt hidden=false id='videoSendFrameRateInput'>Sent Frame Rate Input</dt>
-    <dd hidden=false id='videoSendFrameRateInputValue'>—</dd>
-    <dt hidden=false id='videoSendFrameWidthInput'>Sent Frame Width Input</dt>
-    <dd hidden=false id='videoSendFrameWidthInputValue'>—</dd>
-    <dt hidden=false id='videoSendFrameHeightInput'>Sent Frame Height Input</dt>
-    <dd hidden=false id='videoSendFrameHeightInputValue'>—</dd>
-    <dt hidden=false id='videoSendCodecName'>Send Codec</dt>
-    <dd hidden=false id='videoSendCodecNameValue'>—</dd>
-    <dt hidden=false id='videoRecvBitrate'>Received Bitrate</dt>
-    <dd hidden=false id='videoRecvBitrateValue'>—</dd>
-    <dt hidden=false id='videoRecvPackets'>Received Packets</dt>
-    <dd hidden=false id='videoRecvPacketsValue'>—</dd>
-    <dt hidden=false id='videoRecvPacketsLost'>Receive Packet Loss</dt>
-    <dd hidden=false id='videoRecvPacketsLostValue'>—</dd>
-    <dt hidden=false id='videoRecvJitterBufferMs'>Receive Jitter</dt>
-    <dd hidden=false id='videoRecvJitterBufferMsValue'>—</dd>
-    <dt hidden=false id='videoRecvPairRtt'>Receive Pair Round-Trip Time</dt>
-    <dd hidden=false id='videoRecvPairRttValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameRateReceived'>Received Frame Rate</dt>
-    <dd hidden=false id='videoRecvFrameRateReceivedValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameWidthReceived'>Received Width</dt>
-    <dd hidden=false id='videoRecvFrameWidthReceivedValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameHeightReceived'>Received Height</dt>
-    <dd hidden=false id='videoRecvFrameHeightReceivedValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameRateOutput'>Received Frame Rate Output</dt>
-    <dd hidden=false id='videoRecvFrameRateOutputValue'>—</dd>
-    <dt hidden=false id='videoRecvFrameRateDecoded'>Received Decoded Frame Rate</dt>
-    <dd hidden=false id='videoRecvFrameRateDecodedValue'>—</dd>
-    <dt hidden=false id='videoRecvLongestFreezeDuration'>Received Longest Freeze Duration</dt>
-    <dd hidden=false id='videoRecvLongestFreezeDurationValue'>—</dd>
-    <dt hidden=false id='videoRecvTotalFreezeDuration'>Received Total Freeze Duration</dt>
-    <dd hidden=false id='videoRecvTotalFreezeDurationValue'>—</dd>
-    <dt class='sectionHeader'>Screen Sharing</dt>
-    <dd class='sectionHeader'><a href="https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk#video-quality-metrics" target="_blank">Learn more</a></dd>
-    <dt hidden=false id='screenSharingRecvFrameRateReceived'>Received Frame Rate</dt>
-    <dd hidden=false id='screenSharingRecvFrameRateReceivedValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvFrameRateDecoded'>Received Decoded Frame Rate</dt>
-    <dd hidden=false id='screenSharingRecvFrameRateDecodedValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvFrameWidthReceived'>Received Width</dt>
-    <dd hidden=false id='screenSharingRecvFrameWidthReceivedValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvFrameHeightReceived'>Received Height</dt>
-    <dd hidden=false id='screenSharingRecvFrameHeightReceivedValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvLongestFreezeDuration'>Received Longest Freeze Duration</dt>
-    <dd hidden=false id='screenSharingRecvLongestFreezeDurationValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvTotalFreezeDuration'>Received Total Decoded Frame Rate</dt>
-    <dd hidden=false id='screenSharingRecvTotalFreezeDurationValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvJitterBufferMs'>Received Jitter</dt>
-    <dd hidden=false id='screenSharingRecvJitterBufferMsValue'>—</dd>
-    <dt hidden=false id='screenSharingRecvPacketsLost'>Received Packet Loss</dt>
-    <dd hidden=false id='screenSharingRecvPacketsLostValue'>—</dd>
 </dl>
-`
+`;
+
+type HtmlBlockItems = {
+  keys: string[];
+  sectionName: string;
+  url: string
+};
+
+let subHtml: {[key: string]: HtmlBlockItems } = {
+};
+
+subHtml['audio.send'] = {
+  keys: [
+    'bitrate',
+    'packetsPerSecond',
+    'packetsLostPerSecond',
+    'codecName',
+    'rttInMs',
+    'pairRttInMs',
+    'audioInputLevel'
+  ],
+  sectionName: 'Audio Send',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+subHtml['audio.receive'] = {
+  keys: [
+    'bitrate',
+    'jitterInMs',
+    'packetsLostPerSecond',
+    'packetsPerSecond',
+    'pairRttInMs',
+    'audioOutputLevel'
+  ],
+  sectionName: 'Audio Receive',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+
+subHtml['video.send'] = {
+  keys: [
+    'availableBitrate',
+    'frameRateSent',
+    'frameWidthSent',
+    'frameHeightSent',
+    'bitrate',
+    'packetsPerSecond',
+    'rttInMs',
+    'pairRttInMs',
+    'packetsLostPerSecond',
+    'frameRateInput',
+    'frameWidthInput',
+    'frameHeightInput',
+    'codecName'
+  ],
+  sectionName: 'Video Send',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+
+subHtml['video.receive'] = {
+  keys: [
+    'bitrate',
+    'packetsPerSecond',
+    'packetsLostPerSecond',
+    'jitterInMs',
+    'pairRttInMs',
+    'frameRateReceived',
+    'frameWidthReceived',
+    'frameHeightReceived',
+    'frameRateOutput',
+    'frameRateDecoded',
+    'longestFreezeDuration',
+    'totalFreezeDuration',
+    'codecName'
+  ],
+  sectionName: 'Video Receive',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+
+subHtml['screenShare.send'] = {
+  keys: [
+    'frameRateSent',
+    'frameWidthSent',
+    'frameHeightSent',
+    'bitrate',
+    'packetsPerSecond',
+    'rttInMs',
+    'pairRttInMs',
+    'packetsLostPerSecond',
+    'frameRateInput',
+    'frameWidthInput',
+    'frameHeightInput',
+    'codecName'
+  ],
+  sectionName: 'ScreenShare Send',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+
+subHtml['screenShare.receive'] = {
+  keys: [
+    'bitrate',
+    'packetsPerSecond',
+    'packetsLostPerSecond',
+    'jitterInMs',
+    'pairRttInMs',
+    'frameRateReceived',
+    'frameWidthReceived',
+    'frameHeightReceived',
+    'frameRateOutput',
+    'frameRateDecoded',
+    'longestFreezeDuration',
+    'totalFreezeDuration',
+    'codecName'
+  ],
+  sectionName: 'ScreenShare Receive',
+  url: 'https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/media-quality-sdk'
+};
+
+function generateHtml(key: string, id: string) {
+    const item = subHtml[key];
+    let html = '';
+    html += `<dt class='sectionHeader'>${item.sectionName}</dt>` +
+            `<dd class='sectionHeader'><a href="${item.url}" target="_blank">Learn more</a></dd>`;
+    for (const k of item.keys) {
+      const info = MediaStatsMap[`${key}.${k}`];
+      html += `<dt hidden=false id="${key}.${k}.${id}">${info.Name}</dt>` +
+            `<dd hidden=false id="${key}.${k}.${id}.value">—</dd>`;
+
+    }
+    return html.trim();
+}
+
 
 let eventListenerSet: Set<string>
+let allIds: string[] = [];
 
 export function createMediaStatsTable() {
   eventListenerSet = new Set()
   const template = document.createElement('template')
   html = html.trim() // Never return a text node of whitespace as the result
   template.innerHTML = html
+  allIds = [];
   return template.content.firstChild
 }
 
 export function updateMediaStatsTable(mediaStatsData: MediaStatsData) {
-  if (mediaStatsData) {
-    updateValue(mediaStatsData, 'sentBWEstimate')
-    updateValue(mediaStatsData, 'audioSendBitrate')
-    updateValue(mediaStatsData, 'audioSendPackets')
-    updateValue(mediaStatsData, 'audioSendPacketsLost')
-    updateValue(mediaStatsData, 'audioSendCodecName')
-    updateValue(mediaStatsData, 'audioSendRtt')
-    updateValue(mediaStatsData, 'audioSendPairRtt')
-    updateValue(mediaStatsData, 'audioSendAudioInputLevel')
-    updateValue(mediaStatsData, 'audioRecvBitrate')
-    updateValue(mediaStatsData, 'audioRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'audioRecvPacketsLost')
-    updateValue(mediaStatsData, 'audioRecvPackets')
-    updateValue(mediaStatsData, 'audioRecvPairRtt')
-    updateValue(mediaStatsData, 'audioRecvAudioOutputLevel')
-    updateValue(mediaStatsData, 'videoSendFrameRateSent')
-    updateValue(mediaStatsData, 'videoSendFrameWidthSent')
-    updateValue(mediaStatsData, 'videoSendFrameHeightSent')
-    updateValue(mediaStatsData, 'videoSendBitrate')
-    updateValue(mediaStatsData, 'videoSendPackets')
-    updateValue(mediaStatsData, 'videoSendRtt')
-    updateValue(mediaStatsData, 'videoSendPairRtt')
-    updateValue(mediaStatsData, 'videoSendPacketsLost')
-    updateValue(mediaStatsData, 'videoSendFrameRateInput')
-    updateValue(mediaStatsData, 'videoSendFrameWidthInput')
-    updateValue(mediaStatsData, 'videoSendFrameHeightInput')
-    updateValue(mediaStatsData, 'videoSendCodecName')
-    updateValue(mediaStatsData, 'videoRecvBitrate')
-    updateValue(mediaStatsData, 'videoRecvPackets')
-    updateValue(mediaStatsData, 'videoRecvPacketsLost')
-    updateValue(mediaStatsData, 'videoRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'videoRecvPairRtt')
-    updateValue(mediaStatsData, 'videoRecvFrameRateReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameWidthReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameHeightReceived')
-    updateValue(mediaStatsData, 'videoRecvFrameRateOutput')
-    updateValue(mediaStatsData, 'videoRecvFrameRateDecoded')
-    updateValue(mediaStatsData, 'videoRecvLongestFreezeDuration')
-    updateValue(mediaStatsData, 'videoRecvTotalFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameRateReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameRateDecoded')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameWidthReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvFrameHeightReceived')
-    updateValue(mediaStatsData, 'screenSharingRecvLongestFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvTotalFreezeDuration')
-    updateValue(mediaStatsData, 'screenSharingRecvJitterBufferMs')
-    updateValue(mediaStatsData, 'screenSharingRecvPacketsLost')
+  try{
+    if (mediaStatsData) {
+      const checkItems = [
+          {
+            key: 'audio.send',
+            value: mediaStatsData.audio.send
+          },
+          {
+            key: 'audio.receive',
+            value: mediaStatsData.audio.receive
+          },
+          {
+            key: 'video.send',
+            value: mediaStatsData.video.send
+          },
+          {
+            key: 'video.receive',
+            value: mediaStatsData.video.receive
+          },
+          {
+            key: 'screenShare.send',
+            value: mediaStatsData.screenShare.send
+          },
+          {
+            key: 'screenShare.receive',
+            value: mediaStatsData.screenShare.receive
+          }
+      ];
+
+      //check if there are id added or removed
+      const newIds: string[] = [];
+      for (const obj of checkItems) {
+        const str = obj.key;
+        const items = obj.value
+        const ids = Object.keys(items);
+        for (const id of ids) {
+          newIds.push(str + '.' + id);
+        }
+      }
+      if(allIds.filter(x => !newIds.includes(x)).length ||
+         newIds.filter(x => !allIds.includes(x)).length) {
+        //there is id change, regenerate html
+        let html = '';
+        for (const obj of checkItems) {
+          const str = obj.key;
+          const items = obj.value
+          const ids = Object.keys(items);
+          for (const id of ids) {
+            html += generateHtml(str, id);
+          }
+        }
+        const elem = document.getElementById('mediaStatsTable');
+        elem!.innerHTML = html;
+        allIds = newIds;
+        //listeners attached to dom element are removed
+        eventListenerSet.clear();
+      }
+      updateValue(mediaStatsData);
+    }
+  }catch(e){
+    console.error(e);
   }
 }
 
-function updateValue(mediaStatsData: MediaStatsData, key: string) {
-  const elementId = key + 'Value'
-  if (key in mediaStatsData) {
-    const dataValue = mediaStatsData[key as keyof MediaStatsData]!
-    const value =
-      typeof dataValue[dataValue.length - 1].value === 'number'
-        ? Math.round(dataValue[dataValue.length - 1].value as number)
-        : dataValue[dataValue.length - 1].value
-    const unit =
-      dataValue[dataValue.length - 1].unit === 'None'
-        ? ''
-        : dataValue[dataValue.length - 1].unit
-    const textToShow = value + unit
-
-    if (textToShow !== document.getElementById(elementId)!.innerText) {
-      // to avoid updating the dom when incoming data is same as previous data
-      document.getElementById(elementId)!.innerText = textToShow
-      document.getElementById(elementId)!.hidden = false
-      document.getElementById(key)!.hidden = false
+function updateValue(mediaStatsData: MediaStatsData) {
+  const checkItems = [
+    {
+      key: 'audio.send',
+      value: mediaStatsData.audio.send
+    },
+    {
+      key: 'audio.receive',
+      value: mediaStatsData.audio.receive
+    },
+    {
+      key: 'video.send',
+      value: mediaStatsData.video.send
+    },
+    {
+      key: 'video.receive',
+      value: mediaStatsData.video.receive
+    },
+    {
+      key: 'screenShare.send',
+      value: mediaStatsData.screenShare.send
+    },
+    {
+      key: 'screenShare.receive',
+      value: mediaStatsData.screenShare.receive
     }
+  ];
+  for(const obj of checkItems) {
+    const str = obj.key
+    const items = obj.value
+    const ids = Object.keys(items);
+    const metricKeys = subHtml[str].keys;
+    for(const id of ids) {
+      const targetItem = items[id];
+      for (const k of metricKeys) {
+        const elementId = `${str}.${k}.${id}`
+        const elementValueId = `${elementId}.value`
+        const elementMapId = `${str}.${k}`
+        const dataValue = targetItem[k as MediaStatsDataKey];
+        if (dataValue !== undefined) {
+          const value =
+            typeof dataValue[dataValue.length - 1].value === 'number'
+              ? Math.round(dataValue[dataValue.length - 1].value as number)
+              : dataValue[dataValue.length - 1].value
+          const unit =
+            dataValue[dataValue.length - 1].unit === 'None'
+              ? ''
+              : dataValue[dataValue.length - 1].unit
+          const textToShow = value + unit
+          if (textToShow !== document.getElementById(elementId)!.innerText) {
+            // to avoid updating the dom when incoming data is same as previous data
+            document.getElementById(elementValueId)!.innerText = textToShow
+            document.getElementById(elementValueId)!.hidden = false
+            document.getElementById(elementId)!.hidden = false
+          }
 
-    if (!eventListenerSet.has(key)) {
-      // to avoid duplicate event listeners
-      if (MediaStatsMap[key as keyof typeof MediaStatsMap].Clickable) {
-        document.getElementById(key)!.addEventListener('click', () => {
-          initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
-        })
-        document.getElementById(elementId)!.addEventListener('click', () => {
-          initializeGraph(mediaStatsData[key as keyof MediaStatsData]!, key)
-        })
-        document.getElementById(key)!.classList.add('interactive')
-        document.getElementById(elementId)!.classList.add('interactive')
-        eventListenerSet.add(key)
+          if (!eventListenerSet.has(elementId)) {
+            // to avoid duplicate event listeners
+            if (MediaStatsMap[elementMapId].Clickable) {
+              document.getElementById(elementId)!.addEventListener('click', () => {
+                initializeGraph(dataValue, elementMapId)
+              })
+              document.getElementById(elementValueId)!.addEventListener('click', () => {
+                initializeGraph(dataValue, elementMapId)
+              })
+              document.getElementById(elementId)!.classList.add('interactive')
+              document.getElementById(elementValueId)!.classList.add('interactive')
+              eventListenerSet.add(elementId)
+            }
+          }
+        } else {
+          ;(document.getElementById(elementValueId) as HTMLElement).innerText = ''
+          ;(document.getElementById(elementValueId) as HTMLElement).hidden = true
+          ;(document.getElementById(elementId) as HTMLElement).hidden = true
+        }
       }
     }
-  } else {
-    ;(document.getElementById(elementId) as HTMLElement).innerText = ''
-    ;(document.getElementById(elementId) as HTMLElement).hidden = true
-    ;(document.getElementById(key) as HTMLElement).hidden = true
   }
 }
