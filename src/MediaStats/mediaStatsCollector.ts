@@ -5,7 +5,13 @@ import {
   MediaStatsCallFeature,
   MediaStatsCollector,
 } from '@azure/communication-calling'
-import { MediaStatsData, Collector, MediaStatsDataKey, Tabs, Options } from '../types'
+import {
+  MediaStatsData,
+  Collector,
+  MediaStatsDataKey,
+  Tabs,
+  Options,
+} from '../types'
 import { MediaStatsMap } from './mediaStatsMap'
 import { MEDIA_STATS_AMOUNT_LIMIT } from './constants'
 import { setMediaFailedToStart } from '../statTables'
@@ -13,20 +19,20 @@ import { setMediaFailedToStart } from '../statTables'
 export class MediaStatsCollectorImpl implements Collector {
   call: Call
   tab: Tabs
-  mediaStatsCollector?: MediaStatsCollector;
+  mediaStatsCollector?: MediaStatsCollector
   mediaStatsData: MediaStatsData = {
     audio: {
       send: {},
-      receive: {}
+      receive: {},
     },
     video: {
       send: {},
-      receive: {}
+      receive: {},
     },
     screenShare: {
       send: {},
-      receive: {}
-    }
+      receive: {},
+    },
   }
 
   constructor(options: Options) {
@@ -41,10 +47,15 @@ export class MediaStatsCollectorImpl implements Collector {
   startCollector() {
     // Start collecting stats
     try {
-      this.mediaStatsCollector = this.call.feature(Features.MediaStats).createCollector()
-      this.mediaStatsCollector.on('sampleReported', (mediaStats: MediaStatsReportSample) => {
-        this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
-      })
+      this.mediaStatsCollector = this.call
+        .feature(Features.MediaStats)
+        .createCollector()
+      this.mediaStatsCollector.on(
+        'sampleReported',
+        (mediaStats: MediaStatsReportSample) => {
+          this.mediaStatsData = this.updateData(mediaStats, this.mediaStatsData)
+        }
+      )
     } catch (e) {
       console.error(e)
       console.error('Media Stats feature is not available')
@@ -55,7 +66,7 @@ export class MediaStatsCollectorImpl implements Collector {
 
   stopCollector() {
     // Stop collecting stats
-    this.mediaStatsCollector?.dispose();
+    this.mediaStatsCollector?.dispose()
   }
 
   updateData(
@@ -67,50 +78,52 @@ export class MediaStatsCollectorImpl implements Collector {
         {
           sourceItems: mediaStats.audio.send,
           targetItems: mediaStatsData.audio.send,
-          str: 'audio.send'
+          str: 'audio.send',
         },
         {
           sourceItems: mediaStats.audio.receive,
           targetItems: mediaStatsData.audio.receive,
-          str: 'audio.receive'
+          str: 'audio.receive',
         },
         {
           sourceItems: mediaStats.video.send,
           targetItems: mediaStatsData.video.send,
-          str: 'video.send'
+          str: 'video.send',
         },
         {
           sourceItems: mediaStats.video.receive,
           targetItems: mediaStatsData.video.receive,
-          str: 'video.receive'
+          str: 'video.receive',
         },
         {
           sourceItems: mediaStats.screenShare.send,
           targetItems: mediaStatsData.screenShare.send,
-          str: 'screenShare.send'
+          str: 'screenShare.send',
         },
         {
           sourceItems: mediaStats.screenShare.receive,
           targetItems: mediaStatsData.screenShare.receive,
-          str: 'screenShare.receive'
-        }
-      ];
+          str: 'screenShare.receive',
+        },
+      ]
       for (const obj of checkItems) {
-        const sourceItems = obj.sourceItems;
-        const targetItems = obj.targetItems;
-        const str = obj.str;
-        const sourceIds: string[] = [];
+        const sourceItems = obj.sourceItems
+        const targetItems = obj.targetItems
+        const str = obj.str
+        const sourceIds: string[] = []
         for (const sourceItem of sourceItems) {
-          sourceIds.push(sourceItem.id);
+          sourceIds.push(sourceItem.id)
           for (const [statKey, statValue] of Object.entries(sourceItem)) {
-            const statName = statKey as MediaStatsDataKey;
-            const mapKey = `${str}.${statName}`;
+            const statName = statKey as MediaStatsDataKey
+            const mapKey = `${str}.${statName}`
             if (MediaStatsMap[mapKey] !== undefined) {
               let value: string | number
               let unit: string
 
               if (MediaStatsMap[mapKey].GranularityDivider) {
-                value = (statValue as number) / MediaStatsMap[mapKey].GranularityDivider
+                value =
+                  (statValue as number) /
+                  MediaStatsMap[mapKey].GranularityDivider
                 unit = MediaStatsMap[mapKey].GranularityUnits
               } else {
                 value = statValue
@@ -132,7 +145,7 @@ export class MediaStatsCollectorImpl implements Collector {
                 })
               } else {
                 targetItems[sourceItem.id] = {
-                  id: sourceItem.id 
+                  id: sourceItem.id,
                 }
                 targetItems[sourceItem.id][statName] = [
                   {
@@ -148,10 +161,10 @@ export class MediaStatsCollectorImpl implements Collector {
           }
         }
         //remove id not available in source
-        const targetIds = Object.keys(targetItems);
-        const diffIds = targetIds.filter(x => !sourceIds.includes(x));
-        for(const id of diffIds) {
-          delete targetItems[id];
+        const targetIds = Object.keys(targetItems)
+        const diffIds = targetIds.filter((x) => !sourceIds.includes(x))
+        for (const id of diffIds) {
+          delete targetItems[id]
         }
       }
     } catch (e) {

@@ -1,5 +1,5 @@
 export const MediaStatsMap: any = {
-  "video.send.availableBitrate": {
+  'video.send.availableBitrate': {
     Name: 'Sent Bandwidth Estimate',
     Category: 'General',
     Units: 'bps',
@@ -12,7 +12,7 @@ export const MediaStatsMap: any = {
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "audio.send.bitrate": {
+  'audio.send.bitrate': {
     Name: 'Send Bitrate',
     Category: 'Audio',
     Units: 'bps',
@@ -23,7 +23,7 @@ export const MediaStatsMap: any = {
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "audio.send.packetsPerSecond": {
+  'audio.send.packetsPerSecond': {
     Name: 'Sent Packets',
     Category: 'Audio',
     Units: 'None',
@@ -33,7 +33,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "audio.send.packetsLostPerSecond": {
+  'audio.send.packetsLostPerSecond': {
     Name: 'Lost Send Packets',
     Category: 'Audio',
     Units: 'None',
@@ -43,7 +43,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better.',
     Clickable: true,
   },
-  "audio.send.codecName": {
+  'audio.send.codecName': {
     Name: 'Send codec',
     Category: 'Audio',
     Units: 'None',
@@ -52,7 +52,7 @@ export const MediaStatsMap: any = {
     Comments: 'OPUS, G722, etc',
     Clickable: false,
   },
-  "audio.send.rttInMs": {
+  'audio.send.rttInMs': {
     Name: 'Round-Trip Time',
     Category: 'Audio',
     Units: 'ms',
@@ -62,7 +62,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "audio.send.pairRttInMs": {
+  'audio.send.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Audio',
     Units: 'ms',
@@ -72,17 +72,16 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "audio.send.audioInputLevel": {
+  'audio.send.audioInputLevel': {
     Name: 'Microphone Input Level',
     Category: 'Audio',
     Units: 'None',
     Purpose: 'Microphone input level.',
-    Details:
-      'Microphone input level. The value ranges from 0-65536.',
+    Details: 'Microphone input level. The value ranges from 0-65536.',
     Comments: '0 means silence.',
     Clickable: true,
   },
-  "audio.receive.codecName": {
+  'audio.receive.codecName': {
     Name: 'Receive codec',
     Category: 'Audio',
     Units: 'None',
@@ -91,7 +90,7 @@ export const MediaStatsMap: any = {
     Comments: 'OPUS, G722, etc',
     Clickable: false,
   },
-  "audio.receive.bitrate": {
+  'audio.receive.bitrate': {
     Name: 'Receive Bitrate',
     Category: 'Audio',
     Units: 'bps',
@@ -102,16 +101,18 @@ export const MediaStatsMap: any = {
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "audio.receive.jitterInMs": {
+  'audio.receive.jitterInMs': {
     Name: 'Receive Jitter',
     Category: 'Audio',
     Units: 'ms',
     Purpose: 'Received Jitter',
-    Details: 'Jitter is the variation in the delay of received packets. Results are in milliseconds',
-    Comments: 'Lower is better. Typically, an audio jitter of 30 ms or less is recommended.',
+    Details:
+      'Jitter is the variation in the delay of received packets. Results are in milliseconds',
+    Comments:
+      'Lower is better. Typically, an audio jitter of 30 ms or less is recommended.',
     Clickable: true,
   },
-  "audio.receive.packetsLostPerSecond": {
+  'audio.receive.packetsLostPerSecond': {
     Name: 'Lost Receive Packets',
     Category: 'Audio',
     Units: 'None',
@@ -121,7 +122,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better.',
     Clickable: true,
   },
-  "audio.receive.packetsPerSecond": {
+  'audio.receive.packetsPerSecond': {
     Name: 'Received packets',
     Category: 'Audio',
     Units: 'None',
@@ -131,7 +132,7 @@ export const MediaStatsMap: any = {
     Comments: 'Information only.',
     Clickable: true,
   },
-  "audio.receive.pairRttInMs": {
+  'audio.receive.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Audio',
     Units: 'ms',
@@ -141,7 +142,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "audio.receive.audioOutputLevel": {
+  'audio.receive.audioOutputLevel': {
     Name: 'Speaker Output Level',
     Category: 'Audio',
     Units: 'None',
@@ -151,16 +152,17 @@ export const MediaStatsMap: any = {
     Comments: '0 means silence.',
     Clickable: true,
   },
-  "video.send.frameRateSent": {
+  'video.send.frameRateSent': {
     Name: 'Sent Frame Rate',
     Category: 'Video',
     Units: 'fps',
     Purpose: 'Sent frame rate',
-    Details: 'Number of video frames sent in the last second. Results are frames per second',
+    Details:
+      'Number of video frames sent in the last second. Results are frames per second',
     Comments: '',
     Clickable: true,
   },
-  "video.send.frameWidthSent": {
+  'video.send.frameWidthSent': {
     Name: 'Sent Width',
     Category: 'Video',
     Units: 'px',
@@ -169,7 +171,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.send.frameHeightSent": {
+  'video.send.frameHeightSent': {
     Name: 'Sent Height',
     Category: 'Video',
     Units: 'px',
@@ -178,19 +180,18 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.send.bitrate": {
+  'video.send.bitrate': {
     Name: 'Send Bitrate',
     Category: 'Video',
     Units: 'bps',
     Purpose: 'Sent bitrate',
-    Details:
-      'Sent bitrate of video. Results are in bits per second (bps).',
+    Details: 'Sent bitrate of video. Results are in bits per second (bps).',
     Comments: '',
     Clickable: true,
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "video.send.packetsPerSecond": {
+  'video.send.packetsPerSecond': {
     Name: 'Sent Packets',
     Category: 'Video',
     Units: 'None',
@@ -200,7 +201,7 @@ export const MediaStatsMap: any = {
     Comments: 'Information only',
     Clickable: true,
   },
-  "video.send.rttInMs": {
+  'video.send.rttInMs': {
     Name: 'Round-Trip Time',
     Category: 'Video',
     Units: 'ms',
@@ -210,7 +211,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "video.send.pairRttInMs": {
+  'video.send.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Video',
     Units: 'ms',
@@ -220,7 +221,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "video.send.packetsLostPerSecond": {
+  'video.send.packetsLostPerSecond': {
     Name: 'Send Packet Loss',
     Category: 'Video',
     Units: 'None',
@@ -230,7 +231,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "video.send.frameRateInput": {
+  'video.send.frameRateInput': {
     Name: 'Sent Framerate Input',
     Category: 'Video',
     Units: 'fps',
@@ -239,7 +240,7 @@ export const MediaStatsMap: any = {
     Comments: 'Information only',
     Clickable: true,
   },
-  "video.send.frameWidthInput": {
+  'video.send.frameWidthInput': {
     Name: 'Sent Frame Width Input',
     Category: 'Video',
     Units: 'px',
@@ -248,7 +249,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.send.frameHeightInput": {
+  'video.send.frameHeightInput': {
     Name: 'Sent Frame Height Input',
     Category: 'Video',
     Units: 'px',
@@ -257,7 +258,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.send.codecName": {
+  'video.send.codecName': {
     Name: 'Send Codec',
     Category: 'Video',
     Units: 'None',
@@ -266,7 +267,7 @@ export const MediaStatsMap: any = {
     Comments: 'H264, VP8',
     Clickable: false,
   },
-  "video.receive.codecName": {
+  'video.receive.codecName': {
     Name: 'Receive Codec',
     Category: 'Video',
     Units: 'None',
@@ -275,7 +276,7 @@ export const MediaStatsMap: any = {
     Comments: 'H264, VP8',
     Clickable: false,
   },
-  "video.receive.bitrate": {
+  'video.receive.bitrate': {
     Name: 'Received Bitrate',
     Category: 'Video',
     Units: 'bps',
@@ -286,16 +287,17 @@ export const MediaStatsMap: any = {
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "video.receive.packetsPerSecond": {
+  'video.receive.packetsPerSecond': {
     Name: 'Received Packets',
     Category: 'Video',
     Units: 'None',
     Purpose: 'Received packets',
-    Details: 'The number of video packets received in the last second. Results are in packets per second.',
+    Details:
+      'The number of video packets received in the last second. Results are in packets per second.',
     Comments: 'Information Only',
     Clickable: true,
   },
-  "video.receive.packetsLostPerSecond": {
+  'video.receive.packetsLostPerSecond': {
     Name: 'Receive Packet Loss',
     Category: 'Video',
     Units: 'None',
@@ -305,7 +307,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "video.receive.jitterInMs": {
+  'video.receive.jitterInMs': {
     Name: 'Receive Jitter',
     Category: 'Video',
     Units: 'ms',
@@ -315,7 +317,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better.',
     Clickable: true,
   },
-  "video.receive.pairRttInMs": {
+  'video.receive.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Video',
     Units: 'ms',
@@ -325,16 +327,17 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "video.receive.frameRateReceived": {
+  'video.receive.frameRateReceived': {
     Name: 'Received Frame Rate',
     Category: 'Video',
     Units: 'fps',
     Purpose: 'Received frame rate',
-    Details: 'Frame rate received on the RTP stream. Results are in frames per second.',
+    Details:
+      'Frame rate received on the RTP stream. Results are in frames per second.',
     Comments: '',
     Clickable: true,
   },
-  "video.receive.frameWidthReceived": {
+  'video.receive.frameWidthReceived': {
     Name: 'Received Width',
     Category: 'Video',
     Units: 'px',
@@ -343,7 +346,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.receive.frameHeightReceived": {
+  'video.receive.frameHeightReceived': {
     Name: 'Received Height',
     Category: 'Video',
     Units: 'px',
@@ -352,7 +355,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.receive.frameRateOutput": {
+  'video.receive.frameRateOutput': {
     Name: 'Received Frame Rate Output',
     Category: 'Video',
     Units: 'fps',
@@ -361,55 +364,56 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "video.receive.frameRateDecoded": {
+  'video.receive.frameRateDecoded': {
     Name: 'Received Decoded Frame Rate',
     Category: 'Video',
     Units: 'fps',
     Purpose: 'Received decoded frame rate',
-    Details:
-      'Framerate from decoder output. Results are in frames per second.',
+    Details: 'Framerate from decoder output. Results are in frames per second.',
     Comments: 'Information only',
     Clickable: true,
   },
-  "video.receive.longestFreezeDurationInMs": {
+  'video.receive.longestFreezeDurationInMs': {
     Name: 'Received Longest Freeze Duration',
     Category: 'Video',
     Units: 'ms',
     Purpose: 'Received longest freeze duration',
-    Details: 'The longest freeze duration during the call. Results are in milliseconds.',
+    Details:
+      'The longest freeze duration during the call. Results are in milliseconds.',
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "video.receive.totalFreezeDurationInMs": {
+  'video.receive.totalFreezeDurationInMs': {
     Name: 'Received Total Freeze Duration',
     Category: 'Video',
     Units: 'ms',
     Purpose: 'Received total freeze duration',
-    Details: 'Accumulated freeze duration during the call. Results are in milliseconds.',
+    Details:
+      'Accumulated freeze duration during the call. Results are in milliseconds.',
     Comments: 'Lower is better',
     Clickable: true,
   },
 
-  "screenShare.receive.frameRateReceived": {
+  'screenShare.receive.frameRateReceived': {
     Name: 'Received Frame Rate',
     Category: 'Screen Sharing',
     Units: 'fps',
     Purpose: 'Received Frame Rate',
-    Details: 'Frame rate received on the RTP stream. Results are in frames per second.',
+    Details:
+      'Frame rate received on the RTP stream. Results are in frames per second.',
     Comments: '',
     Clickable: true,
   },
-  "screenShare.receive.frameRateDecoded": {
+  'screenShare.receive.frameRateDecoded': {
     Name: 'Received Decoded Frame Rate',
     Category: 'Screen Sharing',
     Units: 'fps',
     Purpose: 'Received decoded frame rate',
-    Details:
-      'Framerate from decoder output. Results are in frames per second.',
+    Details: 'Framerate from decoder output. Results are in frames per second.',
     Comments: 'Information only',
     Clickable: true,
   },
-  "screenShare.receive.frameWidthReceived": {
+  'screenShare.receive.frameWidthReceived': {
     Name: 'Received Width',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -418,7 +422,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.receive.frameHeightReceived": {
+  'screenShare.receive.frameHeightReceived': {
     Name: 'Received Height',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -427,25 +431,27 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.receive.longestFreezeDurationInMs": {
+  'screenShare.receive.longestFreezeDurationInMs': {
     Name: 'Received Longest Freeze Duration',
     Category: 'Screen Sharing',
     Units: 'ms',
     Purpose: 'Received longest freeze duration',
-    Details: 'The longest freeze duration during the call. Results are in milliseconds.',
+    Details:
+      'The longest freeze duration during the call. Results are in milliseconds.',
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "screenShare.receive.totalFreezeDurationInMs": {
+  'screenShare.receive.totalFreezeDurationInMs': {
     Name: 'Received Total Freeze Duration',
     Category: 'Screen Sharing',
     Units: 'ms',
     Purpose: 'Received total freeze duration',
-    Details: 'Accumulated freeze duration during the call. Results are in milliseconds.',
+    Details:
+      'Accumulated freeze duration during the call. Results are in milliseconds.',
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "screenShare.receive.jitterInMs": {
+  'screenShare.receive.jitterInMs': {
     Name: 'Received Jitter',
     Category: 'Screen Sharing',
     Units: 'ms',
@@ -455,7 +461,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better.',
     Clickable: true,
   },
-  "screenShare.receive.packetsLostPerSecond": {
+  'screenShare.receive.packetsLostPerSecond': {
     Name: 'Received Packet Loss',
     Category: 'Screen Sharing',
     Units: 'None',
@@ -465,7 +471,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "screenShare.receive.codecName": {
+  'screenShare.receive.codecName': {
     Name: 'Receive Codec',
     Category: 'Screen Sharing',
     Units: 'None',
@@ -474,27 +480,29 @@ export const MediaStatsMap: any = {
     Comments: 'H264, VP8',
     Clickable: false,
   },
-  "screenShare.receive.bitrate": {
+  'screenShare.receive.bitrate': {
     Name: 'Received Bitrate',
     Category: 'Screen Sharing',
     Units: 'bps',
     Purpose: 'Received bitrate',
-    Details: 'Received bitrate of screen share. Results are in bits per second (bps).',
+    Details:
+      'Received bitrate of screen share. Results are in bits per second (bps).',
     Comments: '',
     Clickable: true,
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "screenShare.receive.packetsPerSecond": {
+  'screenShare.receive.packetsPerSecond': {
     Name: 'Received Packets',
     Category: 'Screen Sharing',
     Units: 'None',
     Purpose: 'Received packets',
-    Details: 'The number of screen share video packets received in the last second. Results are in packets per second.',
+    Details:
+      'The number of screen share video packets received in the last second. Results are in packets per second.',
     Comments: 'Information Only',
     Clickable: true,
   },
-  "screenShare.receive.pairRttInMs": {
+  'screenShare.receive.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Screen Sharing',
     Units: 'ms',
@@ -504,7 +512,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "screenShare.receive.frameRateOutput": {
+  'screenShare.receive.frameRateOutput': {
     Name: 'Received Frame Rate Output',
     Category: 'Screen Sharing',
     Units: 'fps',
@@ -513,16 +521,17 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.frameRateSent": {
+  'screenShare.send.frameRateSent': {
     Name: 'Sent Frame Rate',
     Category: 'Screen Sharing',
     Units: 'fps',
     Purpose: 'Sent frame rate',
-    Details: 'Number of screen share video frames sent in the last second. Results are frames per second',
+    Details:
+      'Number of screen share video frames sent in the last second. Results are frames per second',
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.frameWidthSent": {
+  'screenShare.send.frameWidthSent': {
     Name: 'Sent Width',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -531,7 +540,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.frameHeightSent": {
+  'screenShare.send.frameHeightSent': {
     Name: 'Sent Height',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -540,7 +549,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.bitrate": {
+  'screenShare.send.bitrate': {
     Name: 'Send Bitrate',
     Category: 'Screen Sharing',
     Units: 'bps',
@@ -552,7 +561,7 @@ export const MediaStatsMap: any = {
     GranularityDivider: 1000,
     GranularityUnits: 'kbps',
   },
-  "screenShare.send.packetsPerSecond": {
+  'screenShare.send.packetsPerSecond': {
     Name: 'Sent Packets',
     Category: 'Screen Sharing',
     Units: 'None',
@@ -562,7 +571,7 @@ export const MediaStatsMap: any = {
     Comments: 'Information only',
     Clickable: true,
   },
-  "screenShare.send.rttInMs": {
+  'screenShare.send.rttInMs': {
     Name: 'Round-Trip Time',
     Category: 'Screen Sharing',
     Units: 'ms',
@@ -572,7 +581,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "screenShare.send.pairRttInMs": {
+  'screenShare.send.pairRttInMs': {
     Name: 'Pair Round-Trip Time',
     Category: 'Screen Sharing',
     Units: 'ms',
@@ -582,7 +591,7 @@ export const MediaStatsMap: any = {
     Comments: 'A round trip time of 200 ms or less is recommended.',
     Clickable: true,
   },
-  "screenShare.send.packetsLostPerSecond": {
+  'screenShare.send.packetsLostPerSecond': {
     Name: 'Send Packet Loss',
     Category: 'Screen Sharing',
     Units: 'None',
@@ -592,7 +601,7 @@ export const MediaStatsMap: any = {
     Comments: 'Lower is better',
     Clickable: true,
   },
-  "screenShare.send.frameRateInput": {
+  'screenShare.send.frameRateInput': {
     Name: 'Sent Framerate Input',
     Category: 'Screen Sharing',
     Units: 'fps',
@@ -601,7 +610,7 @@ export const MediaStatsMap: any = {
     Comments: 'Information only',
     Clickable: true,
   },
-  "screenShare.send.frameWidthInput": {
+  'screenShare.send.frameWidthInput': {
     Name: 'Sent Frame Width Input',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -610,7 +619,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.frameHeightInput": {
+  'screenShare.send.frameHeightInput': {
     Name: 'Sent Frame Height Input',
     Category: 'Screen Sharing',
     Units: 'px',
@@ -619,7 +628,7 @@ export const MediaStatsMap: any = {
     Comments: '',
     Clickable: true,
   },
-  "screenShare.send.codecName": {
+  'screenShare.send.codecName': {
     Name: 'Send Codec',
     Category: 'Screen Sharing',
     Units: 'None',

@@ -9,7 +9,7 @@ import {
   ScreenShareRecvMediaStats,
   ScreenShareSendMediaStats,
   VideoRecvMediaStats,
-  VideoSendMediaStats
+  VideoSendMediaStats,
 } from '@azure/communication-calling'
 
 export enum Tabs {
@@ -58,26 +58,31 @@ export interface MediaStatsDataValue {
   unit: string
 }
 
-export type MediaStatsDataKey = Exclude <keyof (AudioSendMediaStats<MediaStatsDataValue[]> |
-                                       AudioRecvMediaStats<MediaStatsDataValue[]> |
-                                       VideoSendMediaStats<MediaStatsDataValue[]> |
-                                       VideoRecvMediaStats<MediaStatsDataValue[]> |
-                                       ScreenShareSendMediaStats<MediaStatsDataValue[]> |
-                                       ScreenShareRecvMediaStats<MediaStatsDataValue[]>), "id">
+export type MediaStatsDataKey = Exclude<
+  keyof (
+    | AudioSendMediaStats<MediaStatsDataValue[]>
+    | AudioRecvMediaStats<MediaStatsDataValue[]>
+    | VideoSendMediaStats<MediaStatsDataValue[]>
+    | VideoRecvMediaStats<MediaStatsDataValue[]>
+    | ScreenShareSendMediaStats<MediaStatsDataValue[]>
+    | ScreenShareRecvMediaStats<MediaStatsDataValue[]>
+  ),
+  'id'
+>
 
 export type MediaStatsData = {
-    audio: {
-        send: Record<string, AudioSendMediaStats<MediaStatsDataValue[]>>
-        receive: Record<string, AudioRecvMediaStats<MediaStatsDataValue[]>>
-    }
-    video: {
-        send: Record<string, VideoSendMediaStats<MediaStatsDataValue[]>>
-        receive: Record<string, VideoRecvMediaStats<MediaStatsDataValue[]>>
-    }
-    screenShare: {
-        send: Record<string, ScreenShareSendMediaStats<MediaStatsDataValue[]>>
-        receive: Record<string, ScreenShareRecvMediaStats<MediaStatsDataValue[]>>
-    }
+  audio: {
+    send: Record<string, AudioSendMediaStats<MediaStatsDataValue[]>>
+    receive: Record<string, AudioRecvMediaStats<MediaStatsDataValue[]>>
+  }
+  video: {
+    send: Record<string, VideoSendMediaStats<MediaStatsDataValue[]>>
+    receive: Record<string, VideoRecvMediaStats<MediaStatsDataValue[]>>
+  }
+  screenShare: {
+    send: Record<string, ScreenShareSendMediaStats<MediaStatsDataValue[]>>
+    receive: Record<string, ScreenShareRecvMediaStats<MediaStatsDataValue[]>>
+  }
 }
 
 export interface Options {
