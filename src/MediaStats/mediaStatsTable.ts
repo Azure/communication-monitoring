@@ -1,7 +1,6 @@
 import {
   MediaStatsData,
-  MediaStatsDataKey,
-  MediaStatsDataValue,
+  MediaStatsDataKey
 } from '../types'
 import { initializeGraph } from './mediaStatsGraph'
 import { MediaStatsMap } from './mediaStatsMap'
@@ -132,9 +131,11 @@ function generateHtml(key: string, id: string) {
     `<dd class='sectionHeader'><a href="${item.url}" target="_blank">Learn more</a></dd>`
   for (const k of item.keys) {
     const info = MediaStatsMap[`${key}.${k}`]
-    html +=
-      `<dt hidden=false id="${key}.${k}.${id}">${info.Name}</dt>` +
-      `<dd hidden=false id="${key}.${k}.${id}.value">—</dd>`
+    if (info) {
+      html +=
+        `<dt hidden=false id="${key}.${k}.${id}">${info.Name}</dt>` +
+        `<dd hidden=false id="${key}.${k}.${id}.value">—</dd>`
+    }
   }
   return html.trim()
 }

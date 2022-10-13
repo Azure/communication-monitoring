@@ -2,7 +2,6 @@ import {
   Call,
   Features,
   MediaStatsReportSample,
-  MediaStatsCallFeature,
   MediaStatsCollector,
 } from '@azure/communication-calling'
 import {
