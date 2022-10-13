@@ -1,7 +1,4 @@
-import {
-  MediaStatsData,
-  MediaStatsDataKey
-} from '../types'
+import { MediaStatsData, MediaStatsDataKey } from '../types'
 import { initializeGraph } from './mediaStatsGraph'
 import { MediaStatsMap } from './mediaStatsMap'
 
@@ -76,8 +73,8 @@ subHtml['video.receive'] = {
     'frameHeightReceived',
     'frameRateOutput',
     'frameRateDecoded',
-    'longestFreezeDuration',
-    'totalFreezeDuration',
+    'longestFreezeDurationInMs',
+    'totalFreezeDurationInMs',
     'codecName',
   ],
   sectionName: 'Video Receive',
@@ -115,8 +112,8 @@ subHtml['screenShare.receive'] = {
     'frameHeightReceived',
     'frameRateOutput',
     'frameRateDecoded',
-    'longestFreezeDuration',
-    'totalFreezeDuration',
+    'longestFreezeDurationInMs',
+    'totalFreezeDurationInMs',
     'codecName',
   ],
   sectionName: 'ScreenShare Receive',
