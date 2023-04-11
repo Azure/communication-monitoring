@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@azure/communication-calling": "1.5.4-alpha.20220510.1",
-    "@azure/communication-common": "^1.1.0",
+    "@azure/communication-common": "^2.2.0",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
